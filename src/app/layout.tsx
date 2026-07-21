@@ -11,12 +11,16 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
     default: "ZEDX Premium Tech",
     template: "%s | ZEDX Premium Tech",
   },
   description:
     "Explore premium ZEDX audio, power, wearables, tablets, mounts, cables, and everyday tech accessories.",
+  openGraph: {
+    images: ["/brand/zedx-logo-transparent.png"],
+  },
 };
 
 export default function RootLayout({

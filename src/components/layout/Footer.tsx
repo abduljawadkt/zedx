@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Mail, MapPin, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import { categories } from "@/data/categories";
@@ -50,16 +49,13 @@ export function Footer() {
             <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[var(--brand-blue-soft)]/60 to-transparent" />
             <div className="relative z-10">
               <div className="flex items-center">
-                <span className="relative h-12 w-12 overflow-hidden">
-                  <img
-                    src="/cropped-zedx-logo-1.webp"
-                    alt="Zedx"
-                    className="absolute left-0 top-1/2 h-12 w-44 max-w-none -translate-y-1/2 object-contain object-left"
-                  />
-                </span>
-                <span className="ml-3 text-4xl font-semibold text-white">
-                  zedx
-                </span>
+                <Image
+                  src="/brand/zedx-logo-white.png"
+                  alt="Zedx"
+                  width={2034}
+                  height={629}
+                  className="h-12 w-auto object-contain object-left sm:h-14"
+                />
               </div>
               <h2 className="mt-10 max-w-xl text-5xl font-semibold leading-[0.9] sm:text-6xl">
                 Premium tech for everyday momentum.

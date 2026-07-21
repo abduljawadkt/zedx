@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, Search, ShoppingBag, User, X } from "lucide-react";
@@ -67,16 +65,13 @@ export function MobileMenu() {
                 onClick={closeMenu}
                 aria-label="Zedx home"
               >
-                <span className="relative h-10 w-10 overflow-hidden">
-                  <img
-                    src="/cropped-zedx-logo-1.webp"
-                    alt="Zedx"
-                    className="absolute left-0 top-1/2 h-10 w-36 max-w-none -translate-y-1/2 object-contain object-left"
-                  />
-                </span>
-                <span className="ml-3 text-3xl font-semibold text-white">
-                  zedx
-                </span>
+                <Image
+                  src="/brand/zedx-logo-white.png"
+                  alt="Zedx"
+                  width={2034}
+                  height={629}
+                  className="h-9 w-auto object-contain object-left"
+                />
               </Link>
               <button
                 type="button"

@@ -115,7 +115,7 @@ export async function getSiteSettings() {
     seo: {
       title: "ZEDX Premium Tech Store",
       description: "A premium ecommerce launch experience for audio, power, wearables, tablets, and accessories.",
-      openGraphImage: "/cropped-zedx-logo-1.webp",
+      openGraphImage: "/brand/zedx-logo-transparent.png",
       canonicalPath: "/",
       robots: "index,follow",
     } satisfies SeoMetadata,

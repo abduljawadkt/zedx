@@ -1,7 +1,5 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -58,18 +56,16 @@ export function Header() {
         <Link
           href="/"
           aria-label="Zedx home"
-          className="group relative flex h-10 w-28 shrink-0 items-center sm:h-11 sm:w-44"
+          className="group relative flex h-10 w-32 shrink-0 items-center sm:h-11 sm:w-40"
         >
-          <span className="relative h-10 w-10 overflow-hidden sm:h-11 sm:w-11">
-            <img
-              src="/cropped-zedx-logo-1.webp"
-              alt="Zedx"
-              className="absolute left-0 top-1/2 h-10 w-40 max-w-none -translate-y-1/2 object-contain object-left transition duration-300 group-hover:scale-[1.03] sm:h-11"
-            />
-          </span>
-          <span className="ml-2 text-2xl font-semibold text-white sm:ml-3 sm:text-3xl">
-            zedx
-          </span>
+          <Image
+            src="/brand/zedx-logo-white.png"
+            alt="Zedx"
+            width={2034}
+            height={629}
+            priority
+            className="h-8 w-auto object-contain object-left transition duration-300 group-hover:scale-[1.03] sm:h-9"
+          />
         </Link>
 
         <nav

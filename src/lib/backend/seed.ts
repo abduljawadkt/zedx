@@ -72,7 +72,7 @@ export async function seedDatabaseIfNeeded() {
             .replace(/(^-|-$)+/g, ""),
           name: collection,
           description: `Curated ${collection.toLowerCase()} products for a premium everyday tech setup.`,
-          image: leadProduct?.image ?? "/cropped-zedx-logo-1.webp",
+          image: leadProduct?.image ?? "/brand/zedx-logo-transparent.png",
           productCount: collectionProducts.length,
           featured: index < 4,
         };
@@ -91,7 +91,7 @@ export async function seedDatabaseIfNeeded() {
         seoTitle: "ZEDX Premium Tech Store",
         seoDescription:
           "A premium ecommerce launch experience for audio, power, wearables, tablets, and accessories.",
-        openGraphImage: "/cropped-zedx-logo-1.webp",
+        openGraphImage: "/brand/zedx-logo-transparent.png",
         canonicalPath: "/",
         robots: "index,follow",
         socialLinksJson: stringify([]),
