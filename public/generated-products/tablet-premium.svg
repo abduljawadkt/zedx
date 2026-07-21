@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="ZEDX tablet product render">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="0.45" stop-color="#b9c8d7"/>
+      <stop offset="1" stop-color="#27323d"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121922"/>
+      <stop offset="0.55" stop-color="#071014"/>
+      <stop offset="1" stop-color="#020405"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="42%" cy="28%" r="70%">
+      <stop offset="0" stop-color="#00a0e3" stop-opacity="0.52"/>
+      <stop offset="0.42" stop-color="#00a0e3" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#00a0e3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="34" stdDeviation="34" flood-color="#000000" flood-opacity="0.42"/>
+    </filter>
+  </defs>
+  <rect width="900" height="900" fill="none"/>
+  <g filter="url(#shadow)" transform="translate(160 125) rotate(-7 290 330)">
+    <rect x="0" y="0" width="580" height="650" rx="54" fill="url(#body)"/>
+    <rect x="32" y="36" width="516" height="578" rx="34" fill="#05080b"/>
+    <rect x="48" y="52" width="484" height="546" rx="28" fill="url(#screen)"/>
+    <rect x="48" y="52" width="484" height="546" rx="28" fill="url(#glow)"/>
+    <circle cx="290" cy="586" r="8" fill="#dce8f2" opacity="0.64"/>
+    <path d="M108 128h270" stroke="#ffffff" stroke-opacity="0.16" stroke-width="14" stroke-linecap="round"/>
+    <path d="M108 174h188" stroke="#7ddcff" stroke-opacity="0.22" stroke-width="10" stroke-linecap="round"/>
+    <rect x="108" y="248" width="326" height="178" rx="28" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.08"/>
+    <path d="M146 482h284" stroke="#ffffff" stroke-opacity="0.12" stroke-width="12" stroke-linecap="round"/>
+    <path d="M146 522h210" stroke="#ffffff" stroke-opacity="0.08" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

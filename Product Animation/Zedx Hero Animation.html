@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Zedx — Hero Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: #04070d;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    #root { position: fixed; inset: 0; }
+  </style>
+
+  <link rel="preload" as="image" href="assets/speaker.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/dock.png" />
+  <link rel="preload" as="image" href="assets/mount.png" />
+  <link rel="preload" as="image" href="assets/earbuds.png" />
+  <link rel="preload" as="image" href="assets/headphones.png" />
+  <link rel="preload" as="image" href="assets/watch.png" />
+  <link rel="preload" as="image" href="assets/logo.webp" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root" data-video-root data-screen-label="t=0s"></div>
+
+  <script type="text/babel" src="animations.jsx"></script>
+  <script type="text/babel" src="scenes.jsx"></script>
+  <script type="text/babel">
+    const PRELOAD_SRCS = [
+      'assets/speaker.png',
+      'assets/dock.png',
+      'assets/mount.png',
+      'assets/earbuds.png',
+      'assets/headphones.png',
+      'assets/watch.png',
+      'assets/logo.webp',
+    ];
+    const App = () => (
+      <React.Fragment>
+        {/* Hidden preloader: keeps every image decoded + in-memory from
+            t=0 so no scene swap stalls on a fresh fetch/decode. */}
+        <div style={{ position: 'fixed', width: 1, height: 1, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+          {PRELOAD_SRCS.map(s => <img key={s} src={s} alt="" />)}
+        </div>
+        <Stage
+          width={STAGE_W}
+          height={STAGE_H}
+          duration={18}
+          background="#04070d"
+          loop={true}
+          autoplay={true}
+          persistKey="zedx-hero"
+        >
+          <HeroVideo />
+        </Stage>
+      </React.Fragment>
+    );
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

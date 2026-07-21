@@ -1,0 +1,260 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id              String   @id
+  name            String
+  slug            String   @unique
+  category        String
+  categorySlug    String
+  collection      String
+  price           Int
+  oldPrice        Int
+  currency        String
+  badge           String
+  color           String
+  image           String
+  galleryJson     String
+  shortDescription String
+  description     String
+  specsJson       String
+  highlightsJson  String
+  published       Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+}
+
+model Category {
+  slug         String   @id
+  name         String
+  description  String
+  accent       String
+  collection   String
+  image        String
+  productCount Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+}
+
+model Collection {
+  slug         String   @id
+  name         String
+  description  String
+  image        String
+  productCount Int
+  featured     Boolean
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+}
+
+model SiteSettings {
+  id            String   @id @default("site")
+  brandName     String
+  tagline       String
+  announcement  String
+  currency      String
+  seoTitle      String
+  seoDescription String
+  openGraphImage String
+  canonicalPath String
+  robots        String
+  socialLinksJson String
+  updatedAt     DateTime @updatedAt
+}
+
+model HomepageSection {
+  id        String   @id
+  type      String
+  title     String
+  enabled   Boolean
+  sortOrder Int
+  updatedAt DateTime @updatedAt
+}
+
+model SeoMetadata {
+  id              String   @id @default(cuid())
+  entityType      String
+  entitySlug      String
+  title           String
+  description     String
+  openGraphImage  String?
+  canonicalPath   String
+  robots          String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([entityType, entitySlug])
+}
+
+model Redirect {
+  id        String   @id @default(cuid())
+  from      String   @unique
+  to        String
+  status    Int      @default(301)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String
+  width     Int?
+  height    Int?
+  mimeType  String?
+  sortOrder Int      @default(0)
+  owner     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id            String       @id @default(cuid())
+  orderNumber   String       @unique
+  customerId    String?
+  customerName  String
+  email         String
+  phone         String
+  city          String
+  addressLine   String
+  apartment     String?
+  paymentMethod String
+  currency      String
+  subtotal      Int
+  discount      Int
+  shipping      Int
+  total         Int
+  status        String       @default("pending")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  items         OrderItem[]
+  customer      Customer?    @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([customerId])
+  @@index([email])
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  productId   String
+  productSlug String
+  name        String
+  price       Int
+  quantity    Int
+  image       String
+
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model InventoryItem {
+  id          String   @id @default(cuid())
+  productId   String   @unique
+  sku         String
+  quantity    Int      @default(0)
+  reserved    Int      @default(0)
+  lowStockAt  Int      @default(5)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model InventoryLog {
+  id          String   @id @default(cuid())
+  productId   String
+  orderId     String?
+  action      String
+  quantity    Int
+  note        String?
+  createdAt   DateTime @default(now())
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Customer {
+  id           String              @id @default(cuid())
+  name         String
+  email        String              @unique
+  passwordHash String
+  phone        String?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  sessions     CustomerSession[]
+  addresses    CustomerAddress[]
+  orders       Order[]
+}
+
+model CustomerSession {
+  id         String   @id @default(cuid())
+  tokenHash  String   @unique
+  customerId String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+  @@index([expiresAt])
+}
+
+model CustomerAddress {
+  id          String   @id @default(cuid())
+  customerId  String
+  label       String   @default("Default")
+  fullName    String
+  phone       String
+  city        String
+  addressLine String
+  apartment   String?
+  isDefault   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String?
+  entityId  String?
+  payload   String?
+  createdAt DateTime @default(now())
+}

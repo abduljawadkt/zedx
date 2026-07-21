@@ -1,0 +1,260 @@
+"use client";
+
+import Link from "next/link";
+import { Headset, Send, ShoppingBag, Sparkles, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useMemo, useState } from "react";
+import { useCommerce } from "@/components/providers/CommerceProvider";
+import { ProductImage } from "@/components/product/ProductImage";
+import { products, type Product } from "@/data/products";
+
+type ChatMessage = {
+  id: number;
+  productIds?: string[];
+  role: "assistant" | "user";
+  text: string;
+};
+
+const quickPrompts = [
+  "Best audio combo",
+  "Travel charging setup",
+  "Work desk essentials",
+  "Gift under AED 150",
+];
+
+function getRecommendations(prompt: string) {
+  const normalized = prompt.toLowerCase();
+  let matches: Product[];
+  let intro: string;
+
+  if (normalized.includes("audio") || normalized.includes("earbud") || normalized.includes("music")) {
+    matches = products.filter((product) =>
+      ["earpods", "speakers", "over-heads", "wired-headphones", "neck-band"].includes(product.categorySlug),
+    );
+    intro = "For audio, I would compare comfort, call clarity, and bass profile. These three cover private listening, open-ear comfort, and room sound.";
+  } else if (normalized.includes("travel") || normalized.includes("charging") || normalized.includes("power")) {
+    matches = products.filter((product) =>
+      ["power-banks", "chargers", "charging-cables", "adapters", "car-chargers"].includes(product.categorySlug),
+    );
+    intro = "For travel, build around one powerbank, one fast wall charger, and one reliable cable so the setup stays compact.";
+  } else if (normalized.includes("desk") || normalized.includes("work") || normalized.includes("office")) {
+    matches = products.filter((product) =>
+      ["car-holders", "charging-cables", "chargers", "smart-watches"].includes(product.categorySlug),
+    );
+    intro = "For a work desk, I would prioritize charging, visibility, and quick-access wearables without cluttering the surface.";
+  } else if (normalized.includes("gift") || normalized.includes("150") || normalized.includes("budget")) {
+    matches = products.filter((product) => product.price <= 150);
+    intro = "For gifting under AED 150, these are easy to understand, practical, and still feel premium.";
+  } else {
+    matches = products.filter((product) =>
+      ["Best Seller", "New", "Fast Charge", "Premium"].includes(product.badge),
+    );
+    intro = "A balanced recommendation should include one audio product, one power product, and one daily accessory. Here is a strong mixed set.";
+  }
+
+  const recommendations = matches.slice(0, 3);
+
+  return {
+    text: intro,
+    productIds: recommendations.map((product) => product.id),
+  };
+}
+
+export function ProductAdvisorChat() {
+  const { addToCart } = useCommerce();
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 1,
+      role: "assistant",
+      text: "Hi, I am the Zedx product advisor. Tell me your use case and I will compare products that fit your setup.",
+      productIds: products.slice(0, 3).map((product) => product.id),
+    },
+  ]);
+
+  const recommendedProductsById = useMemo(() => {
+    return new Map(products.map((product) => [product.id, product]));
+  }, []);
+
+  function sendPrompt(prompt: string) {
+    const cleanPrompt = prompt.trim();
+    if (!cleanPrompt) return;
+
+    const answer = getRecommendations(cleanPrompt);
+    setMessages((current) => [
+      ...current,
+      { id: Date.now(), role: "user", text: cleanPrompt },
+      {
+        id: Date.now() + 1,
+        role: "assistant",
+        text: answer.text,
+        productIds: answer.productIds,
+      },
+    ]);
+    setInput("");
+    setOpen(true);
+  }
+
+  return (
+    <>
+      <motion.button
+        type="button"
+        aria-label="Open Zedx product advisor chatbot"
+        className="fixed bottom-5 right-5 z-[70] grid size-16 place-items-center rounded-full border border-[#ffffff26] bg-[#00a0e3] text-white shadow-2xl shadow-[#00a0e3]/30 transition hover:scale-105 active:scale-95"
+        onClick={() => setOpen(true)}
+        whileHover={{ y: -3 }}
+        whileTap={{ scale: 0.96 }}
+      >
+        <Headset size={27} />
+        <span className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-white text-[#050505]">
+          <Sparkles size={13} />
+        </span>
+      </motion.button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.aside
+            role="dialog"
+            aria-modal="true"
+            aria-label="Zedx product advisor"
+            className="fixed bottom-24 right-4 z-[82] flex max-h-[calc(100vh-7rem)] w-[calc(100vw-2rem)] max-w-[28rem] flex-col overflow-hidden rounded-[2rem] border border-[#ffffff1a] bg-[#08080a]/94 shadow-2xl shadow-[#00000080] backdrop-blur-2xl sm:right-5"
+            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 190, damping: 24 }}
+          >
+            <div className="border-b border-[#ffffff1a] bg-[#ffffff0a] p-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="grid size-11 place-items-center rounded-full bg-[#00a0e3] text-white">
+                    <Headset size={21} />
+                  </span>
+                  <div>
+                    <h2 className="text-lg font-semibold text-white">Zedx Advisor</h2>
+                    <p className="text-xs text-[#ffffff73]">Product recommendations</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Close product advisor"
+                  className="grid size-10 place-items-center rounded-full border border-[#ffffff1a] text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  <X size={17} />
+                </button>
+              </div>
+              <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+                {quickPrompts.map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    className="shrink-0 rounded-full border border-[#ffffff1a] px-4 py-2 text-xs font-semibold text-[#ffffffb3] transition hover:border-[#00a0e3]/60 hover:text-white"
+                    onClick={() => sendPrompt(prompt)}
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex-1 space-y-4 overflow-auto p-5">
+              {messages.map((message) => {
+                const messageProducts = message.productIds
+                  ?.map((id) => recommendedProductsById.get(id))
+                  .filter(Boolean) as Product[] | undefined;
+
+                return (
+                  <div
+                    key={message.id}
+                    className={message.role === "user" ? "ml-auto max-w-[82%]" : "max-w-full"}
+                  >
+                    <div
+                      className={`rounded-[1.35rem] px-4 py-3 text-sm leading-6 ${
+                        message.role === "user"
+                          ? "bg-[#00a0e3] text-white"
+                          : "border border-[#ffffff1a] bg-[#ffffff0b] text-[#ffffffb3]"
+                      }`}
+                    >
+                      {message.text}
+                    </div>
+                    {messageProducts && messageProducts.length > 0 && (
+                      <div className="mt-3 grid gap-3">
+                        {messageProducts.map((product) => (
+                          <div
+                            key={product.id}
+                            className="grid grid-cols-[4.5rem_1fr] gap-3 rounded-[1.25rem] border border-[#ffffff1a] bg-[#ffffff09] p-3"
+                          >
+                            <div className="product-stage !min-h-0 aspect-square rounded-2xl">
+                              <ProductImage
+                                product={product}
+                                alt={`${product.name} advisor recommendation`}
+                                className="!w-[70%] !drop-shadow-[0_16px_26px_rgba(15,23,42,0.22)]"
+                                imageClassName="brightness-[1.03] contrast-[1.04]"
+                                sizes="90px"
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="line-clamp-2 text-sm font-semibold leading-5 text-white">
+                                {product.name}
+                              </p>
+                              <p className="mt-1 text-xs text-[#ffffff6b]">{product.category}</p>
+                              <p className="mt-2 text-sm font-semibold text-[var(--brand-blue-soft)]">
+                                {product.currency} {product.price}
+                              </p>
+                              <div className="mt-3 flex gap-2">
+                                <button
+                                  type="button"
+                                  className="inline-flex h-9 items-center gap-1 rounded-full bg-white px-3 text-xs font-semibold text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
+                                  onClick={() => addToCart(product)}
+                                >
+                                  <ShoppingBag size={13} />
+                                  Add
+                                </button>
+                                <Link
+                                  href={`/products/${product.slug}`}
+                                  className="inline-flex h-9 items-center rounded-full border border-[#ffffff1a] px-3 text-xs font-semibold text-[#ffffffa6] transition hover:border-[#00a0e3]/60 hover:text-white"
+                                  onClick={() => setOpen(false)}
+                                >
+                                  Details
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <form
+              className="border-t border-[#ffffff1a] p-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                sendPrompt(input);
+              }}
+            >
+              <div className="flex items-center gap-2 rounded-full border border-[#ffffff1a] bg-[#ffffff0a] p-2">
+                <input
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-[#ffffff4d]"
+                  placeholder="Ask for audio, travel, desk, gift..."
+                />
+                <button
+                  type="submit"
+                  aria-label="Send product advisor message"
+                  className="grid size-10 place-items-center rounded-full bg-[#00a0e3] text-white transition hover:bg-white hover:text-[#050505]"
+                >
+                  <Send size={16} />
+                </button>
+              </div>
+            </form>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
