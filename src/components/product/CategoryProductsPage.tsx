@@ -13,7 +13,7 @@ import {
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 type SortMode = "featured" | "price-asc" | "price-desc";
 
@@ -34,6 +34,7 @@ export function CategoryProductsPage({
   }, [products, sortMode]);
   const heroProduct = products[0];
   const lowestPrice = products.length ? Math.min(...products.map((product) => product.price)) : 0;
+  const displayCategoryName = formatCategoryName(category.name);
   const collectionLabel = category.collection.toLowerCase().includes("collection")
     ? category.collection
     : `${category.collection} collection`;
@@ -52,7 +53,7 @@ export function CategoryProductsPage({
             {collectionLabel}
           </p>
           <h1 className="relative mt-5 text-4xl font-semibold leading-tight text-white sm:text-7xl sm:leading-[0.96]">
-            {category.name}
+            {displayCategoryName}
           </h1>
           <p className="relative mt-5 max-w-xl text-base leading-7 text-white/58 sm:mt-6 sm:text-lg sm:leading-8">
             {category.description}
@@ -65,10 +66,10 @@ export function CategoryProductsPage({
               All products
             </Link>
             <Link
-              href="/checkout"
+              href="#category-products"
               className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
             >
-              View checkout
+              Shop from AED {lowestPrice}
             </Link>
           </div>
         </div>
@@ -91,11 +92,7 @@ export function CategoryProductsPage({
               <Package size={56} />
             </div>
           )}
-          <div className="relative grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
-              <p className="text-xs font-semibold text-white/45">Products</p>
-              <p className="mt-2 text-3xl font-semibold">{products.length}</p>
-            </div>
+          <div className="relative">
             <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
               <p className="text-xs font-semibold text-white/45">From</p>
               <p className="mt-2 text-3xl font-semibold">AED {lowestPrice}</p>
@@ -104,13 +101,27 @@ export function CategoryProductsPage({
         </div>
       </motion.div>
 
-      <div className="mt-12">
+      <section className="mt-8 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 sm:p-7">
+        <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+          Buy {displayCategoryName.toLowerCase()} in Dubai & UAE
+        </h2>
+        <p className="mt-4 text-sm leading-7 text-white/58 sm:text-base">
+          This ZEDX category brings together focused options{lowestPrice ? ` from AED ${lowestPrice}` : ""}, helping UAE shoppers
+          compare price, use case, category, and compatibility before choosing the right setup.
+        </p>
+        <p className="mt-4 text-sm leading-7 text-white/54 sm:text-base">
+          Browse by daily need: audio for calls and music, power for travel and work, smart wearables for quick
+          notifications, and mobile accessories for cleaner car, desk, and charging routines.
+        </p>
+      </section>
+
+      <div id="category-products" className="mt-12 scroll-mt-28">
         {products.length > 0 ? (
           <>
             <div className="mb-6 flex flex-col gap-4 rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3 text-xs font-semibold text-white/45">
                 <SlidersHorizontal size={16} />
-                {sortedProducts.length} products
+                Browse products
               </div>
               <label className="relative block min-w-64">
                 <span className="sr-only">Sort category products</span>

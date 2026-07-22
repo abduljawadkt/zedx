@@ -7,7 +7,11 @@ import { getTransparentProductImageSrc } from "@/components/product/ProductImage
 
 export const metadata: Metadata = {
   title: "Collections",
-  description: "Explore curated ZEDX product collections for audio, power, travel, wearables, and essentials.",
+  description:
+    "Browse curated ZEDX collections for audio, power, travel charging, wearables, mounts, and everyday essentials.",
+  alternates: {
+    canonical: "/collections",
+  },
 };
 
 export default async function CollectionsPage() {
@@ -46,10 +50,7 @@ export default async function CollectionsPage() {
               />
             </div>
             <div className="p-5">
-              <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
-                {collection.productCount} products
-              </p>
-              <h2 className="mt-3 text-2xl font-semibold">{collection.name}</h2>
+              <h2 className="text-2xl font-semibold">{collection.name}</h2>
               <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/56">
                 {collection.description}
               </p>

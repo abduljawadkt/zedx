@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, Grid2X2, Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { categories } from "@/data/categories";
 import { collections, products, type Product } from "@/data/products";
@@ -97,16 +97,16 @@ export function ProductsExplorer() {
         <div className="relative mt-8 grid gap-4 sm:grid-cols-2 lg:mt-0 lg:grid-cols-1">
           <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.07] p-4 shadow-sm shadow-black/20 sm:rounded-[1.5rem]">
             <div className="flex items-center gap-3 text-xs font-semibold text-white/45">
-              <Grid2X2 size={16} />
-              Showing
+              <Sparkles size={16} />
+              Catalog view
             </div>
-            <p className="mt-3 text-3xl font-semibold text-white">
-              {visibleProducts.length} products
-            </p>
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-3 text-2xl font-semibold text-white">
               {activeCategory === "all"
                 ? "All categories"
                 : categories.find((category) => category.slug === activeCategory)?.name}
+            </p>
+            <p className="mt-2 text-sm text-white/55">
+              Refine by category, collection, and price.
             </p>
           </div>
           <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.07] p-4 shadow-sm shadow-black/20 sm:rounded-[1.5rem]">
@@ -143,10 +143,7 @@ export function ProductsExplorer() {
             href={`/collections/${group.slug}`}
             className="rounded-[1.1rem] border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-[#00a0e3]/45 hover:bg-white/[0.07]"
           >
-            <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
-              {group.categorySlugs.length} categories
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold text-white">{group.name}</h2>
+            <h2 className="text-2xl font-semibold text-white">{group.name}</h2>
             <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/56">
               {group.description}
             </p>
@@ -200,7 +197,6 @@ export function ProductsExplorer() {
       <div className="mb-8 flex gap-2 overflow-x-auto rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-2 sm:mb-10 sm:gap-3">
         <FilterPill
           label="All"
-          count={products.length}
           active={activeCategory === "all"}
           onClick={() => setActiveCategory("all")}
         />
@@ -208,7 +204,6 @@ export function ProductsExplorer() {
           <FilterPill
             key={category.slug}
             label={category.name}
-            count={products.filter((product) => product.categorySlug === category.slug).length}
             active={activeCategory === category.slug}
             onClick={() => setActiveCategory(category.slug)}
           />
@@ -245,12 +240,10 @@ export function ProductsExplorer() {
 
 function FilterPill({
   active,
-  count,
   label,
   onClick,
 }: {
   active: boolean;
-  count: number;
   label: string;
   onClick: () => void;
 }) {
@@ -266,7 +259,6 @@ function FilterPill({
       onClick={onClick}
     >
       {label}
-      <span className="ml-2 opacity-60">{count}</span>
     </button>
   );
 }
