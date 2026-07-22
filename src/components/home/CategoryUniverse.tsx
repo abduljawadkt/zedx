@@ -41,6 +41,7 @@ const hiddenCategorySlugs = new Set([
   "charging-cables",
   "neck-band",
   "wired-headphones",
+  "car-holders",
 ]);
 
 export function CategoryUniverse() {
