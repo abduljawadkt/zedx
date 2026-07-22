@@ -4,13 +4,13 @@ import { cn } from "@/lib/utils";
 import type { Product } from "@/data/products";
 
 export const productImageStageClassName =
-  "relative grid place-items-center overflow-hidden border border-white/12 bg-[radial-gradient(circle_at_50%_18%,#eef3f7_0%,#b9c4cf_42%,#202832_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_18px_50px_rgba(0,0,0,0.32)]";
+  "relative grid place-items-center overflow-hidden border border-black/10 bg-[#F5F5F7] shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_18px_50px_rgba(0,0,0,0.22)]";
 
 export const productImageStageGlowClassName =
-  "pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_16%,rgba(255,255,255,0.72),transparent_38%),radial-gradient(circle_at_50%_92%,rgba(0,160,227,0.18),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.18))]";
+  "pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_14%,rgba(255,255,255,0.9),transparent_42%),radial-gradient(circle_at_50%_92%,rgba(0,160,227,0.08),transparent_36%)]";
 
 export const productImageGroundShadowClassName =
-  "pointer-events-none absolute inset-x-[18%] bottom-[12%] h-9 rounded-full bg-slate-950/38 blur-2xl";
+  "pointer-events-none absolute inset-x-[18%] bottom-[12%] h-9 rounded-full bg-slate-950/16 blur-2xl";
 
 export function getTransparentProductImageSrc(src: string) {
   if (!src.startsWith("/products/")) return src;
