@@ -36,21 +36,21 @@ const storyVariantClassNames = {
     description: "max-w-lg text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
     product: "sm:max-w-[26rem]",
     title:
-      "max-w-[13ch] text-[2.25rem] font-semibold leading-[1.02] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.45rem] xl:text-[3.8rem]",
+      "max-w-[13ch] text-[2.25rem] font-medium leading-[1.02] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.45rem] xl:text-[3.8rem]",
   },
   compact: {
     content: "p-6 sm:p-8 lg:p-8 xl:p-9",
     description: "max-w-md text-sm leading-6 text-white/72 sm:text-base sm:leading-7",
     product: "sm:max-w-[22rem]",
     title:
-      "max-w-[14ch] text-[2rem] font-semibold leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.55rem] lg:text-[2.65rem] xl:text-[3rem]",
+      "max-w-[14ch] text-[2rem] font-medium leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.55rem] lg:text-[2.65rem] xl:text-[3rem]",
   },
   wide: {
     content: "p-6 sm:p-9 lg:p-10 xl:p-11",
     description: "max-w-xl text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
     product: "sm:max-w-[25rem]",
     title:
-      "max-w-[16ch] text-[2.15rem] font-semibold leading-[1.03] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-[3.1rem] xl:text-[3.45rem]",
+      "max-w-[16ch] text-[2.15rem] font-medium leading-[1.03] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-[3.1rem] xl:text-[3.45rem]",
   },
 };
 
@@ -196,7 +196,7 @@ export function ImmersiveProductStories() {
             <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
               ZEDX essentials
             </p>
-            <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] sm:text-6xl sm:leading-[0.98] xl:text-7xl">
+            <h2 className="mt-5 max-w-3xl text-3xl font-medium leading-tight text-white drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] sm:text-6xl sm:leading-[0.98] xl:text-7xl">
               Power, audio, and accessories for daily UAE routines.
             </h2>
           </motion.div>
@@ -280,7 +280,7 @@ export function ImmersiveProductStories() {
             <div className="grid size-16 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-2xl font-semibold text-white">
               Z
             </div>
-            <p className="mt-10 text-2xl font-semibold leading-tight text-white sm:text-4xl">
+            <p className="mt-10 text-2xl font-medium leading-tight text-white sm:text-4xl">
               Accessories that complete your phone, car, and desk setup.
             </p>
             <p className="mt-5 text-base leading-7 text-white/60">
