@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   BatteryCharging,
-  Cable,
   Car,
   Gamepad2,
   Headphones,
@@ -11,7 +10,6 @@ import {
   Package,
   PlugZap,
   Speaker,
-  Tablet,
   Watch,
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
@@ -28,22 +26,26 @@ import { formatProductName } from "@/lib/productDisplay";
 const iconMap = {
   earpods: Headphones,
   "over-heads": Headphones,
-  "wired-headphones": Headphones,
-  "neck-band": Headphones,
   speakers: Speaker,
   "smart-watches": Watch,
   "power-banks": BatteryCharging,
   chargers: PlugZap,
   adapters: PlugZap,
-  "charging-cables": Cable,
   "car-chargers": Car,
   "car-holders": MonitorSmartphone,
-  tablets: Tablet,
   toys: Gamepad2,
 };
 
+const hiddenCategorySlugs = new Set([
+  "tablets",
+  "charging-cables",
+  "neck-band",
+  "wired-headphones",
+]);
+
 export function CategoryUniverse() {
   const reduceMotion = useReducedMotion();
+  const visibleCategories = categories.filter((category) => !hiddenCategorySlugs.has(category.slug));
 
   return (
     <section className="bg-[#030405] px-5 py-20 text-white sm:px-8 lg:py-24">
@@ -62,7 +64,7 @@ export function CategoryUniverse() {
         </p>
       </div>
       <div className="-mx-5 flex gap-5 overflow-x-auto px-5 pb-3 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-4 lg:px-0">
-        {categories.map((category, index) => {
+        {visibleCategories.map((category, index) => {
           const categoryProducts = products.filter((product) => product.categorySlug === category.slug);
           const heroProduct = categoryProducts[0] ?? products[index % products.length];
           const Icon = iconMap[category.slug as keyof typeof iconMap] ?? Package;
