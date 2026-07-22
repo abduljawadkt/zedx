@@ -54,14 +54,14 @@ export function BrandExperience() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="bg-[#08080a] px-5 pb-28 pt-4 text-white sm:px-8">
+    <section className="bg-[#08080a] px-5 pb-28 pt-4 text-white sm:px-8 lg:hidden">
       <div className="mx-auto max-w-[92rem]">
         <div className="mb-10">
           <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
-            Featured worlds
+            Shop by need
           </p>
           <h2 className="mt-4 max-w-5xl text-5xl font-semibold leading-[0.9] sm:text-7xl">
-            Designed around the way you move.
+            Find the right ZEDX setup faster.
           </h2>
         </div>
         <div className="grid gap-5 lg:grid-cols-2">
@@ -129,7 +129,7 @@ export function BrandExperience() {
                           : "bg-[#00a0e3] text-white hover:bg-white hover:text-[#050505]"
                       }`}
                     >
-                      Explore
+                      Shop now
                       <ArrowRight size={16} />
                     </Link>
                   </div>
