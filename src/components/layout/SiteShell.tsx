@@ -1,15 +1,27 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MobileMenu } from "@/components/layout/MobileMenu";
-import { CartDrawer } from "@/components/overlays/CartDrawer";
-import { ProductAdvisorChat } from "@/components/overlays/ProductAdvisorChat";
-import { SearchOverlay } from "@/components/overlays/SearchOverlay";
-import { ProductQuickView } from "@/components/product/ProductQuickView";
 import { CommerceProvider, useCommerce } from "@/components/providers/CommerceProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { usePathname } from "next/navigation";
+
+const MobileMenu = dynamic(() =>
+  import("@/components/layout/MobileMenu").then((module) => module.MobileMenu),
+);
+const CartDrawer = dynamic(() =>
+  import("@/components/overlays/CartDrawer").then((module) => module.CartDrawer),
+);
+const SearchOverlay = dynamic(() =>
+  import("@/components/overlays/SearchOverlay").then((module) => module.SearchOverlay),
+);
+const ProductAdvisorChat = dynamic(() =>
+  import("@/components/overlays/ProductAdvisorChat").then((module) => module.ProductAdvisorChat),
+);
+const ProductQuickView = dynamic(() =>
+  import("@/components/product/ProductQuickView").then((module) => module.ProductQuickView),
+);
 
 function CommerceOverlays() {
   const { closeQuickView, quickViewProduct } = useCommerce();

@@ -1,6 +1,57 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+@source "../";
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/poppins-300.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/poppins-400.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/poppins-500.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/poppins-600.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/poppins-700.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/poppins-800.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 800;
+}
 
 :root {
+  --font-poppins: "Poppins";
   --background: #030405;
   --foreground: #f7f7f8;
   --card: rgba(255, 255, 255, 0.07);
@@ -46,8 +97,18 @@ body {
 button,
 a,
 input,
-select {
+select,
+textarea {
   min-width: 0;
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--brand-blue-soft);
+  outline-offset: 3px;
+}
+
+:where(input, select, textarea):focus-visible {
+  border-color: rgba(0, 160, 227, 0.72);
 }
 
 h1,
@@ -286,6 +347,10 @@ body::after {
 }
 
 @media (max-width: 640px) {
+  body {
+    padding-top: 4.5rem;
+  }
+
   [class*="text-9xl"] {
     font-size: 4.75rem !important;
     line-height: 0.9 !important;
@@ -327,6 +392,10 @@ body::after {
   [class*="rounded-[2.4rem]"],
   [class*="rounded-[2.25rem]"] {
     border-radius: 1.5rem !important;
+  }
+
+  .product-stage {
+    min-height: 16rem;
   }
 }
 
