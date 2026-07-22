@@ -101,9 +101,11 @@ export function formatProductName(name: string) {
   return name
     .replace(/\bZEDX\b/g, "ZEDX")
     .replace(/\bZedx\b/g, "ZEDX")
+    .replace(/\bZsmart\b/g, "Z Smart")
     .replace(/\bPc\b/g, "PC")
     .replace(/\bGb\b/g, "GB")
     .replace(/\bgb\b/g, "GB")
+    .replace(/\bmah\b/gi, "mAh")
     .replace(/\bGan\b/g, "GaN")
     .replace(/\bPd\b/g, "PD")
     .replace(/\bTws\b/g, "TWS")
@@ -112,13 +114,30 @@ export function formatProductName(name: string) {
     .replace(/\bSterio\b/g, "Stereo")
     .replace(/\bHaed\b/g, "Head")
     .replace(/\bVaccum\b/g, "Vacuum")
+    .replace(/\bChrging\b/g, "Charging")
     .replace(/\bChRGING\b/g, "Charging")
     .replace(/\bCHRGING\b/g, "Charging")
+    .replace(/\b10inch\b/gi, "10 inch")
     .replace(/\(([^)]+)\)/g, " ($1)")
     .replace(/\s*-\s*/g, " - ")
+    .replace(/\bZx - ([a-z0-9]+)\b/gi, (_, code: string) => `ZX-${code.toUpperCase()}`)
+    .replace(/\bZe - ([a-z0-9]+)\b/gi, (_, code: string) => `ZE-${code.toUpperCase()}`)
+    .replace(/\bCr -? ?([0-9]+)\b/gi, (_, code: string) => `CR${code}`)
     .replace(/([0-9])([a-zA-Z])/g, "$1 $2")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+export function formatCategoryName(name: string) {
+  const normalized = name.toLowerCase();
+  const overrides: Record<string, string> = {
+    "car holders": "Car Mounts",
+    earpods: "Wireless Earbuds",
+    "neck band": "Neckbands",
+    "over heads": "Over-Ear Headphones",
+  };
+
+  return overrides[normalized] ?? name;
 }
 
 export function formatProductDescription(product: Product) {
