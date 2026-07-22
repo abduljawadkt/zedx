@@ -8,10 +8,10 @@ const featureCards = [
   {
     label: "Audio",
     title: "Precision Audio",
-    copy: "Headphones and earbuds staged for clear product focus, calls, gaming, and everyday listening.",
+    copy: "Shop wireless earbuds, headphones, neckbands, and speakers for calls, gaming, and everyday listening.",
     href: "/collections/audio",
     productSlug: "zedx-headphone-lumen-100",
-    metric: "17+ products",
+    metric: "Shop audio",
     tone: "cyan",
     size: "large",
   },
@@ -21,17 +21,17 @@ const featureCards = [
     copy: "Smart watches with bright displays, refined straps, and daily health-ready utility.",
     href: "/categories/smart-watches",
     productSlug: "zedx-at-24-ultra-watch",
-    metric: "7 styles",
+    metric: "Shop watches",
     tone: "silver",
     size: "compact",
   },
   {
     label: "Power",
     title: "Power Your Workflow",
-    copy: "Chargers, docks, and portable power for desks, travel, and multi-device setups.",
+    copy: "Shop GaN chargers, charging docks, power banks, and cables for desks, travel, and multi-device setups.",
     href: "/collections/power",
     productSlug: "zedx-power-dock-x-gan-105w",
-    metric: "Power systems",
+    metric: "Shop power",
     tone: "blue",
     size: "compact",
   },
@@ -68,11 +68,11 @@ export function CategoryStrip() {
           <div>
             <p className="text-sm font-semibold text-[var(--brand-blue-soft)]">Shop by setup</p>
             <h2 className="mt-3 text-3xl font-semibold leading-tight text-white sm:text-5xl">
-              Clearer categories, better product focus.
+              Shop ZEDX by setup.
             </h2>
           </div>
           <p className="max-w-md text-sm leading-6 text-white/52 sm:text-right">
-            Each category is staged with one exact catalog item, strong contrast, and no text sitting on top of the product.
+            Find wireless audio, fast chargers, power banks, smart watches, and car accessories for Dubai and UAE shoppers.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ function CategoryFeatureCard({
         <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-auto sm:pt-8">
           <span className="inline-flex h-12 items-center gap-3 rounded-full bg-white px-4 text-sm font-semibold text-[#050505] shadow-lg shadow-white/5 transition group-hover:bg-[var(--brand-blue-soft)]">
             <ArrowRight size={17} />
-            Explore
+            Shop now
           </span>
           <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-xs font-semibold text-white/52">
             {card.metric}
@@ -166,26 +166,26 @@ function ProductStage({
 
   return (
     <div
-      className={`relative z-10 grid min-h-72 place-items-center overflow-hidden rounded-[1.1rem] border border-white/10 bg-[radial-gradient(circle_at_50%_20%,#eff4f8_0%,#9aa7b3_43%,#1d2630_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_24px_70px_rgba(0,0,0,0.36)] sm:rounded-[1.35rem] ${
+      className={`relative z-10 grid min-h-72 place-items-center overflow-hidden rounded-[1.1rem] border border-black/10 bg-[#F5F5F7] shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_24px_70px_rgba(0,0,0,0.24)] sm:rounded-[1.35rem] ${
         isLarge ? "lg:min-h-[27rem]" : "xl:min-h-72"
       }`}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),transparent_34%,rgba(0,0,0,0.24)),radial-gradient(circle_at_50%_82%,rgba(0,0,0,0.22),transparent_34%)]" />
-      <div className={`pointer-events-none absolute bottom-[20%] h-[30%] w-[58%] rounded-full blur-3xl ${tone.glow}`} />
-      <div className="pointer-events-none absolute inset-x-[14%] bottom-[15%] h-10 rounded-full bg-black/36 blur-2xl" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(255,255,255,0.94),transparent_42%),radial-gradient(circle_at_50%_88%,rgba(0,160,227,0.08),transparent_36%)]" />
+      <div className={`pointer-events-none absolute bottom-[20%] h-[30%] w-[58%] rounded-full blur-3xl opacity-45 ${tone.glow}`} />
+      <div className="pointer-events-none absolute inset-x-[14%] bottom-[15%] h-10 rounded-full bg-slate-950/16 blur-2xl" />
       <ProductImage
         product={product}
         alt={`${formatProductName(product.name)} category feature`}
         priority={priority}
         className={
           isLarge
-            ? "!w-[min(62%,520px)] !drop-shadow-[0_36px_70px_rgba(3,7,18,0.36)]"
-            : "!w-[min(72%,340px)] !drop-shadow-[0_30px_58px_rgba(3,7,18,0.34)]"
+            ? "!w-[min(62%,520px)] !drop-shadow-[0_36px_70px_rgba(15,23,42,0.22)]"
+            : "!w-[min(72%,340px)] !drop-shadow-[0_30px_58px_rgba(15,23,42,0.2)]"
         }
         imageClassName="brightness-[1.03] contrast-[1.05]"
         sizes={isLarge ? "(min-width: 1024px) 40vw, 82vw" : "(min-width: 1280px) 24vw, 74vw"}
       />
-      <span className="absolute bottom-4 left-4 right-4 truncate rounded-full border border-white/10 bg-black/32 px-4 py-2 text-center text-xs font-semibold text-white/62 backdrop-blur-md">
+      <span className="absolute bottom-4 left-4 right-4 truncate rounded-full border border-black/10 bg-[#1b2027]/88 px-4 py-2 text-center text-xs font-semibold text-white/76 shadow-lg shadow-black/10 backdrop-blur-md">
         {formatProductName(product.name)}
       </span>
     </div>
