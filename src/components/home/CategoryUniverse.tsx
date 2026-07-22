@@ -64,7 +64,6 @@ export function CategoryUniverse() {
       <div className="-mx-5 flex gap-5 overflow-x-auto px-5 pb-3 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-4 lg:px-0">
         {categories.map((category, index) => {
           const categoryProducts = products.filter((product) => product.categorySlug === category.slug);
-          const count = categoryProducts.length;
           const heroProduct = categoryProducts[0] ?? products[index % products.length];
           const Icon = iconMap[category.slug as keyof typeof iconMap] ?? Package;
 
@@ -102,10 +101,7 @@ export function CategoryUniverse() {
                   </div>
                 </div>
                 <div className="relative z-10 mt-auto">
-                  <p className="text-xs font-semibold text-white/42">
-                    {String(count).padStart(2, "0")} products
-                  </p>
-                  <h3 className="mt-2 text-2xl font-semibold text-white">
+                  <h3 className="text-2xl font-semibold text-white">
                     {category.name}
                   </h3>
                   <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/58">
