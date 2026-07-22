@@ -27,6 +27,31 @@ type StoryVideoProps = {
   mediaClassName?: string;
   cta?: string;
   productSlug?: string;
+  variant?: "feature" | "compact" | "wide";
+};
+
+const storyVariantClassNames = {
+  feature: {
+    content: "p-6 sm:p-9 lg:p-11 xl:p-12",
+    description: "max-w-lg text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
+    product: "sm:max-w-[26rem]",
+    title:
+      "max-w-[13ch] text-[2.25rem] font-semibold leading-[1.02] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.45rem] xl:text-[3.8rem]",
+  },
+  compact: {
+    content: "p-6 sm:p-8 lg:p-8 xl:p-9",
+    description: "max-w-md text-sm leading-6 text-white/72 sm:text-base sm:leading-7",
+    product: "sm:max-w-[22rem]",
+    title:
+      "max-w-[14ch] text-[2rem] font-semibold leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.55rem] lg:text-[2.65rem] xl:text-[3rem]",
+  },
+  wide: {
+    content: "p-6 sm:p-9 lg:p-10 xl:p-11",
+    description: "max-w-xl text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
+    product: "sm:max-w-[25rem]",
+    title:
+      "max-w-[16ch] text-[2.15rem] font-semibold leading-[1.03] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-[3.1rem] xl:text-[3.45rem]",
+  },
 };
 
 function StoryVideo({
@@ -38,8 +63,10 @@ function StoryVideo({
   mediaClassName = "object-center",
   cta,
   productSlug,
+  variant = "compact",
 }: StoryVideoProps) {
   const product = productSlug ? products.find((item) => item.slug === productSlug) : undefined;
+  const variantClassNames = storyVariantClassNames[variant];
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
   const isInView = useInView(videoRef, { margin: "420px 0px" });
@@ -64,7 +91,7 @@ function StoryVideo({
     >
       <video
         ref={videoRef}
-        className={`relative h-64 w-full shrink-0 object-cover opacity-90 transition duration-700 group-hover:scale-[1.02] sm:absolute sm:inset-0 sm:h-full sm:group-hover:scale-[1.035] ${mediaClassName}`}
+        className={`relative h-72 w-full shrink-0 object-cover opacity-90 transition duration-700 group-hover:scale-[1.02] sm:absolute sm:inset-0 sm:h-full sm:group-hover:scale-[1.035] ${mediaClassName}`}
         autoPlay={shouldPlayVideo}
         muted
         loop={!reduceMotion}
@@ -77,7 +104,7 @@ function StoryVideo({
         Your browser does not support the video tag.
       </video>
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-64 sm:hidden"
+        className="pointer-events-none absolute inset-x-0 top-0 h-72 sm:hidden"
         style={{
           background:
             "radial-gradient(circle at 50% 18%, rgba(0,160,227,0.18), transparent 42%), linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.34))",
@@ -87,32 +114,34 @@ function StoryVideo({
         className="pointer-events-none absolute inset-0 hidden sm:block"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.18) 44%, rgba(0,0,0,0.8))",
+            "linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.68) 42%, rgba(0,0,0,0.2) 78%), linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12) 42%, rgba(0,0,0,0.84))",
         }}
       />
       <div
         className="pointer-events-none absolute inset-0 hidden sm:block"
         style={{
           background:
-            "linear-gradient(115deg, rgba(0,160,227,0.18), transparent 38%), linear-gradient(250deg, rgba(255,255,255,0.08), transparent 42%)",
+            "linear-gradient(115deg, rgba(0,160,227,0.16), transparent 36%), linear-gradient(250deg, rgba(255,255,255,0.07), transparent 44%)",
         }}
       />
-      <div className="relative z-10 bg-[#050505] p-6 sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent sm:p-9">
+      <div
+        className={`relative z-10 bg-[#050505] sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent ${variantClassNames.content}`}
+      >
         <p className="w-fit rounded-full border border-white/16 bg-white/12 px-4 py-2 text-[0.68rem] font-semibold text-white/84 backdrop-blur-md">
           {label}
         </p>
-        <h3 className="mt-5 max-w-2xl text-[2.35rem] font-semibold leading-[1.02] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight">
+        <h3 className={`mt-5 ${variantClassNames.title}`}>
           {title}
         </h3>
         {description ? (
-          <p className="mt-4 max-w-md text-base leading-7 text-white/72 drop-shadow-[0_3px_14px_rgba(0,0,0,0.68)] sm:text-white/78">
+          <p className={`mt-4 drop-shadow-[0_3px_14px_rgba(0,0,0,0.68)] ${variantClassNames.description}`}>
             {description}
           </p>
         ) : null}
         {product ? (
           <Link
             href={`/products/${product.slug}`}
-            className="mt-6 flex w-full items-center gap-3 rounded-[1.1rem] border border-white/16 bg-black/50 p-2.5 text-left shadow-2xl shadow-black/35 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)] hover:bg-black/60 sm:mt-5 sm:max-w-sm sm:bg-black/40"
+            className={`mt-6 flex w-full items-center gap-3 rounded-[1.1rem] border border-white/16 bg-black/58 p-2.5 text-left shadow-2xl shadow-black/35 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)] hover:bg-black/66 sm:mt-5 sm:bg-black/44 ${variantClassNames.product}`}
             aria-label={`View ${formatProductName(product.name)}`}
           >
             <span className="relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/16 bg-[radial-gradient(circle_at_50%_18%,#ffffff,#dfe7ef)] sm:size-20">
@@ -154,10 +183,10 @@ export function ImmersiveProductStories() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden bg-[#030405] px-5 py-20 text-white sm:px-8 lg:py-28">
+    <section className="relative overflow-hidden bg-[#030405] px-5 py-20 text-white sm:px-8 lg:py-32 xl:py-36">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(0,160,227,0.12),transparent_28%),radial-gradient(circle_at_80%_86%,rgba(255,255,255,0.07),transparent_30%)]" />
-      <div className="relative mx-auto max-w-[92rem]">
-        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div className="relative mx-auto max-w-[96rem]">
+        <div className="grid gap-8 lg:grid-cols-[0.95fr_0.78fr] lg:items-start xl:gap-14">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 22 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -167,12 +196,12 @@ export function ImmersiveProductStories() {
             <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
               ZEDX essentials
             </p>
-            <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] sm:text-6xl sm:leading-[0.98]">
+            <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] sm:text-6xl sm:leading-[0.98] xl:text-7xl">
               Power, audio, and accessories for daily UAE routines.
             </h2>
           </motion.div>
           <motion.p
-            className="max-w-2xl text-base leading-7 text-white/78 sm:text-lg sm:leading-8 lg:pt-12"
+            className="max-w-2xl text-base leading-7 text-white/72 sm:text-lg sm:leading-8 lg:pt-12 xl:text-xl xl:leading-9"
             initial={reduceMotion ? false : { opacity: 0, y: 22 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -182,7 +211,7 @@ export function ImmersiveProductStories() {
           </motion.p>
         </div>
 
-        <div className="mt-14 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="mt-16 grid gap-7 lg:grid-cols-[1.08fr_0.92fr] xl:gap-8">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 26 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -194,14 +223,15 @@ export function ImmersiveProductStories() {
               label="Powerbank"
               title="Pocket power for work, travel, and long days."
               description="Carry backup power for phones, earbuds, and everyday devices without adding bulk to your bag."
-              className="sm:min-h-[42rem] lg:min-h-[50rem]"
+              className="sm:min-h-[42rem] lg:min-h-[48rem] xl:min-h-[52rem]"
               mediaClassName="object-center"
               cta="Shop power"
               productSlug="zedx-power-bank-10000-zx-pb115"
+              variant="feature"
             />
           </motion.div>
 
-          <div className="grid gap-5">
+          <div className="grid gap-7 xl:gap-8">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 26 }}
               whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -212,9 +242,10 @@ export function ImmersiveProductStories() {
                 src={storyVideos.earpodsLandscape}
                 label="Wireless earbuds"
                 title="Clear calls and music in a compact case."
-                className="sm:min-h-[24rem]"
+                className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-zee-pods-pro"
+                variant="compact"
               />
             </motion.div>
 
@@ -229,22 +260,23 @@ export function ImmersiveProductStories() {
                 label="Headphones"
                 title="Over-ear comfort for focused listening."
                 description="Choose headphones for longer sessions, stronger isolation, and a more immersive sound profile."
-                className="sm:min-h-[24rem]"
+                className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-headphone-zx-hf-110"
+                variant="compact"
               />
             </motion.div>
           </div>
         </div>
 
         <motion.div
-          className="mt-5 grid gap-5 lg:grid-cols-[0.72fr_1.28fr]"
+          className="mt-7 grid gap-7 lg:grid-cols-[0.58fr_1.42fr] xl:gap-8"
           initial={reduceMotion ? false : { opacity: 0, y: 26 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ type: "spring", stiffness: 96, damping: 22 }}
         >
-          <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-8 shadow-2xl shadow-black/24 sm:rounded-[1.8rem] sm:p-10">
+          <div className="grid min-h-[26rem] content-between rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-8 shadow-2xl shadow-black/24 sm:rounded-[1.8rem] sm:p-10 lg:min-h-[31rem]">
             <div className="grid size-16 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-2xl font-semibold text-white">
               Z
             </div>
@@ -268,15 +300,16 @@ export function ImmersiveProductStories() {
             label="Retractable cable"
             title="Fast charging without cable clutter."
             description="Retractable Type-C cables help keep desks, cars, and travel bags cleaner."
-            className="sm:min-h-[30rem]"
+            className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             cta="Shop essentials"
             productSlug="zedx-retractable-cable-100w-ze-03-type-c"
+            variant="wide"
           />
         </motion.div>
 
         <motion.div
-          className="mt-5 grid gap-5 lg:grid-cols-2"
+          className="mt-7 grid gap-7 lg:grid-cols-2 xl:gap-8"
           initial={reduceMotion ? false : { opacity: 0, y: 26 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -287,18 +320,20 @@ export function ImmersiveProductStories() {
             label="Car charger"
             title="High output for the dashboard."
             description="Keep phones topped up during commutes, rideshare work, and road trips across the UAE."
-            className="sm:min-h-[26rem]"
+            className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-38w-car-charger-cr100"
+            variant="wide"
           />
           <StoryVideo
             src={storyVideos.headphoneV2}
             label="Wireless headphones"
             title="Battery-ready sound for work and travel."
             description="Compare headphones and earbuds by comfort, portability, and everyday listening style."
-            className="sm:min-h-[26rem]"
+            className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-headphone-lumen-100"
+            variant="wide"
           />
         </motion.div>
 
