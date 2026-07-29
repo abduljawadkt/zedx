@@ -21,7 +21,8 @@ export function Hero() {
         loop
         playsInline
         preload="metadata"
-        aria-label="ZEDX premium product motion video"
+        aria-hidden="true"
+        disablePictureInPicture
         style={reduceMotion ? undefined : { scale: videoScale }}
       />
 
@@ -38,14 +39,14 @@ export function Hero() {
         style={reduceMotion ? undefined : { y: textY, opacity: textOpacity }}
       >
         <div className="max-w-[44rem] drop-shadow-[0_4px_18px_rgba(0,0,0,0.7)]">
-          <p className="text-xs font-semibold text-[#9fe7ff] sm:text-sm">
+          <p className="type-eyebrow text-[#9fe7ff]">
             ZEDX power series
           </p>
-          <h1 className="mt-4 max-w-[44rem] text-4xl font-medium leading-[0.96] tracking-normal text-white sm:text-6xl lg:text-[5.15rem]">
-            Premium power for the devices that move with you.
+          <h1 className="mt-4 max-w-[44rem] type-hero">
+            Powering Your Digital Lifestyle
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-white/78 sm:text-lg sm:leading-8">
-            ZEDX brings fast charging, everyday audio, and clean accessories into one polished shopping experience.
+          <p className="mt-5 max-w-xl type-body text-white/78">
+            Shop ZEDX chargers, power banks, wireless audio, smart wearables, car mounts, and mobile accessories for Dubai and the UAE.
           </p>
         </div>
       </motion.div>

@@ -68,10 +68,10 @@ export function StickyProductStory() {
       <div className="pointer-events-none absolute right-0 top-32 h-[38rem] w-[38rem] rounded-full bg-[#00a0e3]/10 blur-3xl" />
       <div className="lg:hidden">
         <div>
-          <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
+          <p className="type-eyebrow">
             ZEDX ecosystem
           </p>
-          <h2 className="mt-4 text-3xl font-semibold leading-tight text-white sm:text-5xl">
+          <h2 className="mt-4 type-section-title">
             One connected collection for modern tech rituals.
           </h2>
         </div>
@@ -102,10 +102,10 @@ export function StickyProductStory() {
                     <Icon size={18} className={isActive ? "text-[var(--brand-blue-soft)]" : "text-white/50"} />
                   </span>
                   <span>
-                    <span className="block text-[0.62rem] font-semibold text-white/42">
+                    <span className="block type-micro text-white/48">
                       Step {step.label}
                     </span>
-                    <span className="mt-1 block text-sm font-semibold">{step.title}</span>
+                    <span className="mt-1 block type-control">{step.title}</span>
                   </span>
                 </button>
               );
@@ -145,18 +145,18 @@ export function StickyProductStory() {
           </div>
 
           <div className="relative z-10 mt-4 rounded-[1.35rem] border border-white/12 bg-black/38 p-5 backdrop-blur-xl">
-            <p className="text-xs text-[var(--brand-blue-soft)]">
+            <p className="type-micro text-[var(--brand-blue-soft)]">
               {step.title}
             </p>
-            <h3 className="mt-3 text-2xl font-semibold leading-tight text-white">
+            <h3 className="mt-3 type-card-title">
               {formatProductName(product.name)}
             </h3>
-            <p className="mt-3 text-sm leading-6 text-white/64">
+            <p className="mt-3 type-muted">
               {step.copy}
             </p>
             <Link
               href={`/products/${product.slug}`}
-              className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#00a0e3] px-5 text-xs font-semibold text-white shadow-lg shadow-[#00a0e3]/20"
+              className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#00a0e3] px-5 type-control text-white shadow-lg shadow-[#00a0e3]/20"
             >
               View product
             </Link>
@@ -174,10 +174,10 @@ export function StickyProductStory() {
 
       <div className="hidden space-y-8 lg:block lg:py-24">
         <div className="mb-16">
-          <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
+          <p className="type-eyebrow">
             ZEDX ecosystem
           </p>
-          <h2 className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.98] text-white sm:text-7xl">
+          <h2 className="mt-4 max-w-3xl type-section-title lg:text-[3.5rem]">
             One connected collection for modern tech rituals.
           </h2>
         </div>
@@ -202,14 +202,14 @@ export function StickyProductStory() {
                 <div className="grid size-14 place-items-center rounded-full border border-[#ffffff1a] bg-[#ffffff0a]">
                   <Icon size={22} className="text-[var(--brand-blue-soft)]" />
                 </div>
-                <p className="text-xs font-semibold text-[#ffffff66]">
+                <p className="type-micro text-[#ffffff78]">
                   Step {step.label}
                 </p>
               </div>
-              <h3 className="mt-14 max-w-xl text-4xl font-semibold leading-tight text-white sm:mt-16 sm:text-5xl">
+              <h3 className="mt-14 max-w-xl type-section-title sm:mt-16 sm:text-4xl">
                 {step.title}
               </h3>
-              <p className="mt-6 max-w-lg text-lg leading-8 text-white/62">
+              <p className="mt-6 max-w-lg type-body">
                 {step.copy}
               </p>
             </motion.article>
@@ -235,7 +235,7 @@ export function StickyProductStory() {
           </div>
           <div className="relative min-h-[760px] overflow-hidden rounded-[2.5rem] border border-white/12 bg-[radial-gradient(circle_at_62%_18%,rgba(0,160,227,0.24),transparent_34%),linear-gradient(155deg,rgba(255,255,255,0.1),rgba(255,255,255,0.035)_42%,rgba(0,0,0,0.5))] p-6 shadow-2xl shadow-black/50">
             <div className="absolute inset-x-10 top-12 h-64 rounded-full bg-[#00a0e3]/20 blur-3xl" />
-            <div className="absolute right-8 top-8 z-10 rounded-full border border-[#ffffff1a] bg-[#0000004d] px-4 py-2 text-xs font-semibold text-[#ffffff99]">
+            <div className="absolute right-8 top-8 z-10 rounded-full border border-[#ffffff1a] bg-[#0000004d] px-4 py-2 type-micro text-[#ffffffaa]">
               {product.collection}
             </div>
             <motion.div
@@ -273,22 +273,22 @@ export function StickyProductStory() {
               animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
             >
-              <p className="text-xs text-[var(--brand-blue-soft)]">
+              <p className="type-micro text-[var(--brand-blue-soft)]">
                 {storySteps[activeStep].title}
               </p>
-              <h3 className="mt-3 max-w-xl text-3xl font-semibold text-white">
+              <h3 className="mt-3 max-w-xl type-card-title">
                 {formatProductName(product.name)}
               </h3>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-white/62">
+              <p className="mt-3 max-w-xl type-muted">
                 {product.shortDescription}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
-                <span className="rounded-full border border-white/12 px-4 py-2 text-xs font-semibold text-white/62">
+                <span className="rounded-full border border-white/12 px-4 py-2 type-micro text-white/66">
                   {product.badge}
                 </span>
                 <Link
                   href={`/products/${product.slug}`}
-                  className="rounded-full bg-[#00a0e3] px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-[#00a0e3]/20 transition hover:bg-[#008fcb]"
+                  className="rounded-full bg-[#00a0e3] px-4 py-2 type-control text-white shadow-lg shadow-[#00a0e3]/20 transition hover:bg-[#008fcb]"
                 >
                   View product
                 </Link>
@@ -322,10 +322,10 @@ function CompactRecommendationCard({ item }: { item: (typeof products)[number] }
           sizes="140px"
         />
       </div>
-      <p className="mt-3 text-[0.62rem] font-semibold text-[#7ddcff]">
+      <p className="mt-3 type-micro text-[#7ddcff]">
         {item.category}
       </p>
-      <p className="mt-2 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-white">
+      <p className="mt-2 line-clamp-2 min-h-10 type-control text-white">
         {formatProductName(item.name)}
       </p>
     </Link>

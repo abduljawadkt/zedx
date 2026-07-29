@@ -89,6 +89,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins), system-ui, sans-serif;
+  line-height: 1.5;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -144,6 +145,48 @@ button,
 a,
 .font-body {
   font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+@layer components {
+  .type-eyebrow {
+    @apply text-xs font-medium leading-5 text-[var(--brand-blue-soft)];
+  }
+
+  .type-hero {
+    @apply text-4xl font-medium leading-[1.02] text-balance text-white sm:text-6xl lg:text-7xl;
+  }
+
+  .type-page-title {
+    @apply text-4xl font-semibold leading-[1.05] text-balance text-white sm:text-6xl;
+  }
+
+  .type-section-title {
+    @apply text-3xl font-semibold leading-[1.08] text-balance text-white sm:text-5xl;
+  }
+
+  .type-card-title {
+    @apply text-xl font-semibold leading-7 text-balance text-white sm:text-2xl;
+  }
+
+  .type-product-title {
+    @apply text-lg font-semibold leading-6 text-white sm:text-xl sm:leading-7;
+  }
+
+  .type-body {
+    @apply text-sm font-normal leading-6 text-white/70 sm:text-base sm:leading-7;
+  }
+
+  .type-muted {
+    @apply text-sm font-normal leading-6 text-white/64;
+  }
+
+  .type-control {
+    @apply text-sm font-semibold leading-5;
+  }
+
+  .type-micro {
+    @apply text-xs font-medium leading-5;
+  }
 }
 
 body::before {

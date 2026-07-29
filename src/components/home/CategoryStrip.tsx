@@ -66,12 +66,12 @@ export function CategoryStrip() {
       <div className="mx-auto max-w-[92rem]">
         <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-semibold text-[var(--brand-blue-soft)]">Shop by setup</p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight text-white sm:text-5xl">
+            <p className="type-eyebrow">Shop by setup</p>
+            <h2 className="mt-3 type-section-title">
               Shop ZEDX by setup.
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-6 text-white/52 sm:text-right">
+          <p className="max-w-md type-muted sm:text-right">
             Find wireless audio, fast chargers, power banks, smart watches, and car accessories for Dubai and UAE shoppers.
           </p>
         </div>
@@ -115,27 +115,27 @@ function CategoryFeatureCard({
 
       <div className={`relative z-10 flex min-w-0 flex-col ${isLarge ? "max-w-2xl" : ""}`}>
         <span
-          className={`w-fit rounded-full border px-3.5 py-2 text-xs font-semibold backdrop-blur-md ${tone.badge}`}
+          className={`w-fit rounded-full border px-3.5 py-2 type-micro backdrop-blur-md ${tone.badge}`}
         >
           {card.label}
         </span>
         <h3
-          className={`mt-5 max-w-[15ch] font-semibold leading-[1.02] text-white ${
-            isLarge ? "text-4xl sm:text-6xl lg:text-6xl" : "text-3xl sm:text-5xl xl:text-5xl"
+          className={`mt-5 max-w-[15ch] font-semibold leading-[1.06] text-white ${
+            isLarge ? "text-4xl sm:text-5xl lg:text-[3.4rem]" : "text-3xl sm:text-4xl xl:text-[2.8rem]"
           }`}
         >
           {card.title}
         </h3>
-        <p className="mt-4 max-w-md text-sm leading-6 text-white/58 sm:text-base sm:leading-7">
+        <p className="mt-4 max-w-md type-muted sm:text-base sm:leading-7">
           {card.copy}
         </p>
 
         <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-auto sm:pt-8">
-          <span className="inline-flex h-12 items-center gap-3 rounded-full bg-white px-4 text-sm font-semibold text-[#050505] shadow-lg shadow-white/5 transition group-hover:bg-[var(--brand-blue-soft)]">
+          <span className="inline-flex h-12 items-center gap-3 rounded-full bg-white px-4 type-control text-[#050505] shadow-lg shadow-white/5 transition group-hover:bg-[var(--brand-blue-soft)]">
             <ArrowRight size={17} />
             Shop now
           </span>
-          <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-xs font-semibold text-white/52">
+          <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 type-micro text-white/62">
             {card.metric}
           </span>
         </div>
@@ -185,7 +185,7 @@ function ProductStage({
         imageClassName="brightness-[1.03] contrast-[1.05]"
         sizes={isLarge ? "(min-width: 1024px) 40vw, 82vw" : "(min-width: 1280px) 24vw, 74vw"}
       />
-      <span className="absolute bottom-4 left-4 right-4 truncate rounded-full border border-black/10 bg-[#1b2027]/88 px-4 py-2 text-center text-xs font-semibold text-white/76 shadow-lg shadow-black/10 backdrop-blur-md">
+      <span className="absolute bottom-4 left-4 right-4 truncate rounded-full border border-black/10 bg-[#1b2027]/88 px-4 py-2 text-center type-micro text-white/78 shadow-lg shadow-black/10 backdrop-blur-md">
         {formatProductName(product.name)}
       </span>
     </div>

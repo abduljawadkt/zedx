@@ -10,7 +10,7 @@ import { useCommerce } from "@/components/providers/CommerceProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
-import { formatProductName, productGroups } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName, productGroups } from "@/lib/productDisplay";
 
 const navGroups = [
   {
@@ -55,15 +55,17 @@ export function Header() {
       <div className="mx-auto flex h-13 w-full max-w-[76rem] items-center justify-between rounded-full border border-white/12 bg-[#08090b]/82 px-3 shadow-2xl shadow-black/45 backdrop-blur-2xl sm:h-16 sm:px-6 lg:px-7">
         <Link
           href="/"
-          aria-label="Zedx home"
+          aria-label="ZEDX home"
           className="group relative flex h-10 w-32 shrink-0 items-center sm:h-11 sm:w-40"
         >
           <Image
             src="/brand/zedx-logo-white.png"
-            alt="Zedx"
-            width={2034}
-            height={629}
+            alt="ZEDX"
+            width={220}
+            height={68}
+            sizes="10rem"
             priority
+            loading="eager"
             className="h-8 w-auto object-contain object-left transition duration-300 group-hover:scale-[1.03] sm:h-9"
           />
         </Link>
@@ -148,18 +150,18 @@ export function Header() {
           >
             <div className="grid gap-4 lg:grid-cols-[0.8fr_1fr_1.1fr]">
               <div className="rounded-[1.25rem] border border-[#ffffff1a] bg-[#ffffff0a] p-6">
-                <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
+                <p className="type-eyebrow">
                   {activeMega.label} universe
                 </p>
-                <h2 className="mt-4 text-3xl font-semibold leading-tight text-white">
+                <h2 className="mt-4 type-card-title sm:text-3xl">
                   Shop the full {activeMega.label.toLowerCase()} range.
                 </h2>
-                <p className="mt-4 text-sm leading-6 text-white/62">
+                <p className="mt-4 type-muted">
                   {activeMega.description}
                 </p>
                 <Link
                   href={activeMega.href}
-                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--brand-blue)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-[#050505]"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--brand-blue)] px-5 py-3 type-control text-white transition hover:bg-white hover:text-[#050505]"
                   onClick={() => setActiveMega(null)}
                 >
                   Explore {activeMega.label}
@@ -177,8 +179,8 @@ export function Header() {
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div>
-                        <p className="text-lg font-semibold text-white">{category.name}</p>
-                        <p className="mt-1 line-clamp-2 text-sm leading-5 text-[#ffffff7a]">
+                        <p className="type-control text-white">{category.name}</p>
+                        <p className="mt-1 line-clamp-2 type-muted text-[#ffffff88]">
                           {category.description}
                         </p>
                       </div>
@@ -208,13 +210,13 @@ export function Header() {
                       />
                     </div>
                     <div className="p-4">
-                      <p className="text-[0.65rem] font-semibold text-white/45">
-                        {product.category}
+                      <p className="type-micro text-white/52">
+                        {formatCategoryName(product.category)}
                       </p>
-                      <p className="mt-2 line-clamp-2 min-h-10 text-sm font-semibold leading-5">
+                      <p className="mt-2 line-clamp-2 min-h-10 type-control">
                         {formatProductName(product.name)}
                       </p>
-                      <p className="mt-3 text-sm font-semibold text-[var(--brand-blue-soft)]">
+                      <p className="mt-3 type-control text-[var(--brand-blue-soft)]">
                         {product.currency} {product.price}
                       </p>
                     </div>

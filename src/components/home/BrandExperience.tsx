@@ -18,7 +18,7 @@ type ExperiencePanel = {
   href: string;
   productId: string;
   title: string;
-      tone: "blue" | "dark" | "graphite";
+  tone: "blue" | "dark" | "graphite";
   visualSrc?: string;
 };
 
@@ -57,10 +57,10 @@ export function BrandExperience() {
     <section className="bg-[#08080a] px-5 pb-28 pt-4 text-white sm:px-8 lg:hidden">
       <div className="mx-auto max-w-[92rem]">
         <div className="mb-10">
-          <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
+          <p className="type-eyebrow">
             Shop by need
           </p>
-          <h2 className="mt-4 max-w-5xl text-5xl font-semibold leading-[0.9] sm:text-7xl">
+          <h2 className="mt-4 max-w-5xl type-section-title sm:text-5xl">
             Find the right ZEDX setup faster.
           </h2>
         </div>
@@ -100,25 +100,13 @@ export function BrandExperience() {
                   }`}
                 >
                   <div className="flex max-w-xl flex-col justify-end">
-                    <p
-                      className={`text-xs font-semibold ${
-                        "text-[var(--brand-blue-soft)]"
-                      }`}
-                    >
+                    <p className="type-eyebrow">
                       {panel.eyebrow}
                     </p>
-                    <h3
-                      className={`mt-4 text-5xl font-semibold leading-[0.9] sm:text-7xl ${
-                        "text-white"
-                      }`}
-                    >
+                    <h3 className="mt-4 type-section-title sm:text-5xl">
                       {panel.title}
                     </h3>
-                    <p
-                      className={`mt-5 max-w-lg text-lg leading-8 ${
-                        "text-white/62"
-                      }`}
-                    >
+                    <p className="mt-5 max-w-lg type-body">
                       {panel.copy}
                     </p>
                     <Link

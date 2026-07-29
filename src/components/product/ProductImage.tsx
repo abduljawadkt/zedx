@@ -58,6 +58,7 @@ export function ProductImage({
           alt={alt ?? product.name}
           fill
           priority={priority}
+          loading={priority ? "eager" : undefined}
           sizes={sizes}
           className={cn("object-contain", imageClassName)}
         />

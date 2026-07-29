@@ -49,25 +49,25 @@ export function CategoryProductsPage({
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_20%,rgba(0,160,227,0.24),transparent_34%),radial-gradient(circle_at_22%_86%,rgba(255,255,255,0.08),transparent_34%)]" />
         <div>
-          <p className="relative inline-flex rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-[var(--brand-blue-soft)]">
+          <p className="relative inline-flex rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 type-eyebrow">
             {collectionLabel}
           </p>
-          <h1 className="relative mt-5 text-4xl font-semibold leading-tight text-white sm:text-7xl sm:leading-[0.96]">
+          <h1 className="relative mt-5 type-page-title">
             {displayCategoryName}
           </h1>
-          <p className="relative mt-5 max-w-xl text-base leading-7 text-white/58 sm:mt-6 sm:text-lg sm:leading-8">
+          <p className="relative mt-5 max-w-xl type-body sm:mt-6">
             {category.description}
           </p>
           <div className="relative mt-8 flex flex-wrap gap-3">
             <Link
               href="/products"
-              className="rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-white/70 transition hover:border-[#00a0e3]/60 hover:text-white"
+              className="rounded-full border border-white/10 px-5 py-3 type-control text-white/78 transition hover:border-[#00a0e3]/60 hover:text-white"
             >
               All products
             </Link>
             <Link
               href="#category-products"
-              className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
+              className="rounded-full bg-white px-5 py-3 type-control text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
             >
               Shop from AED {lowestPrice}
             </Link>
@@ -82,6 +82,7 @@ export function CategoryProductsPage({
               <ProductImage
                 product={heroProduct}
                 alt={`${formatProductName(heroProduct.name)} category hero`}
+                priority
                 className="!w-[min(82%,360px)] !drop-shadow-[0_28px_50px_rgba(15,23,42,0.28)]"
                 imageClassName="brightness-[1.03] contrast-[1.04]"
                 sizes="(min-width: 1024px) 360px, 72vw"
@@ -94,7 +95,7 @@ export function CategoryProductsPage({
           )}
           <div className="relative">
             <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
-              <p className="text-xs font-semibold text-white/45">From</p>
+              <p className="type-micro text-white/52">From</p>
               <p className="mt-2 text-3xl font-semibold">AED {lowestPrice}</p>
             </div>
           </div>
@@ -102,14 +103,14 @@ export function CategoryProductsPage({
       </motion.div>
 
       <section className="mt-8 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 sm:p-7">
-        <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+        <h2 className="type-card-title sm:text-3xl">
           Buy {displayCategoryName.toLowerCase()} in Dubai & UAE
         </h2>
-        <p className="mt-4 text-sm leading-7 text-white/58 sm:text-base">
+        <p className="mt-4 type-body">
           This ZEDX category brings together focused options{lowestPrice ? ` from AED ${lowestPrice}` : ""}, helping UAE shoppers
           compare price, use case, category, and compatibility before choosing the right setup.
         </p>
-        <p className="mt-4 text-sm leading-7 text-white/54 sm:text-base">
+        <p className="mt-4 type-muted sm:text-base sm:leading-7">
           Browse by daily need: audio for calls and music, power for travel and work, smart wearables for quick
           notifications, and mobile accessories for cleaner car, desk, and charging routines.
         </p>
@@ -119,7 +120,7 @@ export function CategoryProductsPage({
         {products.length > 0 ? (
           <>
             <div className="mb-6 flex flex-col gap-4 rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-3 text-xs font-semibold text-white/45">
+              <div className="flex items-center gap-3 type-micro text-white/52">
                 <SlidersHorizontal size={16} />
                 Browse products
               </div>
@@ -128,7 +129,7 @@ export function CategoryProductsPage({
                 <select
                   value={sortMode}
                   onChange={(event) => setSortMode(event.target.value as SortMode)}
-                  className="h-12 w-full appearance-none rounded-full border border-white/10 bg-black/25 px-5 pr-12 text-xs font-semibold text-white outline-none"
+                  className="h-12 w-full appearance-none rounded-full border border-white/10 bg-black/25 px-5 pr-12 type-control text-white outline-none"
                 >
                   <option value="featured" className="bg-[#050505]">Featured</option>
                   <option value="price-asc" className="bg-[#050505]">Price low to high</option>
@@ -141,18 +142,18 @@ export function CategoryProductsPage({
           </>
         ) : (
           <div className="glass-panel flex min-h-80 flex-col justify-center rounded-[2rem] p-8">
-            <p className="text-xs font-semibold text-white/40">
+            <p className="type-micro text-white/48">
               Empty category
             </p>
-            <h2 className="mt-4 text-4xl font-semibold text-white">
+            <h2 className="mt-4 type-section-title">
               No products yet.
             </h2>
-            <p className="mt-4 max-w-md text-white/55">
+            <p className="mt-4 max-w-md type-muted">
               This category will expand as new ZEDX essentials arrive.
             </p>
             <Link
               href="/products"
-              className="mt-8 inline-flex h-12 w-fit items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
+              className="mt-8 inline-flex h-12 w-fit items-center justify-center rounded-full bg-white px-6 type-control text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
             >
               View all products
             </Link>

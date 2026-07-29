@@ -35,29 +35,29 @@ export function HomeSeoContent() {
     <section className="bg-[#050505] px-5 py-20 text-white sm:px-8 lg:py-28">
       <div className="mx-auto grid max-w-[92rem] gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
         <div className="lg:sticky lg:top-28">
-          <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">Why ZEDX</p>
-          <h2 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl sm:leading-[0.98]">
+          <p className="type-eyebrow">Why ZEDX</p>
+          <h2 className="mt-4 max-w-3xl type-section-title sm:text-5xl">
             Mobile accessories, chargers, power banks, and smart devices for Dubai & UAE.
           </h2>
-          <p className="mt-6 max-w-2xl text-base leading-7 text-white/62 sm:text-lg sm:leading-8">
+          <p className="mt-6 max-w-2xl type-body">
             ZEDX brings everyday electronics into one premium shopping experience: wireless earbuds for calls and music,
             power banks for travel, GaN chargers for faster desk charging, smart watches for daily visibility, and car
             mounts for cleaner driving setups.
           </p>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-white/56">
+          <p className="mt-5 max-w-2xl type-muted sm:text-base sm:leading-7">
             The catalog is organized around practical UAE shopping needs: price, category, compatibility, portability,
             and setup type. Each page is built to help customers compare products quickly before moving to checkout.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/products"
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#00a0e3] px-6 text-sm font-semibold text-white"
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#00a0e3] px-6 type-control text-white"
             >
               Shop all products
             </Link>
             <Link
               href="/support"
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 px-6 text-sm font-semibold text-white/76"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/14 px-6 type-control text-white/80"
             >
               Get product help
             </Link>
@@ -77,8 +77,8 @@ export function HomeSeoContent() {
                     <Icon size={20} />
                   </span>
                   <div>
-                    <h3 className="text-xl font-semibold text-white">{reason.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-white/58">{reason.body}</p>
+                    <h3 className="type-card-title sm:text-xl">{reason.title}</h3>
+                    <p className="mt-2 type-muted">{reason.body}</p>
                   </div>
                 </div>
               </article>
@@ -91,8 +91,8 @@ export function HomeSeoContent() {
                 <Mail size={20} />
               </span>
               <div>
-                <h3 className="text-xl font-semibold text-white">Launch updates</h3>
-                <p className="mt-2 text-sm leading-7 text-white/62">
+                <h3 className="type-card-title sm:text-xl">Launch updates</h3>
+                <p className="mt-2 type-muted">
                   Follow ZEDX product launches, new arrivals, and support updates through the confirmed brand email:
                   {" "}
                   <span className="font-semibold text-white">{storefrontConfig.contactEmail}</span>.

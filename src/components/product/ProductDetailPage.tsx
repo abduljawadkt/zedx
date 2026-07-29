@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Minus, Plus, ShieldCheck, ShoppingBag, Star, Truck, Zap } from "lucide-react";
+import { ChevronDown, Minus, Plus, ShieldCheck, ShoppingBag, Truck, Zap } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { Badge } from "@/components/ui/Badge";
@@ -14,20 +14,19 @@ import {
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
 import type { Product } from "@/data/products";
-import { formatProductDescription, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductDescription, formatProductName } from "@/lib/productDisplay";
+import { storefrontConfig } from "@/config/storefront";
 
 const shippingItems = [
   {
-    title: "Shipping",
+    title: storefrontConfig.shipping.shortLabel,
     icon: Truck,
-    content:
-      "Estimated delivery: 1-3 business days in major UAE cities.",
+    content: storefrontConfig.shipping.description,
   },
   {
-    title: "Warranty",
+    title: storefrontConfig.warranty.label,
     icon: ShieldCheck,
-    content:
-      "Warranty support information may vary by product, region, and service availability.",
+    content: storefrontConfig.warranty.description,
   },
 ];
 
@@ -66,15 +65,15 @@ export function ProductDetailPage({
         transition={{ type: "spring", stiffness: 100, damping: 22 }}
       >
         <div>
-          <p className="text-xs font-semibold text-cyan-200/80">
+          <p className="type-eyebrow text-cyan-200/80">
             Product launch
           </p>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/45">
+          <p className="mt-3 max-w-2xl type-muted text-white/60">
             Explore the finish, pricing, highlights, and setup details before you add it to your cart.
           </p>
         </div>
-        <p className="text-xs font-semibold text-white/35">
-          {product.collection} / {product.category}
+        <p className="type-micro text-white/48">
+          {product.collection} / {formatCategoryName(product.category)}
         </p>
       </motion.div>
       <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr]">
@@ -143,19 +142,13 @@ export function ProductDetailPage({
         >
           <div className="flex flex-wrap gap-3">
             <Badge>{product.badge}</Badge>
-            <Badge className="text-[var(--brand-blue-soft)]">{product.category}</Badge>
+            <Badge className="text-[var(--brand-blue-soft)]">{formatCategoryName(product.category)}</Badge>
             <Badge className="text-white/70">{product.color}</Badge>
           </div>
-          <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-[var(--brand-blue-soft)]">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Star key={index} size={16} className="fill-current" />
-            ))}
-            <span className="ml-2 text-white/45">54 verified reviews</span>
-          </div>
-          <h1 className="mt-5 text-3xl font-semibold leading-tight text-white sm:text-6xl sm:leading-[0.98]">
+          <h1 className="mt-5 type-page-title">
             {displayName}
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-white/55 sm:mt-6 sm:text-lg sm:leading-8">
+          <p className="mt-5 max-w-xl type-body sm:mt-6">
             {displayDescription}
           </p>
           <div className="mt-7 flex flex-wrap items-end gap-3 sm:mt-8 sm:gap-4">
@@ -165,26 +158,26 @@ export function ProductDetailPage({
             <p className="pb-1 text-lg text-white/35 line-through">
               {product.currency} {product.oldPrice}
             </p>
-            {savings > 0 && (
-              <span className="mb-1 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
-                Save {product.currency} {savings}
+          {savings > 0 && (
+              <span className="mb-1 rounded-full bg-[#00a0e3]/16 px-3 py-1 type-micro text-[var(--brand-blue-soft)]">
+                Launch price: {product.currency} {savings} less than list
               </span>
             )}
           </div>
 
           <div className="mt-7 rounded-[1.25rem] border border-[#00a0e3]/30 bg-[#00a0e3]/10 p-4">
-            <div className="flex items-center gap-3 text-sm font-semibold text-white">
+            <div className="flex items-center gap-3 type-control text-white">
               <Zap size={17} className="text-[var(--brand-blue-soft)]" />
               Auto-applied launch offer
             </div>
-            <p className="mt-2 text-sm leading-6 text-white/50">
-              Limited launch pricing is applied automatically for this product.
+            <p className="mt-2 type-muted">
+              Current demo pricing is shown clearly before checkout. Timed offers will appear only after ZEDX confirms campaign dates.
             </p>
           </div>
 
           <div className="mt-7 flex flex-col gap-4 sm:mt-8 sm:flex-row sm:items-center">
             <div>
-              <p className="mb-2 text-xs font-semibold text-white/40">
+              <p className="mb-2 type-micro text-white/52">
                 Quantity
               </p>
               <div className="inline-flex h-14 items-center overflow-hidden rounded-full border border-white/10 bg-white/[0.035]">
@@ -196,7 +189,7 @@ export function ProductDetailPage({
                 >
                   <Minus size={16} />
                 </button>
-                <span className="grid h-14 min-w-12 place-items-center border-x border-white/10 text-sm font-semibold text-white">
+                <span className="grid h-14 min-w-12 place-items-center border-x border-white/10 type-control text-white">
                   {quantity}
                 </span>
                 <button
@@ -215,7 +208,7 @@ export function ProductDetailPage({
               <button
                 type="button"
                 aria-label={`Add ${displayName} to cart`}
-              className="inline-flex h-13 items-center justify-center gap-3 rounded-full bg-[#00a0e3] px-5 text-xs font-semibold text-white shadow-lg shadow-[#00a0e3]/20 transition hover:scale-105 hover:bg-[#008fcb] sm:h-14 sm:px-7 sm:text-sm"
+              className="inline-flex h-13 items-center justify-center gap-3 rounded-full bg-[#00a0e3] px-5 type-control text-white shadow-lg shadow-[#00a0e3]/20 transition hover:scale-105 hover:bg-[#008fcb] sm:h-14 sm:px-7"
               onClick={() => addSelectedQuantity()}
             >
               <ShoppingBag size={17} />
@@ -223,7 +216,7 @@ export function ProductDetailPage({
             </button>
             <Link
               href="/checkout"
-              className="inline-flex h-13 items-center justify-center rounded-full border border-[#00a0e3]/40 bg-[#00a0e3]/10 px-5 text-xs font-semibold text-[var(--brand-blue-soft)] transition hover:scale-105 hover:border-[#00a0e3] hover:bg-[#00a0e3]/16 sm:h-14 sm:px-7 sm:text-sm"
+              className="inline-flex h-13 items-center justify-center rounded-full border border-[#00a0e3]/40 bg-[#00a0e3]/10 px-5 type-control text-[var(--brand-blue-soft)] transition hover:scale-105 hover:border-[#00a0e3] hover:bg-[#00a0e3]/16 sm:h-14 sm:px-7"
               onClick={() => addSelectedQuantity(false)}
             >
               Buy now
@@ -231,7 +224,7 @@ export function ProductDetailPage({
             <button
               type="button"
               aria-label={`Preview ${displayName} in quick view`}
-              className="h-13 rounded-full border border-white/10 px-5 text-xs font-semibold text-white transition hover:scale-105 hover:border-[#00a0e3]/70 sm:h-14 sm:px-7 sm:text-sm"
+              className="h-13 rounded-full border border-white/10 px-5 type-control text-white transition hover:scale-105 hover:border-[#00a0e3]/70 sm:h-14 sm:px-7"
               onClick={() => openQuickView(product)}
             >
                 Quick view
@@ -242,7 +235,7 @@ export function ProductDetailPage({
             {product.highlights.map((highlight) => (
               <span
                 key={highlight}
-                className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-white/60"
+                className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 type-micro text-white/68"
               >
                 {highlight}
               </span>
@@ -251,11 +244,11 @@ export function ProductDetailPage({
 
           <div className="mt-8 grid gap-3 rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
             {[
-              "In stock - estimated delivery in 3-7 business days",
-              "30-day money-back guarantee",
-              "Lifetime customer support messaging",
+              storefrontConfig.shipping.label,
+              storefrontConfig.warranty.label,
+              storefrontConfig.support.label,
             ].map((item) => (
-              <div key={item} className="flex items-center gap-3 text-sm font-semibold text-white/62">
+              <div key={item} className="flex items-center gap-3 type-control text-white/68">
                 <ShieldCheck size={17} className="text-[var(--brand-blue-soft)]" />
                 {item}
               </div>
@@ -263,14 +256,44 @@ export function ProductDetailPage({
           </div>
 
           <div className="mt-10 space-y-3">
-            {product.specs.map((spec, index) => (
+            <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.03] p-4">
+              <p className="type-control text-white/78">Key specifications</p>
+              <dl className="mt-4 grid gap-3">
+                {product.specs.map((spec) => (
+                  <div
+                    key={spec}
+                    className="grid gap-1 rounded-2xl border border-white/10 bg-black/18 p-4 sm:grid-cols-[0.7fr_1fr] sm:items-center"
+                  >
+                    <dt className="type-micro text-white/50">Feature</dt>
+                    <dd className="type-control text-white/76">{spec}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            {[
+              {
+                title: "Compatibility",
+                content:
+                  "Designed for everyday phone, tablet, audio, and accessory setups. Check connector type and power needs before ordering.",
+              },
+              {
+                title: "Box contents",
+                content:
+                  "Packaging contents vary by SKU. ZEDX should confirm exact accessories, cables, and manuals for each product before launch.",
+              },
+              {
+                title: "FAQ",
+                content:
+                  "Need help choosing? Compare price, category, connector type, charging speed, and daily use case before checkout.",
+              },
+            ].map((item, index) => (
               <AccordionItem
-                key={spec}
+                key={item.title}
                 open={openSpec === index}
-                title={spec}
+                title={item.title}
                 onClick={() => setOpenSpec(openSpec === index ? -1 : index)}
               >
-                Detailed product information for {displayName}, including fit, finish, compatibility, and everyday performance.
+                {item.content}
               </AccordionItem>
             ))}
           </div>
@@ -296,10 +319,10 @@ export function ProductDetailPage({
 
       {relatedProducts.length > 0 && (
         <section className="mt-24 rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 sm:mt-32 sm:p-8">
-          <p className="text-xs font-semibold text-cyan-200/80">
+          <p className="type-eyebrow text-cyan-200/80">
             Related products
           </p>
-          <h2 className="mt-4 text-3xl font-semibold leading-tight text-white sm:text-6xl sm:leading-[0.98]">
+          <h2 className="mt-4 type-section-title">
             Complete the setup.
           </h2>
           <div className="mt-10">
@@ -307,6 +330,31 @@ export function ProductDetailPage({
           </div>
         </section>
       )}
+
+      <div className="fixed inset-x-0 bottom-0 z-[60] border-t border-white/10 bg-[#050505]/94 p-3 shadow-[0_-18px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl lg:hidden">
+        <div className="mx-auto flex max-w-[92rem] items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate type-control text-white">{displayName}</p>
+            <p className="type-micro text-[var(--brand-blue-soft)]">{price}</p>
+          </div>
+          <button
+            type="button"
+            aria-label={`Add ${displayName} to cart`}
+            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#00a0e3] px-5 text-sm font-semibold text-white shadow-lg shadow-[#00a0e3]/20"
+            onClick={() => addSelectedQuantity()}
+          >
+            <ShoppingBag size={16} />
+            Add
+          </button>
+          <Link
+            href="/checkout"
+            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-[#050505]"
+            onClick={() => addSelectedQuantity(false)}
+          >
+            Buy
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }
@@ -332,7 +380,7 @@ function AccordionItem({
         className="flex w-full items-center justify-between gap-4 p-4 text-left"
         onClick={onClick}
       >
-        <span className="flex items-center gap-3 text-sm font-semibold text-white/75">
+        <span className="flex items-center gap-3 type-control text-white/78">
           {icon}
           {title}
         </span>
@@ -350,7 +398,7 @@ function AccordionItem({
             transition={{ type: "spring", stiffness: 160, damping: 24 }}
             className="overflow-hidden"
           >
-            <p className="px-4 pb-4 text-sm leading-6 text-white/50">{children}</p>
+            <p className="px-4 pb-4 type-muted">{children}</p>
           </motion.div>
         )}
       </AnimatePresence>

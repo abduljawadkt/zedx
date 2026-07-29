@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Plus, Star } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
@@ -12,7 +12,7 @@ import {
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
 import type { Product } from "@/data/products";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 export function ProductCard({
   hidePricing = false,
@@ -66,33 +66,29 @@ export function ProductCard({
               sizes="(min-width: 1280px) 330px, (min-width: 640px) 42vw, 78vw"
             />
           </motion.div>
-          <span className="absolute left-3 top-3 z-10 rounded-full border border-[#00a0e3]/20 bg-[#00a0e3] px-2.5 py-1.5 text-[0.62rem] font-semibold text-white shadow-lg shadow-[#00a0e3]/20 sm:left-5 sm:top-5 sm:px-3 sm:text-[0.65rem]">
+          <span className="absolute left-3 top-3 z-10 rounded-full border border-[#00a0e3]/20 bg-[#00a0e3] px-2.5 py-1.5 type-micro text-white shadow-lg shadow-[#00a0e3]/20 sm:left-5 sm:top-5 sm:px-3">
             {product.badge}
-          </span>
-          <span className="absolute right-3 top-3 z-10 inline-flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1.5 text-[0.68rem] font-semibold text-white backdrop-blur sm:right-5 sm:top-5 sm:px-3 sm:text-[0.7rem]">
-            <Star size={12} className="fill-[#00a0e3] text-[#00a0e3]" />
-            4.8
           </span>
         </div>
       </Link>
       <div className="p-5 sm:p-7">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-semibold text-white/42">
+          <p className="type-micro text-white/52">
             {product.collection}
           </p>
-          <p className="rounded-full bg-[#00a0e3]/12 px-3 py-1 text-[0.68rem] font-semibold text-[var(--brand-blue-soft)]">
-            {product.category}
+          <p className="rounded-full bg-[#00a0e3]/12 px-3 py-1 type-micro text-[var(--brand-blue-soft)]">
+            {formatCategoryName(product.category)}
           </p>
         </div>
-        <h3 className="mt-4 min-h-14 text-lg font-semibold leading-tight text-white sm:min-h-16 sm:text-2xl">
+        <h3 className="mt-4 line-clamp-2 min-h-14 type-product-title sm:min-h-14">
           {displayName}
         </h3>
-        <p className="mt-3 line-clamp-2 min-h-11 text-sm leading-6 text-white/55">
+        <p className="mt-3 line-clamp-2 min-h-11 type-muted">
           {product.shortDescription}
         </p>
         {!hidePricing && (
           <div className="mt-6 flex items-center justify-between gap-4">
-            <p className="text-2xl font-semibold text-white">
+            <p className="text-2xl font-semibold leading-8 text-white">
               {product.currency} {product.price}
             </p>
             <p className="text-sm text-white/35 line-through">
@@ -104,7 +100,7 @@ export function ProductCard({
           <button
             type="button"
             aria-label={`Open quick view for ${displayName}`}
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#00a0e3] px-5 text-xs font-semibold text-white shadow-lg shadow-[#00a0e3]/20 transition hover:scale-[1.02] hover:bg-[#008fcb] active:scale-95"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#00a0e3] px-5 type-control text-white shadow-lg shadow-[#00a0e3]/20 transition hover:scale-[1.02] hover:bg-[#008fcb] active:scale-95"
             onClick={() => openQuickView(product)}
           >
             <Eye size={14} />
@@ -113,7 +109,7 @@ export function ProductCard({
           <button
             type="button"
             aria-label={`Add ${displayName} to cart`}
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#00a0e3]/35 bg-white/[0.04] px-5 text-xs font-semibold text-[var(--brand-blue-soft)] transition hover:border-[#00a0e3] hover:bg-[#00a0e3]/10 active:scale-95"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#00a0e3]/35 bg-white/[0.04] px-5 type-control text-[var(--brand-blue-soft)] transition hover:border-[#00a0e3] hover:bg-[#00a0e3]/10 active:scale-95"
             onClick={handleAdd}
           >
             <Plus size={14} />

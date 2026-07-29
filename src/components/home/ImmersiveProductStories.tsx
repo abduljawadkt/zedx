@@ -36,21 +36,21 @@ const storyVariantClassNames = {
     description: "max-w-lg text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
     product: "sm:max-w-[26rem]",
     title:
-      "max-w-[13ch] text-[2.25rem] font-medium leading-[1.02] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.45rem] xl:text-[3.8rem]",
+      "max-w-[13ch] text-[2.25rem] font-medium leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.25rem] xl:text-[3.45rem]",
   },
   compact: {
     content: "p-6 sm:p-8 lg:p-8 xl:p-9",
     description: "max-w-md text-sm leading-6 text-white/72 sm:text-base sm:leading-7",
     product: "sm:max-w-[22rem]",
     title:
-      "max-w-[14ch] text-[2rem] font-medium leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.55rem] lg:text-[2.65rem] xl:text-[3rem]",
+      "max-w-[14ch] text-[2rem] font-medium leading-[1.06] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.35rem] lg:text-[2.45rem] xl:text-[2.7rem]",
   },
   wide: {
     content: "p-6 sm:p-9 lg:p-10 xl:p-11",
     description: "max-w-xl text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
     product: "sm:max-w-[25rem]",
     title:
-      "max-w-[16ch] text-[2.15rem] font-medium leading-[1.03] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl lg:text-[3.1rem] xl:text-[3.45rem]",
+      "max-w-[16ch] text-[2.15rem] font-medium leading-[1.05] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.8rem] lg:text-[2.95rem] xl:text-[3.2rem]",
   },
 };
 
@@ -127,7 +127,7 @@ function StoryVideo({
       <div
         className={`relative z-10 bg-[#050505] sm:absolute sm:inset-x-0 sm:bottom-0 sm:bg-transparent ${variantClassNames.content}`}
       >
-        <p className="w-fit rounded-full border border-white/16 bg-white/12 px-4 py-2 text-[0.68rem] font-semibold text-white/84 backdrop-blur-md">
+        <p className="w-fit rounded-full border border-white/16 bg-white/12 px-4 py-2 type-micro text-white/84 backdrop-blur-md">
           {label}
         </p>
         <h3 className={`mt-5 ${variantClassNames.title}`}>
@@ -154,20 +154,20 @@ function StoryVideo({
               />
             </span>
             <span className="min-w-0">
-              <span className="block text-[0.58rem] font-semibold text-[var(--brand-blue-soft)] sm:text-[0.62rem]">
+              <span className="block type-micro text-[var(--brand-blue-soft)]">
                 Shop this product
               </span>
-              <span className="mt-1 line-clamp-2 block text-sm font-semibold leading-tight text-white">
+              <span className="mt-1 line-clamp-2 block type-control text-white">
                 {formatProductName(product.name)}
               </span>
-              <span className="mt-1 block text-xs font-semibold text-white/72">
+              <span className="mt-1 block type-micro text-white/72">
                 {product.currency} {product.price}
               </span>
             </span>
           </Link>
         ) : null}
         {cta ? (
-          <div className="mt-7 inline-flex items-center gap-3 text-sm font-semibold text-white/86">
+          <div className="mt-7 inline-flex items-center gap-3 type-control text-white/86">
             <span className="grid size-11 shrink-0 place-items-center rounded-full border border-white/18 bg-white text-[#050505]">
               <ArrowRight size={17} />
             </span>
@@ -193,15 +193,15 @@ export function ImmersiveProductStories() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ type: "spring", stiffness: 100, damping: 22 }}
           >
-            <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">
+            <p className="type-eyebrow">
               ZEDX essentials
             </p>
-            <h2 className="mt-5 max-w-3xl text-3xl font-medium leading-tight text-white drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] sm:text-6xl sm:leading-[0.98] xl:text-7xl">
+            <h2 className="mt-5 max-w-3xl type-section-title font-medium drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] xl:text-6xl">
               Power, audio, and accessories for daily UAE routines.
             </h2>
           </motion.div>
           <motion.p
-            className="max-w-2xl text-base leading-7 text-white/72 sm:text-lg sm:leading-8 lg:pt-12 xl:text-xl xl:leading-9"
+            className="max-w-2xl type-body text-white/72 lg:pt-12 xl:text-lg xl:leading-8"
             initial={reduceMotion ? false : { opacity: 0, y: 22 }}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -280,15 +280,15 @@ export function ImmersiveProductStories() {
             <div className="grid size-16 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-2xl font-semibold text-white">
               Z
             </div>
-            <p className="mt-10 text-2xl font-medium leading-tight text-white sm:text-4xl">
+            <p className="mt-10 text-2xl font-medium leading-[1.12] text-white sm:text-3xl">
               Accessories that complete your phone, car, and desk setup.
             </p>
-            <p className="mt-5 text-base leading-7 text-white/60">
+            <p className="mt-5 type-body">
               Shop durable charging cables, car adapters, mounts, and audio essentials built for everyday use.
             </p>
             <Link
               href="/products"
-              className="mt-8 inline-flex h-12 items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 text-xs font-semibold text-[#050505] transition hover:bg-[var(--brand-blue)]"
+              className="mt-8 inline-flex h-12 items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 type-control text-[#050505] transition hover:bg-[var(--brand-blue)]"
             >
               <Play size={14} className="fill-current" />
               View collection
@@ -345,7 +345,7 @@ export function ImmersiveProductStories() {
           transition={{ type: "spring", stiffness: 96, damping: 22, delay: 0.08 }}
         >
           <span className="h-px w-16 bg-white/14" />
-          <span className="text-xs font-semibold">
+          <span className="type-micro">
             Shop ZEDX audio, power, and accessories
           </span>
           <span className="h-px w-16 bg-white/14" />
