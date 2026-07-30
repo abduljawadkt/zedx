@@ -2,43 +2,62 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Mail, MapPin, ShieldCheck, Sparkles, Truck } from "lucide-react";
 import { categories } from "@/data/categories";
+import { storefrontConfig } from "@/config/storefront";
 
 const footerLinks = [
   {
     title: "Shop",
     links: [
       { href: "/products", label: "All products" },
-      { href: "/categories/earpods", label: "Audio" },
-      { href: "/categories/power-banks", label: "Power" },
-      { href: "/categories/car-holders", label: "Mounts" },
+      { href: "/collections/audio", label: "Audio" },
+      { href: "/collections/power", label: "Power" },
+      { href: "/collections/accessories", label: "Accessories" },
+      { href: "/categories/car-holders", label: "Car mounts" },
     ],
   },
   {
     title: "Company",
     links: [
-      { href: "/about", label: "About Zedx" },
+      { href: "/about", label: "About ZEDX" },
       { href: "/contact", label: "Contact" },
-      { href: "/products", label: "Catalog" },
-      { href: "/categories/smart-watches", label: "Wearables" },
+      { href: "/support", label: "Support" },
+      { href: "/faq", label: "FAQ" },
+    ],
+  },
+  {
+    title: "Policies",
+    links: [
+      { href: "/warranty", label: "Warranty" },
+      { href: "/shipping", label: "Shipping" },
+      { href: "/returns", label: "Returns" },
+      { href: "/refunds", label: "Refunds" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { href: "/privacy", label: "Privacy" },
+      { href: "/terms", label: "Terms" },
+      { href: "/track-order", label: "Track order" },
     ],
   },
 ];
 
 const serviceNotes = [
-  { icon: Truck, label: "Fast delivery" },
-  { icon: ShieldCheck, label: "Warranty support" },
-  { icon: Sparkles, label: "AI product advisor" },
+  { icon: Truck, label: storefrontConfig.shipping.shortLabel },
+  { icon: ShieldCheck, label: storefrontConfig.warranty.label },
+  { icon: Sparkles, label: storefrontConfig.support.label },
 ];
 
 const glassPanelClassName =
-  "relative overflow-hidden rounded-[2rem] border border-white/14 bg-[#101114]/88 shadow-[0_28px_90px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl";
+  "relative overflow-hidden rounded-[2rem] border border-[var(--shell-border)] bg-[var(--shell-card)] shadow-[0_28px_90px_var(--shell-shadow),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl";
 
 const glassVeilClassName =
-  "absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_42%,rgba(0,0,0,0.2))]";
+  "absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_42%,rgba(0,160,227,0.04))]";
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-[#ffffff1a] bg-[#050505] px-5 pt-20 text-[#ffffff] sm:px-8">
+    <footer className="relative overflow-hidden border-t border-[var(--shell-border)] bg-[var(--footer-bg)] px-5 pt-20 text-[var(--foreground)] sm:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_54%_0%,rgba(0,160,227,0.18),transparent_30rem),radial-gradient(circle_at_12%_36%,rgba(255,255,255,0.07),transparent_22rem)]" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-[32rem] w-[56rem] -translate-x-1/2 rounded-full bg-[#00a0e3]/10 blur-3xl" />
       <div className="mx-auto max-w-[92rem]">
@@ -51,24 +70,25 @@ export function Footer() {
               <div className="flex items-center">
                 <Image
                   src="/brand/zedx-logo-white.png"
-                  alt="Zedx"
-                  width={2034}
-                  height={629}
+                  alt="ZEDX"
+                  width={260}
+                  height={80}
+                  sizes="(min-width: 640px) 14rem, 12rem"
                   className="h-12 w-auto object-contain object-left sm:h-14"
                 />
               </div>
               <h2 className="mt-10 max-w-xl text-5xl font-semibold leading-[0.9] sm:text-6xl">
-                Premium tech for everyday momentum.
+                Premium tech accessories for Dubai & UAE.
               </h2>
               <p className="mt-5 max-w-lg text-base leading-7 text-[#ffffff8c]">
-                Explore audio, power, wearables, and everyday accessories with a focused ZEDX shopping experience.
+                Shop audio, fast charging, wearables, car mounts, and everyday accessories in one focused ZEDX experience.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/products"
                   className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
                 >
-                  Explore catalog
+                  Shop ZEDX products
                   <ArrowRight size={16} />
                 </Link>
                 <Link
@@ -139,7 +159,9 @@ export function Footer() {
                   </p>
                   <div className="mt-5 flex items-center gap-3 rounded-full border border-white/18 bg-black/40 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl">
                     <Mail size={18} className="ml-3 text-[#ffffff73]" />
-                    <span className="min-w-0 flex-1 text-sm text-[#ffffff73]">hello@zedx.store</span>
+                    <span className="min-w-0 flex-1 text-sm text-[#ffffff73]">
+                      {storefrontConfig.contactEmail}
+                    </span>
                     <span className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#050505]">
                       Notify me
                     </span>
@@ -150,7 +172,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className={`${glassPanelClassName} mt-8 grid gap-6 p-7 md:grid-cols-[1fr_auto_auto] md:items-start`}>
+        <div className={`${glassPanelClassName} mt-8 grid gap-6 p-7 md:grid-cols-[1fr_repeat(4,auto)] md:items-start`}>
           <div className={glassVeilClassName} />
           <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           <div className="relative z-10">
@@ -158,7 +180,7 @@ export function Footer() {
               ZEDX promise
             </p>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[#ffffff80]">
-              Focused product discovery, helpful recommendations, and a clean path from selection to checkout.
+              Focused product discovery, clear pricing, and verified claim-based shopping flows for the UAE market.
             </p>
           </div>
           {footerLinks.map((group) => (

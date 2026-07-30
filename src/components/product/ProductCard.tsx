@@ -36,7 +36,7 @@ export function ProductCard({
 
   return (
     <motion.article
-      className="group relative overflow-hidden rounded-[1.1rem] border border-white/10 bg-[#0b0d11]/78 text-white shadow-sm shadow-black/30 transition duration-500 hover:-translate-y-1 hover:border-[#00a0e3]/35 hover:bg-[#11151b] hover:shadow-2xl hover:shadow-[#00a0e3]/10 sm:rounded-[1.35rem]"
+      className="group relative overflow-hidden rounded-[1.1rem] border border-[var(--shell-border)] bg-[var(--shell-card)] text-[var(--foreground)] shadow-sm shadow-[var(--shell-shadow)] transition duration-500 hover:-translate-y-1 hover:border-[#00a0e3]/35 hover:bg-[var(--shell-panel)] hover:shadow-2xl hover:shadow-[#00a0e3]/10 sm:rounded-[1.35rem]"
       initial={reduceMotion ? false : { opacity: 0, y: 26 }}
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       whileHover={reduceMotion ? undefined : { y: -8 }}
@@ -73,7 +73,7 @@ export function ProductCard({
       </Link>
       <div className="p-5 sm:p-7">
         <div className="flex items-center justify-between gap-3">
-          <p className="type-micro text-white/52">
+          <p className="type-micro text-[var(--muted)]">
             {product.collection}
           </p>
           <p className="rounded-full bg-[#00a0e3]/12 px-3 py-1 type-micro text-[var(--brand-blue-soft)]">
@@ -88,10 +88,10 @@ export function ProductCard({
         </p>
         {!hidePricing && (
           <div className="mt-6 flex items-center justify-between gap-4">
-            <p className="text-2xl font-semibold leading-8 text-white">
+            <p className="text-2xl font-semibold leading-8 text-[var(--foreground)]">
               {product.currency} {product.price}
             </p>
-            <p className="text-sm text-white/35 line-through">
+            <p className="text-sm text-[var(--muted)] line-through">
               {product.currency} {product.oldPrice}
             </p>
           </div>

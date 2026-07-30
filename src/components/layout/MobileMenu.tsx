@@ -12,7 +12,8 @@ import {
 } from "@/components/product/ProductImage";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 const primaryLinks = [
   { href: "/collections/audio", label: "Audio" },
@@ -52,7 +53,7 @@ export function MobileMenu() {
         >
           <motion.nav
             aria-label="Mobile navigation"
-            className="flex h-full flex-col overflow-auto rounded-[1.35rem] border border-white/10 bg-[#0b0c10]/94 p-4 shadow-2xl shadow-black/50 sm:rounded-[1.75rem] sm:p-6"
+            className="flex h-full flex-col overflow-auto rounded-[1.35rem] border border-[var(--shell-border)] bg-[var(--shell-panel-solid)] p-4 shadow-2xl shadow-[var(--shell-shadow)] sm:rounded-[1.75rem] sm:p-6"
             initial={{ y: 26, opacity: 0, scale: 0.96 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 26, opacity: 0, scale: 0.96 }}
@@ -63,24 +64,29 @@ export function MobileMenu() {
                 href="/"
                 className="relative flex h-10 w-36 items-center"
                 onClick={closeMenu}
-                aria-label="Zedx home"
+                aria-label="ZEDX home"
               >
                 <Image
                   src="/brand/zedx-logo-white.png"
-                  alt="Zedx"
-                  width={2034}
-                  height={629}
+                  alt="ZEDX"
+                  width={220}
+                  height={68}
+                  sizes="10rem"
                   className="h-9 w-auto object-contain object-left"
                 />
               </Link>
               <button
                 type="button"
                 aria-label="Close mobile menu"
-                className="grid size-11 place-items-center rounded-full border border-white/10 text-[var(--brand-blue)]"
+                className="grid size-11 place-items-center rounded-full border border-[var(--shell-border)] text-[var(--brand-blue)]"
                 onClick={closeMenu}
               >
                 <X size={18} />
               </button>
+            </div>
+
+            <div className="mt-8">
+              <ThemeToggle />
             </div>
 
             <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5">
@@ -98,7 +104,7 @@ export function MobileMenu() {
                 >
                   <Link
                     href={link.href}
-                    className="text-3xl font-semibold leading-tight text-white sm:text-5xl"
+                    className="text-3xl font-semibold leading-tight text-[var(--foreground)] sm:text-5xl"
                     onClick={closeMenu}
                   >
                     {link.label}
@@ -107,12 +113,12 @@ export function MobileMenu() {
               ))}
             </div>
 
-            <div className="mt-7 grid gap-3 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-3 sm:mt-9 sm:rounded-[1.75rem]">
+            <div className="mt-7 grid gap-3 rounded-[1.5rem] border border-[var(--shell-border)] bg-[var(--shell-soft)] p-3 sm:mt-9 sm:rounded-[1.75rem]">
               {products.slice(0, 3).map((product) => (
                 <Link
                   key={product.slug}
                   href={`/products/${product.slug}`}
-                  className="grid grid-cols-[4rem_1fr_auto] items-center gap-3 rounded-[1.2rem] bg-white/[0.04] p-2"
+                  className="grid grid-cols-[4rem_1fr_auto] items-center gap-3 rounded-[1.2rem] bg-[var(--shell-panel)] p-2"
                   onClick={closeMenu}
                 >
                   <span className={`${productImageStageClassName} aspect-square rounded-2xl`}>
@@ -127,13 +133,13 @@ export function MobileMenu() {
                   </span>
                   <span>
                     <span className="block text-xs font-semibold text-[var(--brand-blue-soft)]">
-                      {product.category}
+                      {formatCategoryName(product.category)}
                     </span>
-                    <span className="mt-1 line-clamp-2 block text-sm font-semibold leading-5 text-white">
+                    <span className="mt-1 line-clamp-2 block text-sm font-semibold leading-5 text-[var(--foreground)]">
                       {formatProductName(product.name)}
                     </span>
                   </span>
-                  <ChevronRight size={18} className="text-white/35" />
+                  <ChevronRight size={18} className="text-[var(--muted)]" />
                 </Link>
               ))}
             </div>
@@ -166,7 +172,7 @@ export function MobileMenu() {
             </div>
 
             <div className="mt-10">
-              <p className="text-xs font-semibold text-white/35">
+              <p className="text-xs font-semibold text-[var(--muted)]">
                 Full menu
               </p>
               <div className="mt-4 grid grid-cols-2 gap-2">
@@ -174,7 +180,7 @@ export function MobileMenu() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="rounded-full border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white/70"
+                    className="rounded-full border border-[var(--shell-border)] px-4 py-3 text-center text-sm font-semibold text-[var(--muted)]"
                     onClick={closeMenu}
                   >
                     {link.label}
@@ -184,7 +190,7 @@ export function MobileMenu() {
             </div>
 
             <div className="mt-10">
-              <p className="text-xs font-semibold text-white/35">
+              <p className="text-xs font-semibold text-[var(--muted)]">
                 Categories
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -192,7 +198,7 @@ export function MobileMenu() {
                   <Link
                     key={category.slug}
                     href={`/categories/${category.slug}`}
-                    className="rounded-full border border-white/10 px-4 py-2 text-xs font-semibold text-white/58"
+                    className="rounded-full border border-[var(--shell-border)] px-4 py-2 text-xs font-semibold text-[var(--muted)]"
                     onClick={closeMenu}
                   >
                     {category.name}
