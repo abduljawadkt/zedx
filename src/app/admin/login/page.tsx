@@ -44,7 +44,8 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               className="mt-2 h-14 w-full rounded-2xl border border-white/10 bg-black/30 px-4 text-white outline-none"
-              placeholder="admin@zedx.local"
+              placeholder="Enter admin email"
+              autoComplete="username"
             />
           </label>
           <label className="block">
@@ -54,7 +55,8 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="mt-2 h-14 w-full rounded-2xl border border-white/10 bg-black/30 px-4 text-white outline-none"
-              placeholder="zedx-admin"
+              placeholder="Enter password"
+              autoComplete="current-password"
             />
           </label>
         </div>
