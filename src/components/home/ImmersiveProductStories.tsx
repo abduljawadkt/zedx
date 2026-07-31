@@ -254,21 +254,34 @@ export function ImmersiveProductStories() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ type: "spring", stiffness: 96, damping: 22 }}
         >
-          <div className="grid min-h-[26rem] content-between rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-8 shadow-2xl shadow-black/24 sm:rounded-[1.8rem] sm:p-10 lg:min-h-[31rem]">
-            <div className="grid size-16 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-2xl font-semibold text-white">
-              Z
+          <Link
+            href="/collections/accessories"
+            className="group relative grid min-h-[26rem] overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#080a0d] p-8 shadow-2xl shadow-black/24 transition duration-500 hover:-translate-y-1 hover:border-[#00a0e3]/45 sm:rounded-[1.8rem] sm:p-10 lg:min-h-[31rem]"
+          >
+            <Image
+              src="/banners/accessories-premium-banner.webp"
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 34vw, 92vw"
+              className="object-cover opacity-72 transition duration-700 group-hover:scale-[1.04] group-hover:opacity-86"
+              aria-hidden="true"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(3,4,5,0.18),rgba(3,4,5,0.72)_54%,rgba(3,4,5,0.96)),radial-gradient(circle_at_70%_20%,rgba(0,160,227,0.22),transparent_38%)]" />
+            <div className="pointer-events-none absolute inset-x-8 top-8 h-px bg-gradient-to-r from-transparent via-[#00a0e3]/65 to-transparent" />
+
+            <div className="relative z-10 flex h-full min-h-[20rem] flex-col justify-end">
+              <p className="w-fit rounded-full border border-white/16 bg-white/12 px-4 py-2 type-micro text-white/84 backdrop-blur-md">
+                Everyday Accessories
+              </p>
+              <p className="mt-5 max-w-[14ch] text-2xl font-medium leading-[1.08] text-white drop-shadow-[0_8px_26px_rgba(0,0,0,0.62)] sm:text-3xl">
+                Accessories that complete your phone, car, and desk setup.
+              </p>
+              <span className="mt-7 inline-flex h-12 w-fit items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 type-control text-[#050505] shadow-2xl shadow-black/20 transition group-hover:bg-[var(--brand-blue)] group-hover:text-white">
+                <Play size={14} className="fill-current" />
+                View collection
+              </span>
             </div>
-            <p className="mt-10 text-2xl font-medium leading-[1.12] text-white sm:text-3xl">
-              Accessories that complete your phone, car, and desk setup.
-            </p>
-            <Link
-              href="/products"
-              className="mt-6 inline-flex h-12 items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 type-control text-[#050505] transition hover:bg-[var(--brand-blue)]"
-            >
-              <Play size={14} className="fill-current" />
-              View collection
-            </Link>
-          </div>
+          </Link>
 
           <StoryVideo
             src={storyVideos.retractableCable}
