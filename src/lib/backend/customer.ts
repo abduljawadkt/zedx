@@ -1,19 +1,26 @@
-type DemoCustomer = {
+import { prisma } from "@/lib/backend/prisma";
+import { hashPassword, verifyPassword } from "@/lib/backend/password";
+
+type CustomerRecord = {
   id: string;
   name: string;
   email: string;
-  phone?: string;
+  phone?: string | null;
 };
 
-export async function getCustomerProfile() {
-  return null;
+export async function getCustomerProfile(customerId: string) {
+  return prisma.customer.findUnique({ where: { id: customerId } });
 }
 
-export async function getCustomerOrders() {
-  return [];
+export async function getCustomerOrders(customerId: string) {
+  return prisma.order.findMany({
+    where: { customerId },
+    include: { items: true },
+    orderBy: { createdAt: "desc" },
+  });
 }
 
-export function safeCustomer(customer: DemoCustomer | null) {
+export function safeCustomer(customer: CustomerRecord | null) {
   if (!customer) return null;
 
   return {
@@ -25,21 +32,42 @@ export function safeCustomer(customer: DemoCustomer | null) {
 }
 
 export async function verifyCustomerLogin(
-  _email: string,
-  _password: string,
-): Promise<DemoCustomer | null> {
-  return null;
+  email: string,
+  password: string,
+): Promise<CustomerRecord | null> {
+  const customer = await prisma.customer.findUnique({ where: { email } });
+  if (!customer) return null;
+
+  const passwordOk = verifyPassword(password, customer.passwordHash);
+  if (!passwordOk) return null;
+
+  if (!customer.passwordHash.startsWith("pbkdf2$")) {
+    await prisma.customer.update({
+      where: { id: customer.id },
+      data: { passwordHash: hashPassword(password) },
+    });
+  }
+
+  return customer;
 }
 
 export async function createCustomerAccount(input: {
   name: string;
   email: string;
   phone?: string;
+  password: string;
 }) {
-  return {
-    id: "demo-customer",
-    name: input.name,
-    email: input.email,
-    phone: input.phone ?? "",
-  };
+  const existing = await prisma.customer.findUnique({ where: { email: input.email } });
+  if (existing) {
+    throw new Error("An account already exists for this email.");
+  }
+
+  return prisma.customer.create({
+    data: {
+      name: input.name,
+      email: input.email,
+      phone: input.phone ?? "",
+      passwordHash: hashPassword(input.password),
+    },
+  });
 }

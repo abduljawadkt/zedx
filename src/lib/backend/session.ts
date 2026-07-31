@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/backend/prisma";
 
-const SESSION_COOKIE = "zedx_admin_session";
+export const ADMIN_SESSION_COOKIE = "zedx_admin_session";
 export const CUSTOMER_SESSION_COOKIE = "zedx_customer_session";
 const SESSION_DAYS = 7;
 
@@ -79,7 +79,7 @@ export async function getAdminSessionFromToken(token?: string) {
 }
 
 export async function getAdminSession(request: NextRequest) {
-  return getAdminSessionFromToken(request.cookies.get(SESSION_COOKIE)?.value);
+  return getAdminSessionFromToken(request.cookies.get(ADMIN_SESSION_COOKIE)?.value);
 }
 
 export async function getCustomerSessionFromToken(token?: string) {
@@ -115,7 +115,7 @@ export async function destroyCustomerSession(token: string) {
 
 export function createSessionCookie(token: string, expiresAt: Date) {
   return {
-    name: SESSION_COOKIE,
+    name: ADMIN_SESSION_COOKIE,
     value: token,
     httpOnly: true,
     sameSite: "lax" as const,

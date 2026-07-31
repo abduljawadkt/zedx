@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@zedx.local");
-  const [password, setPassword] = useState("zedx-admin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
           {loading ? "Signing in..." : "Sign in"}
         </button>
         {error && <p className="mt-4 text-sm text-red-300">{error}</p>}
-        <p className="mt-4 text-sm text-white/55">Use the local admin credentials configured in `.env`.</p>
+        <p className="mt-4 text-sm text-white/55">Use the admin credentials configured for this store.</p>
       </form>
     </main>
   );

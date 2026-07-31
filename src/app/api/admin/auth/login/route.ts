@@ -3,7 +3,8 @@ import { z } from "zod";
 import { errorResponse, jsonResponse } from "@/lib/backend/http";
 import { prisma } from "@/lib/backend/prisma";
 import { createAdminSession, createSessionCookie } from "@/lib/backend/session";
-import { verifyPassword } from "@/lib/backend/password";
+import { hashPassword, verifyPassword } from "@/lib/backend/password";
+import { seedDatabaseIfNeeded } from "@/lib/backend/seed";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -11,6 +12,7 @@ const loginSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  await seedDatabaseIfNeeded();
   const parsed = loginSchema.safeParse(await request.json());
   if (!parsed.success) {
     return errorResponse(parsed.error.message, 400);
@@ -24,6 +26,13 @@ export async function POST(request: NextRequest) {
   const passwordOk = verifyPassword(parsed.data.password, user.passwordHash);
   if (!passwordOk) {
     return errorResponse("Invalid credentials.", 401);
+  }
+
+  if (!user.passwordHash.startsWith("pbkdf2$")) {
+    await prisma.adminUser.update({
+      where: { id: user.id },
+      data: { passwordHash: hashPassword(parsed.data.password) },
+    });
   }
 
   const session = await createAdminSession(user.id);
