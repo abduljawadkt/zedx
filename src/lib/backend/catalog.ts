@@ -1,3 +1,5 @@
+import { categories as staticCategories } from "@/data/categories";
+import { collections as staticCollectionNames, products as staticProducts } from "@/data/products";
 import { prisma } from "@/lib/backend/prisma";
 import { seedDatabaseIfNeeded } from "@/lib/backend/seed";
 import type { Category, Collection, DashboardSummary, HomepageSection, Product, ProductQuery, SeoMetadata, SiteSettings } from "@/lib/backend/types";
@@ -115,6 +117,101 @@ function mapCollection(row: {
   };
 }
 
+function fallbackProducts({
+  badge,
+  category,
+  collection,
+  limit,
+  maxPrice,
+  minPrice,
+  search,
+  sort = "featured",
+}: ProductQuery = {}) {
+  let items = staticProducts as Product[];
+
+  if (category) {
+    items = items.filter((product) => product.categorySlug === category);
+  }
+
+  if (collection) {
+    items = items.filter((product) => slugify(product.collection) === collection);
+  }
+
+  if (badge) {
+    items = items.filter((product) => product.badge.toLowerCase() === badge.toLowerCase());
+  }
+
+  if (typeof minPrice === "number") {
+    items = items.filter((product) => product.price >= minPrice);
+  }
+
+  if (typeof maxPrice === "number") {
+    items = items.filter((product) => product.price <= maxPrice);
+  }
+
+  if (search) {
+    const query = search.toLowerCase();
+    items = items.filter((product) =>
+      [
+        product.name,
+        product.category,
+        product.collection,
+        product.badge,
+        product.color,
+        product.shortDescription,
+        product.description,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(query),
+    );
+  }
+
+  items = [...items].sort((a, b) => {
+    if (sort === "price-asc") return a.price - b.price;
+    if (sort === "price-desc") return b.price - a.price;
+    if (sort === "name") return a.name.localeCompare(b.name);
+    if (sort === "newest") return b.id.localeCompare(a.id);
+    return Number(b.badge === "Premium") - Number(a.badge === "Premium");
+  });
+
+  return typeof limit === "number" ? items.slice(0, limit) : items;
+}
+
+function fallbackCollections() {
+  return staticCollectionNames.map((name, index) => {
+    const collectionProducts = staticProducts.filter((product) => product.collection === name);
+    const leadProduct = collectionProducts[0] ?? staticProducts[0];
+    return {
+      id: slugify(name),
+      slug: slugify(name),
+      name,
+      description: `Curated ${name.toLowerCase()} products for a premium everyday tech setup.`,
+      image: leadProduct?.image ?? "/brand/zedx-logo-transparent.png",
+      productCount: collectionProducts.length,
+      featured: index < 4,
+      sortOrder: index + 1,
+    } satisfies Collection;
+  });
+}
+
+function fallbackSiteSettings(): SiteSettings {
+  return {
+    brandName: "ZEDX",
+    tagline: "Premium gadgets and accessories for modern everyday setups.",
+    announcement: "Catalog preview available while the database is being configured.",
+    currency: "AED",
+    seo: {
+      title: "ZEDX Premium Tech Store",
+      description: "A premium ecommerce launch experience for audio, power, wearables, tablets, and accessories.",
+      openGraphImage: "/brand/zedx-logo-transparent.png",
+      canonicalPath: "/",
+      robots: "index,follow",
+    },
+    socialLinks: [],
+  };
+}
+
 export async function getProducts({
   badge,
   category,
@@ -125,34 +222,40 @@ export async function getProducts({
   search,
   sort = "featured",
 }: ProductQuery = {}) {
-  await seedDatabaseIfNeeded();
+  const fallback = () => fallbackProducts({ badge, category, collection, limit, maxPrice, minPrice, search, sort });
+  let rows: Array<Parameters<typeof mapProduct>[0]>;
 
-  const rows = await prisma.product.findMany({
-    where: {
-      published: true,
-      status: "published",
-      ...(category ? { categorySlug: category } : {}),
-      ...(badge ? { badge } : {}),
-      ...(typeof minPrice === "number" || typeof maxPrice === "number"
-        ? {
-            price: {
-              ...(typeof minPrice === "number" ? { gte: minPrice } : {}),
-              ...(typeof maxPrice === "number" ? { lte: maxPrice } : {}),
-            },
-          }
-        : {}),
-    },
-    orderBy:
-      sort === "price-asc"
-        ? [{ price: "asc" }]
-        : sort === "price-desc"
-          ? [{ price: "desc" }]
-          : sort === "name"
-            ? [{ name: "asc" }]
-            : sort === "newest"
-              ? [{ createdAt: "desc" }]
-              : [{ featured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
-  });
+  try {
+    await seedDatabaseIfNeeded();
+    rows = await prisma.product.findMany({
+      where: {
+        published: true,
+        status: "published",
+        ...(category ? { categorySlug: category } : {}),
+        ...(badge ? { badge } : {}),
+        ...(typeof minPrice === "number" || typeof maxPrice === "number"
+          ? {
+              price: {
+                ...(typeof minPrice === "number" ? { gte: minPrice } : {}),
+                ...(typeof maxPrice === "number" ? { lte: maxPrice } : {}),
+              },
+            }
+          : {}),
+      },
+      orderBy:
+        sort === "price-asc"
+          ? [{ price: "asc" }]
+          : sort === "price-desc"
+            ? [{ price: "desc" }]
+            : sort === "name"
+              ? [{ name: "asc" }]
+              : sort === "newest"
+                ? [{ createdAt: "desc" }]
+                : [{ featured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
+    });
+  } catch {
+    return fallback();
+  }
 
   let items = rows.map(mapProduct);
 
@@ -184,31 +287,39 @@ export async function getProducts({
 }
 
 export async function getProduct(slug: string) {
-  await seedDatabaseIfNeeded();
-  const product = await prisma.product.findFirst({
-    where: {
-      slug,
-      published: true,
-      status: "published",
-    },
-  });
+  try {
+    await seedDatabaseIfNeeded();
+    const product = await prisma.product.findFirst({
+      where: {
+        slug,
+        published: true,
+        status: "published",
+      },
+    });
 
-  return product ? mapProduct(product) : null;
+    return product ? mapProduct(product) : null;
+  } catch {
+    return (staticProducts.find((product) => product.slug === slug) as Product | undefined) ?? null;
+  }
 }
 
 export async function getCategories() {
-  await seedDatabaseIfNeeded();
-  const [rows, products] = await Promise.all([
-    prisma.category.findMany({ orderBy: [{ sortOrder: "asc" }, { name: "asc" }] }),
-    prisma.product.findMany({ where: { published: true, status: "published" }, select: { categorySlug: true } }),
-  ]);
+  try {
+    await seedDatabaseIfNeeded();
+    const [rows, products] = await Promise.all([
+      prisma.category.findMany({ orderBy: [{ sortOrder: "asc" }, { name: "asc" }] }),
+      prisma.product.findMany({ where: { published: true, status: "published" }, select: { categorySlug: true } }),
+    ]);
 
-  return rows.map((row) =>
-    mapCategory({
-      ...row,
-      productCount: products.filter((product) => product.categorySlug === row.slug).length,
-    }),
-  );
+    return rows.map((row) =>
+      mapCategory({
+        ...row,
+        productCount: products.filter((product) => product.categorySlug === row.slug).length,
+      }),
+    );
+  } catch {
+    return staticCategories as Category[];
+  }
 }
 
 export async function getCategory(slug: string) {
@@ -216,18 +327,22 @@ export async function getCategory(slug: string) {
 }
 
 export async function getCollections() {
-  await seedDatabaseIfNeeded();
-  const [rows, products] = await Promise.all([
-    prisma.collection.findMany({ orderBy: [{ sortOrder: "asc" }, { name: "asc" }] }),
-    prisma.product.findMany({ where: { published: true, status: "published" }, select: { collection: true } }),
-  ]);
+  try {
+    await seedDatabaseIfNeeded();
+    const [rows, products] = await Promise.all([
+      prisma.collection.findMany({ orderBy: [{ sortOrder: "asc" }, { name: "asc" }] }),
+      prisma.product.findMany({ where: { published: true, status: "published" }, select: { collection: true } }),
+    ]);
 
-  return rows.map((row) =>
-    mapCollection({
-      ...row,
-      productCount: products.filter((product) => slugify(product.collection) === row.slug).length,
-    }),
-  );
+    return rows.map((row) =>
+      mapCollection({
+        ...row,
+        productCount: products.filter((product) => slugify(product.collection) === row.slug).length,
+      }),
+    );
+  } catch {
+    return fallbackCollections();
+  }
 }
 
 export async function getCollection(slug: string) {
@@ -235,24 +350,16 @@ export async function getCollection(slug: string) {
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  await seedDatabaseIfNeeded();
-  const settings = await prisma.siteSettings.findUnique({ where: { id: "site" } });
+  let settings;
+  try {
+    await seedDatabaseIfNeeded();
+    settings = await prisma.siteSettings.findUnique({ where: { id: "site" } });
+  } catch {
+    return fallbackSiteSettings();
+  }
 
   if (!settings) {
-    return {
-      brandName: "ZEDX",
-      tagline: "Premium gadgets and accessories for modern everyday setups.",
-      announcement: "Catalog database is ready for merchandising.",
-      currency: "AED",
-      seo: {
-        title: "ZEDX Premium Tech Store",
-        description: "A premium ecommerce launch experience for audio, power, wearables, tablets, and accessories.",
-        openGraphImage: "/brand/zedx-logo-transparent.png",
-        canonicalPath: "/",
-        robots: "index,follow",
-      },
-      socialLinks: [],
-    };
+    return fallbackSiteSettings();
   }
 
   return {
