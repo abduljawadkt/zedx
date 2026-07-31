@@ -31,22 +31,22 @@ type StoryVideoProps = {
 
 const storyVariantClassNames = {
   feature: {
-    content: "p-6 sm:p-9 lg:p-11 xl:p-12",
+    content: "p-6 sm:p-8 lg:p-10 xl:p-10",
     product: "sm:max-w-[26rem]",
     title:
-      "max-w-[13ch] text-[2.25rem] font-medium leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.25rem] xl:text-[3.45rem]",
+      "max-w-[13ch] text-[2.1rem] font-medium leading-[0.94] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.85rem] sm:leading-[0.94] lg:text-[3rem] xl:text-[3.15rem]",
   },
   compact: {
-    content: "p-6 sm:p-8 lg:p-8 xl:p-9",
+    content: "p-6 sm:p-7 lg:p-7 xl:p-8",
     product: "sm:max-w-[22rem]",
     title:
-      "max-w-[14ch] text-[2rem] font-medium leading-[1.06] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.35rem] lg:text-[2.45rem] xl:text-[2.7rem]",
+      "max-w-[14ch] text-[1.9rem] font-medium leading-[0.95] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.15rem] sm:leading-[0.95] lg:text-[2.25rem] xl:text-[2.4rem]",
   },
   wide: {
-    content: "p-6 sm:p-9 lg:p-10 xl:p-11",
+    content: "p-6 sm:p-8 lg:p-9 xl:p-10",
     product: "sm:max-w-[25rem]",
     title:
-      "max-w-[16ch] text-[2.15rem] font-medium leading-[1.05] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.8rem] lg:text-[2.95rem] xl:text-[3.2rem]",
+      "max-w-[16ch] text-[2rem] font-medium leading-[0.94] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.55rem] sm:leading-[0.94] lg:text-[2.7rem] xl:text-[2.9rem]",
   },
 };
 
@@ -125,13 +125,13 @@ function StoryVideo({
         <p className="w-fit rounded-full border border-white/16 bg-white/12 px-4 py-2 type-micro text-white/84 backdrop-blur-md">
           {label}
         </p>
-        <h3 className={`mt-5 ${variantClassNames.title}`}>
+        <h3 className={`mt-4 ${variantClassNames.title}`}>
           {title}
         </h3>
         {product ? (
           <Link
             href={`/products/${product.slug}`}
-            className={`mt-6 flex w-full items-center gap-3 rounded-[1.1rem] border border-white/16 bg-black/58 p-2.5 text-left shadow-2xl shadow-black/35 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)] hover:bg-black/66 sm:mt-5 sm:bg-black/44 ${variantClassNames.product}`}
+            className={`mt-5 flex w-full items-center gap-3 rounded-[1.1rem] border border-white/16 bg-black/58 p-2.5 text-left shadow-2xl shadow-black/35 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)] hover:bg-black/66 sm:mt-4 sm:bg-black/44 ${variantClassNames.product}`}
             aria-label={`View ${formatProductName(product.name)}`}
           >
             <span className="relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/16 bg-[radial-gradient(circle_at_50%_18%,#ffffff,#dfe7ef)] sm:size-20">
@@ -157,7 +157,7 @@ function StoryVideo({
           </Link>
         ) : null}
         {cta ? (
-          <div className="mt-7 inline-flex items-center gap-3 type-control text-white/86">
+          <div className="mt-6 inline-flex items-center gap-3 type-control text-white/86">
             <span className="grid size-11 shrink-0 place-items-center rounded-full border border-white/18 bg-white text-[#050505]">
               <ArrowRight size={17} />
             </span>
