@@ -18,6 +18,7 @@ const storySteps = [
   {
     label: "01",
     title: "Precision Audio",
+    copy: "Earbuds, headphones, and speakers for calls, focus, and everyday listening.",
     icon: Headphones,
     categorySlug: "earpods",
     pickSlugs: ["earpods", "speakers", "over-heads"],
@@ -26,6 +27,7 @@ const storySteps = [
   {
     label: "02",
     title: "Smart Wearables",
+    copy: "Connected watches and refined accessories for health, alerts, and daily visibility.",
     icon: Watch,
     categorySlug: "smart-watches",
     pickSlugs: ["smart-watches", "car-holders", "charging-cables"],
@@ -34,6 +36,7 @@ const storySteps = [
   {
     label: "03",
     title: "Portable Power",
+    copy: "Chargers, power banks, and travel-ready backup for long days.",
     icon: BatteryCharging,
     categorySlug: "power-banks",
     pickSlugs: ["power-banks", "chargers", "car-chargers"],
@@ -42,6 +45,7 @@ const storySteps = [
   {
     label: "04",
     title: "Everyday Accessories",
+    copy: "Mounts, cables, and compact add-ons for phone, car, and desk setups.",
     icon: Package,
     categorySlug: "car-holders",
     pickSlugs: ["car-holders", "charging-cables", "adapters"],
@@ -147,6 +151,9 @@ export function StickyProductStory() {
             <h3 className="mt-3 type-card-title">
               {formatProductName(product.name)}
             </h3>
+            <p className="mt-3 type-muted">
+              {step.copy}
+            </p>
             <Link
               href={`/products/${product.slug}`}
               className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#00a0e3] px-5 type-control text-white shadow-lg shadow-[#00a0e3]/20"
@@ -202,6 +209,9 @@ export function StickyProductStory() {
               <h3 className="mt-14 max-w-xl type-section-title sm:mt-16 sm:text-4xl">
                 {step.title}
               </h3>
+              <p className="mt-5 max-w-lg type-body">
+                {step.copy}
+              </p>
             </motion.article>
           );
         })}
