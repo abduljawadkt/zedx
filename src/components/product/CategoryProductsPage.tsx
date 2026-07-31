@@ -13,7 +13,7 @@ import {
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
-import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatLabelName, formatProductName } from "@/lib/productDisplay";
 
 type SortMode = "featured" | "price-asc" | "price-desc";
 
@@ -35,9 +35,11 @@ export function CategoryProductsPage({
   const heroProduct = products[0];
   const lowestPrice = products.length ? Math.min(...products.map((product) => product.price)) : 0;
   const displayCategoryName = formatCategoryName(category.name);
-  const collectionLabel = category.collection.toLowerCase().includes("collection")
-    ? category.collection
-    : `${category.collection} collection`;
+  const collectionLabel = formatLabelName(
+    category.collection.toLowerCase().includes("collection")
+      ? category.collection
+      : `${category.collection} collection`,
+  );
 
   return (
     <main className="mx-auto w-full max-w-[92rem] flex-1 px-4 py-12 text-white sm:px-8 sm:py-20">

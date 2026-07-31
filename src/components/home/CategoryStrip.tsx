@@ -63,7 +63,7 @@ export function CategoryStrip() {
       <div className="mx-auto max-w-[92rem]">
         <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="type-eyebrow">Shop by setup</p>
+            <p className="type-eyebrow">Shop By Setup</p>
             <h2 className="mt-3 type-section-title">
               Shop ZEDX by setup.
             </h2>

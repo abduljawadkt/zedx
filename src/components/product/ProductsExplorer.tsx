@@ -70,7 +70,7 @@ export function ProductsExplorer() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(0,160,227,0.22),transparent_34%),radial-gradient(circle_at_20%_80%,rgba(139,92,246,0.14),transparent_34%)]" />
         <div>
           <p className="relative inline-flex rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 type-eyebrow text-cyan-200/80">
-            Full ZEDX catalog
+            Full ZEDX Catalog
           </p>
           <h1 className="relative mt-5 max-w-4xl type-page-title">
             Explore products by category.

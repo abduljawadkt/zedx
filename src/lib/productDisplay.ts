@@ -140,6 +140,23 @@ export function formatCategoryName(name: string) {
   return overrides[normalized] ?? name;
 }
 
+export function formatLabelName(name: string) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((word) =>
+      word
+        .split("-")
+        .map((part) => {
+          if (/^zedx$/i.test(part)) return "ZEDX";
+          if (/^uae$/i.test(part)) return "UAE";
+          return part ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : part;
+        })
+        .join("-"),
+    )
+    .join(" ");
+}
+
 export function formatProductDescription(product: Product) {
   return product.description.replace(product.name, formatProductName(product.name));
 }

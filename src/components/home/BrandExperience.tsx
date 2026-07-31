@@ -23,14 +23,14 @@ type ExperiencePanel = {
 
 const panels: ExperiencePanel[] = [
   {
-    eyebrow: "Portable power",
+    eyebrow: "Portable Power",
     title: "Power for every moment.",
     productId: "zedx-power-bank-10000-zx-pb115",
     href: "/categories/power-banks",
     tone: "graphite",
   },
   {
-    eyebrow: "Premium audio",
+    eyebrow: "Premium Audio",
     title: "Audio that feels composed.",
     productId: "zedx-headphone-lumen-100",
     visualSrc: "/hero-animation/headphones.png",
@@ -38,7 +38,7 @@ const panels: ExperiencePanel[] = [
     tone: "dark",
   },
   {
-    eyebrow: "Smart wearables",
+    eyebrow: "Smart Wearables",
     title: "A sharper everyday setup.",
     productId: "zedx-zen5-round-watch",
     href: "/categories/smart-watches",

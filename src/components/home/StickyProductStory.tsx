@@ -65,7 +65,7 @@ export function StickyProductStory() {
       <div className="lg:hidden">
         <div>
           <p className="type-eyebrow">
-            ZEDX ecosystem
+            ZEDX Ecosystem
           </p>
           <h2 className="mt-4 type-section-title">
             One connected collection for modern tech rituals.
@@ -168,7 +168,7 @@ export function StickyProductStory() {
       <div className="hidden space-y-8 lg:block lg:py-24">
         <div className="mb-16">
           <p className="type-eyebrow">
-            ZEDX ecosystem
+            ZEDX Ecosystem
           </p>
           <h2 className="mt-4 max-w-3xl type-section-title lg:text-[3.5rem]">
             One connected collection for modern tech rituals.

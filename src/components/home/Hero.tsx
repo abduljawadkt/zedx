@@ -40,7 +40,7 @@ export function Hero() {
       >
         <div className="max-w-[44rem] drop-shadow-[0_4px_18px_rgba(0,0,0,0.52)]">
           <p className="type-eyebrow text-[#9fe7ff]">
-            ZEDX power series
+            ZEDX Power Series
           </p>
           <h1 className="mt-4 max-w-[44rem] type-hero">
             Powering Your Digital Lifestyle

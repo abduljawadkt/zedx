@@ -145,7 +145,7 @@ function StoryVideo({
             </span>
             <span className="min-w-0">
               <span className="block type-micro text-[var(--brand-blue-soft)]">
-                Shop this product
+                Shop This Product
               </span>
               <span className="mt-1 line-clamp-2 block type-control text-white">
                 {formatProductName(product.name)}
@@ -184,7 +184,7 @@ export function ImmersiveProductStories() {
             transition={{ type: "spring", stiffness: 100, damping: 22 }}
           >
             <p className="type-eyebrow">
-              ZEDX essentials
+              ZEDX Essentials
             </p>
             <h2 className="mt-5 max-w-3xl type-section-title font-medium drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] xl:text-6xl">
               Power, audio, and accessories for daily UAE routines.
@@ -220,7 +220,7 @@ export function ImmersiveProductStories() {
             >
               <StoryVideo
                 src={storyVideos.earpodsLandscape}
-                label="Wireless earbuds"
+                label="Wireless Earbuds"
                 title="Clear calls and music in a compact case."
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
@@ -273,7 +273,7 @@ export function ImmersiveProductStories() {
 
           <StoryVideo
             src={storyVideos.retractableCable}
-            label="Retractable cable"
+            label="Retractable Cable"
             title="Fast charging without cable clutter."
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
@@ -292,7 +292,7 @@ export function ImmersiveProductStories() {
         >
           <StoryVideo
             src={storyVideos.carCharger}
-            label="Car charger"
+            label="Car Charger"
             title="High output for the dashboard."
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
@@ -301,7 +301,7 @@ export function ImmersiveProductStories() {
           />
           <StoryVideo
             src={storyVideos.headphoneV2}
-            label="Wireless headphones"
+            label="Wireless Headphones"
             title="Battery-ready sound for work and travel."
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"

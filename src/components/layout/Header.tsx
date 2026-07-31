@@ -155,7 +155,7 @@ export function Header() {
             <div className="grid gap-4 lg:grid-cols-[0.8fr_1fr_1.1fr]">
               <div className="rounded-[1.25rem] border border-[var(--shell-border)] bg-[var(--shell-soft)] p-6">
                 <p className="type-eyebrow">
-                  {activeMega.label} universe
+                  {activeMega.label} Universe
                 </p>
                 <h2 className="mt-4 type-card-title sm:text-3xl">
                   Shop the full {activeMega.label.toLowerCase()} range.
