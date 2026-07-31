@@ -26,7 +26,7 @@ const panels: ExperiencePanel[] = [
     eyebrow: "Portable Power",
     title: "Power for every moment.",
     productId: "zedx-power-bank-10000-zx-pb115",
-    href: "/categories/power-banks",
+    href: "/products/zedx-power-bank-10000-zx-pb115",
     tone: "graphite",
   },
   {
@@ -34,14 +34,14 @@ const panels: ExperiencePanel[] = [
     title: "Audio that feels composed.",
     productId: "zedx-headphone-lumen-100",
     visualSrc: "/hero-animation/headphones.png",
-    href: "/categories/over-heads",
+    href: "/products/zedx-headphone-lumen-100",
     tone: "dark",
   },
   {
     eyebrow: "Smart Wearables",
     title: "A sharper everyday setup.",
     productId: "zedx-zen5-round-watch",
-    href: "/categories/smart-watches",
+    href: "/products/zedx-zen5-round-watch",
     tone: "blue",
   },
 ];

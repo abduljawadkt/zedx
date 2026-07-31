@@ -11,7 +11,7 @@ const featureCards = [
   {
     label: "Audio",
     title: "Precision Audio",
-    href: "/collections/audio",
+    href: "/products/zedx-headphone-lumen-100",
     productSlug: "zedx-headphone-lumen-100",
     metric: "Shop audio",
     tone: "cyan",
@@ -20,7 +20,7 @@ const featureCards = [
   {
     label: "Wearables",
     title: "Future on Your Wrist",
-    href: "/categories/smart-watches",
+    href: "/products/zedx-at-24-ultra-watch",
     productSlug: "zedx-at-24-ultra-watch",
     metric: "Shop watches",
     tone: "silver",
@@ -29,7 +29,7 @@ const featureCards = [
   {
     label: "Power",
     title: "Power Your Workflow",
-    href: "/collections/power",
+    href: "/products/zedx-power-dock-x-gan-105w",
     productSlug: "zedx-power-dock-x-gan-105w",
     metric: "Shop power",
     tone: "blue",
