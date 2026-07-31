@@ -79,7 +79,6 @@ export function ProductQuickView({
                   {product.currency} {product.oldPrice}
                 </p>
               </div>
-              <p className="mt-5 text-white/55">{product.shortDescription}</p>
               <div className="mt-7 flex flex-wrap gap-2">
                 {product.highlights.map((highlight) => (
                   <span

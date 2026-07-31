@@ -24,12 +24,9 @@ export function SignatureShowcase() {
         <h2 className="mt-4 text-6xl font-semibold leading-[0.86] text-white sm:text-8xl">
           {product.name}
         </h2>
-        <p className="mt-8 max-w-xl text-lg leading-8 text-white/55">
-          {product.description}
-        </p>
         <Link
           href={`/products/${product.slug}`}
-          className="mt-10 inline-flex h-14 items-center justify-center rounded-full bg-white px-7 text-sm font-semibold text-[#050505] transition hover:scale-105 hover:bg-[var(--brand-blue-soft)]"
+          className="mt-8 inline-flex h-14 items-center justify-center rounded-full bg-white px-7 text-sm font-semibold text-[#050505] transition hover:scale-105 hover:bg-[var(--brand-blue-soft)]"
         >
           See signature
         </Link>

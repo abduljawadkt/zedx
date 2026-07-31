@@ -55,9 +55,6 @@ export function CategoryProductsPage({
           <h1 className="relative mt-5 type-page-title">
             {displayCategoryName}
           </h1>
-          <p className="relative mt-5 max-w-xl type-body sm:mt-6">
-            {category.description}
-          </p>
           <div className="relative mt-8 flex flex-wrap gap-3">
             <Link
               href="/products"

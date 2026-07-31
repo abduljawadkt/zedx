@@ -160,9 +160,6 @@ export function Header() {
                 <h2 className="mt-4 type-card-title sm:text-3xl">
                   Shop the full {activeMega.label.toLowerCase()} range.
                 </h2>
-                <p className="mt-4 type-muted">
-                  {activeMega.description}
-                </p>
                 <Link
                   href={activeMega.href}
                   className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--brand-blue)] px-5 py-3 type-control text-white transition hover:bg-[var(--foreground)] hover:text-[var(--background)]"
@@ -184,9 +181,6 @@ export function Header() {
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="type-control text-[var(--foreground)]">{category.name}</p>
-                        <p className="mt-1 line-clamp-2 type-muted">
-                          {category.description}
-                        </p>
                       </div>
                       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--shell-panel)] text-[var(--brand-blue)] transition group-hover:bg-[var(--brand-blue)] group-hover:text-white">
                         <ChevronRight size={17} />

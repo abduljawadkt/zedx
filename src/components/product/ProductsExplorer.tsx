@@ -144,9 +144,6 @@ export function ProductsExplorer() {
             className="rounded-[1.1rem] border border-white/10 bg-white/[0.045] p-4 transition hover:-translate-y-0.5 hover:border-[#00a0e3]/45 hover:bg-white/[0.07]"
           >
             <h2 className="type-card-title">{group.name}</h2>
-            <p className="mt-2 line-clamp-2 type-muted">
-              {group.description}
-            </p>
           </Link>
         ))}
       </section>

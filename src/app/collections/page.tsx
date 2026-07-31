@@ -26,10 +26,6 @@ export default async function CollectionsPage() {
         <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[0.9] sm:text-8xl">
           Shop by collection.
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-8 text-white/58">
-          Premium product groups for launch campaigns, homepage merchandising, and focused shopping
-          journeys.
-        </p>
       </section>
 
       <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
@@ -51,9 +47,6 @@ export default async function CollectionsPage() {
             </div>
             <div className="p-5">
               <h2 className="text-2xl font-semibold">{collection.name}</h2>
-              <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/56">
-                {collection.description}
-              </p>
               <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white/76">
                 Explore
                 <ArrowRight size={16} />
