@@ -177,7 +177,7 @@ a,
 
 @layer components {
   .type-eyebrow {
-    @apply text-xs font-medium leading-5 text-[var(--brand-blue-soft)];
+    @apply text-[0.8125rem] font-medium leading-5 text-[var(--brand-blue-soft)];
   }
 
   .type-hero {
@@ -213,7 +213,7 @@ a,
   }
 
   .type-micro {
-    @apply text-xs font-medium leading-5;
+    @apply text-[0.8125rem] font-medium leading-5;
   }
 }
 
