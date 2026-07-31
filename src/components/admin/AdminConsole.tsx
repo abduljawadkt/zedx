@@ -58,10 +58,10 @@ export function AdminConsole({ categories, collections, homepageSections, produc
   const [tab, setTab] = useState<TabKey>("products");
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(products[0] ?? null);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0] ?? null);
-  const [selectedCollection, setSelectedCollection] = useState(collections[0] ?? null);
-  const [selectedSection, setSelectedSection] = useState(homepageSections[0] ?? null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(products[0] ?? null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(categories[0] ?? null);
+  const [selectedCollection, setSelectedCollection] = useState<Collection | null>(collections[0] ?? null);
+  const [selectedSection, setSelectedSection] = useState<HomepageSection | null>(homepageSections[0] ?? null);
   const [seoSlug, setSeoSlug] = useState(products[0]?.slug ?? "");
   const [seoType, setSeoType] = useState<"product" | "category" | "collection">("product");
   const [seoDraft, setSeoDraft] = useState({
