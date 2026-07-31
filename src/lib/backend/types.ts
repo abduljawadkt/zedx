@@ -1,8 +1,17 @@
 import type { Category as DataCategory } from "@/data/categories";
 import type { Product as DataProduct } from "@/data/products";
 
-export type Category = DataCategory;
-export type Product = DataProduct;
+export type Category = DataCategory & {
+  featured?: boolean;
+  sortOrder?: number;
+};
+export type Product = DataProduct & {
+  sku?: string | null;
+  published?: boolean;
+  status?: "draft" | "published" | "archived";
+  featured?: boolean;
+  sortOrder?: number;
+};
 
 export type ApiMeta = {
   mode: "database";
@@ -33,6 +42,7 @@ export type Collection = {
   image: string;
   productCount: number;
   featured: boolean;
+  sortOrder?: number;
 };
 
 export type SeoMetadata = {

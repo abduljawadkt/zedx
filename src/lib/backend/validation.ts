@@ -6,6 +6,7 @@ export const productWriteSchema = z.object({
   id: z.string().min(1).optional(),
   name: z.string().min(1),
   slug: slugSchema,
+  sku: z.string().min(1).optional().nullable(),
   category: z.string().min(1),
   categorySlug: slugSchema,
   collection: z.string().min(1),
@@ -21,6 +22,9 @@ export const productWriteSchema = z.object({
   specs: z.array(z.string().min(1)).default([]),
   highlights: z.array(z.string().min(1)).default([]),
   published: z.boolean().optional().default(true),
+  status: z.enum(["draft", "published", "archived"]).optional().default("published"),
+  featured: z.boolean().optional().default(false),
+  sortOrder: z.number().int().optional().default(0),
 });
 
 export const categoryWriteSchema = z.object({
@@ -30,7 +34,9 @@ export const categoryWriteSchema = z.object({
   accent: z.enum(["blue", "violet", "green", "silver"]),
   collection: z.string().min(1),
   image: z.string().min(1),
-  productCount: z.number().int().nonnegative(),
+  productCount: z.number().int().nonnegative().optional().default(0),
+  featured: z.boolean().optional().default(false),
+  sortOrder: z.number().int().optional().default(0),
 });
 
 export const collectionWriteSchema = z.object({
@@ -38,8 +44,9 @@ export const collectionWriteSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
   image: z.string().min(1),
-  productCount: z.number().int().nonnegative(),
+  productCount: z.number().int().nonnegative().optional().default(0),
   featured: z.boolean(),
+  sortOrder: z.number().int().optional().default(0),
 });
 
 export const homepageSectionWriteSchema = z.object({

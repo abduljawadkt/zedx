@@ -1,41 +1,18 @@
-type AnyRecord = Record<string, unknown>;
+import path from "node:path";
+import { PrismaClient } from "@prisma/client";
 
-function createModelProxy(modelName: string) {
-  return new Proxy(
-    {},
-    {
-      get(_target, property) {
-        const method = String(property);
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient;
+};
 
-        if (method === "count") return async () => 0;
-        if (method === "findMany") return async () => [];
-        if (method === "findUnique" || method === "findFirst") return async () => null;
-        if (method === "deleteMany" || method === "createMany") {
-          return async () => ({ count: 0 });
-        }
-        if (method === "create" || method === "update" || method === "upsert") {
-          return async (args?: { data?: AnyRecord; create?: AnyRecord; update?: AnyRecord }) => ({
-            id: `${modelName}-demo`,
-            ...(args?.data ?? args?.create ?? args?.update ?? {}),
-          });
-        }
-        if (method === "delete") return async () => null;
+process.env.DATABASE_URL ??= `file:${path.join(process.cwd(), "prisma/dev.db")}`;
 
-        return async () => null;
-      },
-    },
-  );
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
 }
-
-export const prisma = new Proxy(
-  {},
-  {
-    get(_target, property) {
-      if (property === "$transaction") {
-        return async (callback: (tx: typeof prisma) => unknown) => callback(prisma);
-      }
-
-      return createModelProxy(String(property));
-    },
-  },
-) as any;

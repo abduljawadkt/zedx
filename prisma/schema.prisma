@@ -11,6 +11,7 @@ model Product {
   id              String   @id
   name            String
   slug            String   @unique
+  sku             String?  @unique
   category        String
   categorySlug    String
   collection      String
@@ -26,9 +27,15 @@ model Product {
   specsJson       String
   highlightsJson  String
   published       Boolean  @default(true)
+  status          String   @default("published")
+  featured        Boolean  @default(false)
+  sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  @@index([categorySlug])
+  @@index([collection])
+  @@index([published])
 }
 
 model Category {
@@ -39,6 +46,8 @@ model Category {
   collection   String
   image        String
   productCount Int
+  featured     Boolean  @default(false)
+  sortOrder    Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -51,6 +60,7 @@ model Collection {
   image        String
   productCount Int
   featured     Boolean
+  sortOrder    Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

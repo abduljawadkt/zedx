@@ -8,6 +8,10 @@ function stringify(value: unknown) {
   return JSON.stringify(value);
 }
 
+function productSku(slug: string) {
+  return slug.toUpperCase().replace(/[^A-Z0-9]/g, "-");
+}
+
 export async function seedDatabaseIfNeeded() {
   const [productCount, categoryCount, collectionCount, settingsCount, homepageCount, adminCount, inventoryCount] =
     await Promise.all([
@@ -22,10 +26,11 @@ export async function seedDatabaseIfNeeded() {
 
   if (productCount === 0) {
     await prisma.product.createMany({
-      data: seedProducts.map((product) => ({
+      data: seedProducts.map((product, index) => ({
         id: product.id,
         name: product.name,
         slug: product.slug,
+        sku: productSku(product.slug),
         category: product.category,
         categorySlug: product.categorySlug,
         collection: product.collection,
@@ -40,13 +45,36 @@ export async function seedDatabaseIfNeeded() {
         description: product.description,
         specsJson: stringify(product.specs),
         highlightsJson: stringify(product.highlights),
+        published: true,
+        status: "published",
+        featured: ["Premium", "Best Seller", "Client Pick"].includes(product.badge),
+        sortOrder: index + 1,
       })),
     });
+  } else {
+    const existingProducts = await prisma.product.findMany({
+      select: { id: true, slug: true, badge: true, sku: true, sortOrder: true },
+      orderBy: { createdAt: "asc" },
+    });
+    await Promise.all(
+      existingProducts.map((product, index) =>
+        prisma.product.update({
+          where: { id: product.id },
+          data: {
+            sku: product.sku ?? productSku(product.slug),
+            status: "published",
+            published: true,
+            featured: ["Premium", "Best Seller", "Client Pick"].includes(product.badge),
+            sortOrder: product.sortOrder || index + 1,
+          },
+        }),
+      ),
+    );
   }
 
   if (categoryCount === 0) {
     await prisma.category.createMany({
-      data: seedCategories.map((category: Category) => ({
+      data: seedCategories.map((category: Category, index) => ({
         slug: category.slug,
         name: category.name,
         description: category.description,
@@ -54,8 +82,26 @@ export async function seedDatabaseIfNeeded() {
         collection: category.collection,
         image: category.image,
         productCount: category.productCount,
+        featured: index < 6,
+        sortOrder: index + 1,
       })),
     });
+  } else {
+    const existingCategories = await prisma.category.findMany({
+      select: { slug: true, sortOrder: true },
+      orderBy: { createdAt: "asc" },
+    });
+    await Promise.all(
+      existingCategories.map((category, index) =>
+        prisma.category.update({
+          where: { slug: category.slug },
+          data: {
+            featured: index < 6,
+            sortOrder: category.sortOrder || index + 1,
+          },
+        }),
+      ),
+    );
   }
 
   if (collectionCount === 0) {
@@ -75,9 +121,25 @@ export async function seedDatabaseIfNeeded() {
           image: leadProduct?.image ?? "/brand/zedx-logo-transparent.png",
           productCount: collectionProducts.length,
           featured: index < 4,
+          sortOrder: index + 1,
         };
       }),
     });
+  } else {
+    const existingCollections = await prisma.collection.findMany({
+      select: { slug: true, sortOrder: true },
+      orderBy: { createdAt: "asc" },
+    });
+    await Promise.all(
+      existingCollections.map((collection, index) =>
+        prisma.collection.update({
+          where: { slug: collection.slug },
+          data: {
+            sortOrder: collection.sortOrder || index + 1,
+          },
+        }),
+      ),
+    );
   }
 
   if (settingsCount === 0) {
@@ -140,13 +202,13 @@ export async function seedDatabaseIfNeeded() {
           where: { productId: product.id },
           create: {
             productId: product.id,
-            sku: product.slug.toUpperCase().replace(/[^A-Z0-9]/g, "-"),
+            sku: productSku(product.slug),
             quantity: 50,
             reserved: 0,
             lowStockAt: 5,
           },
           update: {
-            sku: product.slug.toUpperCase().replace(/[^A-Z0-9]/g, "-"),
+            sku: productSku(product.slug),
             quantity: 50,
             reserved: 0,
             lowStockAt: 5,

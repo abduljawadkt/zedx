@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { RefreshCw, Save, Settings2, FileSearch, PanelsTopLeft, FolderTree, Boxes, Image as ImageIcon, Link2, Sparkles } from "lucide-react";
 import type { Category, Collection, HomepageSection, Product } from "@/lib/backend/types";
 
@@ -33,6 +34,14 @@ function toJson<T>(value: T) {
   return JSON.stringify(value);
 }
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 async function api<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     headers: { "content-type": "application/json", ...(init?.headers ?? {}) },
@@ -45,6 +54,7 @@ async function api<T>(url: string, init?: RequestInit): Promise<T> {
 }
 
 export function AdminConsole({ categories, collections, homepageSections, products, siteSettings }: Props) {
+  const router = useRouter();
   const [tab, setTab] = useState<TabKey>("products");
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -82,11 +92,14 @@ export function AdminConsole({ categories, collections, homepageSections, produc
     setBusy(true);
     setMessage(null);
     try {
-      await api("/api/admin/products/" + selectedProduct.slug, {
-        method: "PATCH",
+      const existingProduct = products.find((product) => product.id === selectedProduct.id);
+      await api(existingProduct ? "/api/admin/products/" + existingProduct.slug : "/api/admin/products", {
+        method: existingProduct ? "PATCH" : "POST",
         body: toJson({
+          id: selectedProduct.id,
           name: selectedProduct.name,
           slug: selectedProduct.slug,
+          sku: selectedProduct.sku,
           category: selectedProduct.category,
           categorySlug: selectedProduct.categorySlug,
           collection: selectedProduct.collection,
@@ -101,13 +114,61 @@ export function AdminConsole({ categories, collections, homepageSections, produc
           description: selectedProduct.description,
           specs: selectedProduct.specs,
           highlights: selectedProduct.highlights,
-          published: true,
+          published: selectedProduct.published ?? selectedProduct.status !== "draft",
+          status: selectedProduct.status ?? "published",
+          featured: selectedProduct.featured ?? false,
+          sortOrder: selectedProduct.sortOrder ?? 0,
         }),
       });
       setMessage("Product saved.");
+      router.refresh();
     } finally {
       setBusy(false);
     }
+  }
+
+  async function deleteSelectedProduct() {
+    if (!selectedProduct) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      const existingProduct = products.find((product) => product.id === selectedProduct.id);
+      if (!existingProduct) return;
+      await api("/api/admin/products/" + existingProduct.slug, { method: "DELETE" });
+      setSelectedProduct(products.find((product) => product.id !== existingProduct.id) ?? null);
+      setMessage("Product deleted.");
+      router.refresh();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function createProductDraft() {
+    const count = products.length + 1;
+    setSelectedProduct({
+      id: `zedx-new-product-${Date.now()}`,
+      name: "New ZEDX Product",
+      slug: `new-zedx-product-${count}`,
+      sku: `ZEDX-NEW-${count}`,
+      category: categories[0]?.name ?? "Accessories",
+      categorySlug: categories[0]?.slug ?? "accessories",
+      collection: collections[0]?.name ?? "General",
+      price: 0,
+      oldPrice: 0,
+      currency: siteSettings.currency,
+      badge: "New",
+      color: "Black",
+      image: "/brand/zedx-logo-transparent.png",
+      gallery: [],
+      shortDescription: "Short launch-ready product summary.",
+      description: "Detailed product description for the ZEDX catalog.",
+      specs: [],
+      highlights: [],
+      published: false,
+      status: "draft",
+      featured: false,
+      sortOrder: count,
+    });
   }
 
   async function saveCategory() {
@@ -115,8 +176,42 @@ export function AdminConsole({ categories, collections, homepageSections, produc
     setBusy(true);
     setMessage(null);
     try {
-      await api("/api/admin/categories/" + selectedCategory.slug, { method: "PATCH", body: toJson(selectedCategory) });
+      const existingCategory = categories.find((category) => category.slug === selectedCategory.slug);
+      await api(existingCategory ? "/api/admin/categories/" + existingCategory.slug : "/api/admin/categories", {
+        method: existingCategory ? "PATCH" : "POST",
+        body: toJson(selectedCategory),
+      });
       setMessage("Category saved.");
+      router.refresh();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function createCategoryDraft() {
+    const count = categories.length + 1;
+    setSelectedCategory({
+      slug: `new-category-${count}`,
+      name: "New Category",
+      description: "Category description.",
+      accent: "blue",
+      collection: collections[0]?.name ?? "General",
+      image: "/brand/zedx-logo-transparent.png",
+      productCount: 0,
+      featured: false,
+      sortOrder: count,
+    });
+  }
+
+  async function deleteSelectedCategory() {
+    if (!selectedCategory) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      await api("/api/admin/categories/" + selectedCategory.slug, { method: "DELETE" });
+      setSelectedCategory(categories.find((category) => category.slug !== selectedCategory.slug) ?? null);
+      setMessage("Category deleted.");
+      router.refresh();
     } finally {
       setBusy(false);
     }
@@ -127,8 +222,41 @@ export function AdminConsole({ categories, collections, homepageSections, produc
     setBusy(true);
     setMessage(null);
     try {
-      await api("/api/admin/collections/" + selectedCollection.slug, { method: "PATCH", body: toJson(selectedCollection) });
+      const existingCollection = collections.find((collection) => collection.slug === selectedCollection.slug);
+      await api(existingCollection ? "/api/admin/collections/" + existingCollection.slug : "/api/admin/collections", {
+        method: existingCollection ? "PATCH" : "POST",
+        body: toJson(selectedCollection),
+      });
       setMessage("Collection saved.");
+      router.refresh();
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function createCollectionDraft() {
+    const count = collections.length + 1;
+    setSelectedCollection({
+      id: `new-collection-${count}`,
+      slug: `new-collection-${count}`,
+      name: "New Collection",
+      description: "Collection description.",
+      image: "/brand/zedx-logo-transparent.png",
+      productCount: 0,
+      featured: false,
+      sortOrder: count,
+    });
+  }
+
+  async function deleteSelectedCollection() {
+    if (!selectedCollection) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      await api("/api/admin/collections/" + selectedCollection.slug, { method: "DELETE" });
+      setSelectedCollection(collections.find((collection) => collection.slug !== selectedCollection.slug) ?? null);
+      setMessage("Collection deleted.");
+      router.refresh();
     } finally {
       setBusy(false);
     }
@@ -266,16 +394,31 @@ export function AdminConsole({ categories, collections, homepageSections, produc
       <div className="mt-6 grid gap-6 lg:grid-cols-[0.42fr_1fr]">
         <aside className="space-y-3">
           <Panel title="Records" subtitle="Select one item to edit." icon={<Boxes size={16} />}>
+            {tab === "products" && (
+              <button type="button" onClick={createProductDraft} className="w-full rounded-2xl border border-cyan-300/30 bg-cyan-300/10 px-4 py-3 text-left text-sm font-semibold text-cyan-100">
+                Create product
+              </button>
+            )}
             {tab === "products" && products.map((product) => (
               <button key={product.id} type="button" onClick={() => setSelectedProduct(product)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-left text-sm">
                 {product.name}
               </button>
             ))}
+            {tab === "categories" && (
+              <button type="button" onClick={createCategoryDraft} className="w-full rounded-2xl border border-cyan-300/30 bg-cyan-300/10 px-4 py-3 text-left text-sm font-semibold text-cyan-100">
+                Create category
+              </button>
+            )}
             {tab === "categories" && categories.map((item) => (
               <button key={item.slug} type="button" onClick={() => setSelectedCategory(item)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-left text-sm">
                 {item.name}
               </button>
             ))}
+            {tab === "collections" && (
+              <button type="button" onClick={createCollectionDraft} className="w-full rounded-2xl border border-cyan-300/30 bg-cyan-300/10 px-4 py-3 text-left text-sm font-semibold text-cyan-100">
+                Create collection
+              </button>
+            )}
             {tab === "collections" && collections.map((item) => (
               <button key={item.slug} type="button" onClick={() => setSelectedCollection(item)} className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-left text-sm">
                 {item.name}
@@ -301,13 +444,18 @@ export function AdminConsole({ categories, collections, homepageSections, produc
 
         <section className="space-y-6">
           {tab === "products" && selectedProduct && (
-            <EditorShell title="Product editor" icon={<Boxes size={16} />} onSave={saveProduct} busy={busy}>
-              <TextField label="Name" value={selectedProduct.name} onChange={(value) => setSelectedProduct({ ...selectedProduct, name: value })} />
-              <TextField label="Slug" value={selectedProduct.slug} onChange={(value) => setSelectedProduct({ ...selectedProduct, slug: value })} />
+            <EditorShell title="Product editor" icon={<Boxes size={16} />} onSave={saveProduct} onDelete={products.some((product) => product.id === selectedProduct.id) ? deleteSelectedProduct : undefined} busy={busy}>
+              <TextField label="Name" value={selectedProduct.name} onChange={(value) => setSelectedProduct({ ...selectedProduct, name: value, slug: selectedProduct.slug || slugify(value) })} />
+              <TextField label="Slug" value={selectedProduct.slug} onChange={(value) => setSelectedProduct({ ...selectedProduct, slug: slugify(value) })} />
+              <TextField label="SKU" value={selectedProduct.sku ?? ""} onChange={(value) => setSelectedProduct({ ...selectedProduct, sku: value })} />
               <TextField label="Category" value={selectedProduct.category} onChange={(value) => setSelectedProduct({ ...selectedProduct, category: value })} />
+              <TextField label="Category slug" value={selectedProduct.categorySlug} onChange={(value) => setSelectedProduct({ ...selectedProduct, categorySlug: slugify(value) })} />
               <TextField label="Collection" value={selectedProduct.collection} onChange={(value) => setSelectedProduct({ ...selectedProduct, collection: value })} />
               <TextField label="Price" value={String(selectedProduct.price)} onChange={(value) => setSelectedProduct({ ...selectedProduct, price: Number(value) || 0 })} />
               <TextField label="Old price" value={String(selectedProduct.oldPrice)} onChange={(value) => setSelectedProduct({ ...selectedProduct, oldPrice: Number(value) || 0 })} />
+              <TextField label="Sort order" value={String(selectedProduct.sortOrder ?? 0)} onChange={(value) => setSelectedProduct({ ...selectedProduct, sortOrder: Number(value) || 0 })} />
+              <SelectField label="Status" value={selectedProduct.status ?? "published"} options={["draft", "published", "archived"]} onChange={(value) => setSelectedProduct({ ...selectedProduct, status: value as Product["status"], published: value === "published" })} />
+              <CheckboxField label="Featured product" checked={selectedProduct.featured ?? false} onChange={(value) => setSelectedProduct({ ...selectedProduct, featured: value })} />
               <TextField label="Image" value={selectedProduct.image} onChange={(value) => setSelectedProduct({ ...selectedProduct, image: value })} />
               <TextArea label="Short description" value={selectedProduct.shortDescription} onChange={(value) => setSelectedProduct({ ...selectedProduct, shortDescription: value })} />
               <TextArea label="Description" value={selectedProduct.description} onChange={(value) => setSelectedProduct({ ...selectedProduct, description: value })} />
@@ -315,21 +463,25 @@ export function AdminConsole({ categories, collections, homepageSections, produc
           )}
 
           {tab === "categories" && selectedCategory && (
-            <EditorShell title="Category editor" icon={<FolderTree size={16} />} onSave={saveCategory} busy={busy}>
+            <EditorShell title="Category editor" icon={<FolderTree size={16} />} onSave={saveCategory} onDelete={categories.some((category) => category.slug === selectedCategory.slug) ? deleteSelectedCategory : undefined} busy={busy}>
               <TextField label="Name" value={selectedCategory.name} onChange={(value) => setSelectedCategory({ ...selectedCategory, name: value })} />
               <TextField label="Slug" value={selectedCategory.slug} onChange={(value) => setSelectedCategory({ ...selectedCategory, slug: value })} />
               <TextField label="Description" value={selectedCategory.description} onChange={(value) => setSelectedCategory({ ...selectedCategory, description: value })} />
               <TextField label="Collection" value={selectedCategory.collection} onChange={(value) => setSelectedCategory({ ...selectedCategory, collection: value })} />
               <TextField label="Image" value={selectedCategory.image} onChange={(value) => setSelectedCategory({ ...selectedCategory, image: value })} />
+              <TextField label="Sort order" value={String(selectedCategory.sortOrder ?? 0)} onChange={(value) => setSelectedCategory({ ...selectedCategory, sortOrder: Number(value) || 0 })} />
+              <CheckboxField label="Featured category" checked={selectedCategory.featured ?? false} onChange={(value) => setSelectedCategory({ ...selectedCategory, featured: value })} />
             </EditorShell>
           )}
 
           {tab === "collections" && selectedCollection && (
-            <EditorShell title="Collection editor" icon={<PanelsTopLeft size={16} />} onSave={saveCollection} busy={busy}>
+            <EditorShell title="Collection editor" icon={<PanelsTopLeft size={16} />} onSave={saveCollection} onDelete={collections.some((collection) => collection.slug === selectedCollection.slug) ? deleteSelectedCollection : undefined} busy={busy}>
               <TextField label="Name" value={selectedCollection.name} onChange={(value) => setSelectedCollection({ ...selectedCollection, name: value })} />
               <TextField label="Slug" value={selectedCollection.slug} onChange={(value) => setSelectedCollection({ ...selectedCollection, slug: value })} />
               <TextField label="Description" value={selectedCollection.description} onChange={(value) => setSelectedCollection({ ...selectedCollection, description: value })} />
               <TextField label="Image" value={selectedCollection.image} onChange={(value) => setSelectedCollection({ ...selectedCollection, image: value })} />
+              <TextField label="Sort order" value={String(selectedCollection.sortOrder ?? 0)} onChange={(value) => setSelectedCollection({ ...selectedCollection, sortOrder: Number(value) || 0 })} />
+              <CheckboxField label="Featured collection" checked={selectedCollection.featured} onChange={(value) => setSelectedCollection({ ...selectedCollection, featured: value })} />
             </EditorShell>
           )}
 
@@ -415,7 +567,7 @@ export function AdminConsole({ categories, collections, homepageSections, produc
   );
 }
 
-function EditorShell({ title, icon, onSave, busy, children }: { title: string; icon: ReactNode; onSave: () => Promise<void>; busy: boolean; children: ReactNode; }) {
+function EditorShell({ title, icon, onSave, onDelete, busy, children }: { title: string; icon: ReactNode; onSave: () => Promise<void>; onDelete?: () => Promise<void>; busy: boolean; children: ReactNode; }) {
   return (
     <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.045] p-5">
       <div className="flex items-center justify-between gap-4">
@@ -423,10 +575,17 @@ function EditorShell({ title, icon, onSave, busy, children }: { title: string; i
           <span className="grid size-10 place-items-center rounded-full bg-[#00a0e3]/15 text-[var(--brand-blue-soft)]">{icon}</span>
           <h2 className="text-xl font-semibold">{title}</h2>
         </div>
-        <button onClick={onSave} disabled={busy} type="button" className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-[#050505] disabled:opacity-60">
-          {busy ? <RefreshCw size={16} className="animate-spin" /> : <Save size={16} />}
-          Save
-        </button>
+        <div className="flex items-center gap-2">
+          {onDelete && (
+            <button onClick={onDelete} disabled={busy} type="button" className="inline-flex h-11 items-center rounded-full border border-red-300/30 px-4 text-sm font-semibold text-red-100 disabled:opacity-60">
+              Delete
+            </button>
+          )}
+          <button onClick={onSave} disabled={busy} type="button" className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-semibold text-[#050505] disabled:opacity-60">
+            {busy ? <RefreshCw size={16} className="animate-spin" /> : <Save size={16} />}
+            Save
+          </button>
+        </div>
       </div>
       <div className="mt-5 grid gap-4 md:grid-cols-2">{children}</div>
     </div>
@@ -453,6 +612,28 @@ function TextField({ label, value, onChange }: { label: string; value: string; o
     <label className="block">
       <span className="text-xs uppercase tracking-[0.18em] text-white/45">{label}</span>
       <input value={value} onChange={(e) => onChange(e.target.value)} className="mt-2 h-12 w-full rounded-2xl border border-white/10 bg-black/24 px-4 text-sm text-white outline-none" />
+    </label>
+  );
+}
+
+function SelectField({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (value: string) => void; }) {
+  return (
+    <label className="block">
+      <span className="text-xs uppercase tracking-[0.18em] text-white/45">{label}</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="mt-2 h-12 w-full rounded-2xl border border-white/10 bg-black/24 px-4 text-sm text-white outline-none">
+        {options.map((option) => (
+          <option key={option} value={option}>{option}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function CheckboxField({ label, checked, onChange }: { label: string; checked: boolean; onChange: (value: boolean) => void; }) {
+  return (
+    <label className="flex h-12 items-center gap-3 rounded-2xl border border-white/10 bg-black/24 px-4 text-sm font-semibold text-white/72">
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-4 accent-[#00a0e3]" />
+      {label}
     </label>
   );
 }
