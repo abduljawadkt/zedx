@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Headset, Send, ShoppingBag, Sparkles, X } from "lucide-react";
+import { Headset, MessageCircle, Send, ShoppingBag, Sparkles, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
@@ -14,6 +14,14 @@ type ChatMessage = {
   role: "assistant" | "user";
   text: string;
 };
+
+type SupportDraft = {
+  message: string;
+  name: string;
+  phone: string;
+};
+
+const supportWhatsAppNumber = "971524371450";
 
 const quickPrompts = [
   "Best audio combo",
@@ -64,6 +72,12 @@ export function ProductAdvisorChat() {
   const { addToCart } = useCommerce();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [supportMode, setSupportMode] = useState(false);
+  const [supportDraft, setSupportDraft] = useState<SupportDraft>({
+    message: "",
+    name: "",
+    phone: "",
+  });
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
@@ -81,6 +95,7 @@ export function ProductAdvisorChat() {
     const cleanPrompt = prompt.trim();
     if (!cleanPrompt) return;
 
+    setSupportMode(false);
     const answer = getRecommendations(cleanPrompt);
     setMessages((current) => [
       ...current,
@@ -94,6 +109,49 @@ export function ProductAdvisorChat() {
     ]);
     setInput("");
     setOpen(true);
+  }
+
+  function openSupportMode() {
+    setOpen(true);
+    setSupportMode(true);
+  }
+
+  function updateSupportDraft(field: keyof SupportDraft, value: string) {
+    setSupportDraft((current) => ({ ...current, [field]: value }));
+  }
+
+  function submitSupportRequest() {
+    const name = supportDraft.name.trim();
+    const phone = supportDraft.phone.trim();
+    const message = supportDraft.message.trim();
+
+    if (!name || !phone || !message) return;
+
+    const whatsappMessage = [
+      "ZEDX Customer Support Request",
+      "",
+      `Name: ${name}`,
+      `Phone: ${phone}`,
+      `Message: ${message}`,
+      "",
+      "Source: Website product advisor chat",
+    ].join("\n");
+
+    window.open(
+      `https://wa.me/${supportWhatsAppNumber}?text=${encodeURIComponent(whatsappMessage)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+
+    setMessages((current) => [
+      ...current,
+      { id: Date.now(), role: "user", text: "Customer support request" },
+      {
+        id: Date.now() + 1,
+        role: "assistant",
+        text: "I prepared your support message for WhatsApp. Please review and send it to the official ZEDX support number.",
+      },
+    ]);
   }
 
   return (
@@ -145,6 +203,14 @@ export function ProductAdvisorChat() {
                 </button>
               </div>
               <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+                <button
+                  type="button"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#00a0e3]/55 bg-[#00a0e3]/14 px-4 py-2 text-xs font-semibold text-[var(--brand-blue-soft)] transition hover:bg-[#00a0e3] hover:text-white"
+                  onClick={openSupportMode}
+                >
+                  <MessageCircle size={14} />
+                  Customer Support
+                </button>
                 {quickPrompts.map((prompt) => (
                   <button
                     key={prompt}
@@ -227,31 +293,102 @@ export function ProductAdvisorChat() {
                   </div>
                 );
               })}
+              {supportMode ? (
+                <div className="rounded-[1.35rem] border border-[#00a0e3]/28 bg-[#00a0e3]/10 p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[#00a0e3] text-white">
+                      <MessageCircle size={17} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-white">Customer Support</p>
+                      <p className="mt-1 text-xs leading-5 text-white/58">
+                        Share your details and we will open WhatsApp with a ready message to the official ZEDX support number.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
-            <form
-              className="border-t border-[#ffffff1a] p-4"
-              onSubmit={(event) => {
-                event.preventDefault();
-                sendPrompt(input);
-              }}
-            >
-              <div className="flex items-center gap-2 rounded-full border border-[#ffffff1a] bg-[#ffffff0a] p-2">
-                <input
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-[#ffffff4d]"
-                  placeholder="Ask for audio, travel, desk, gift..."
-                />
-                <button
-                  type="submit"
-                  aria-label="Send product advisor message"
-                  className="grid size-10 place-items-center rounded-full bg-[#00a0e3] text-white transition hover:bg-white hover:text-[#050505]"
-                >
-                  <Send size={16} />
-                </button>
-              </div>
-            </form>
+            {supportMode ? (
+              <form
+                className="border-t border-[#ffffff1a] p-4"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  submitSupportRequest();
+                }}
+              >
+                <div className="grid gap-2">
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <input
+                      value={supportDraft.name}
+                      onChange={(event) => updateSupportDraft("name", event.target.value)}
+                      aria-label="Customer name"
+                      className="h-11 rounded-2xl border border-[#ffffff1a] bg-[#ffffff0a] px-4 text-sm text-white outline-none placeholder:text-[#ffffff4d] focus:border-[#00a0e3]/70"
+                      placeholder="Your name"
+                      required
+                    />
+                    <input
+                      value={supportDraft.phone}
+                      onChange={(event) => updateSupportDraft("phone", event.target.value)}
+                      aria-label="Customer phone"
+                      className="h-11 rounded-2xl border border-[#ffffff1a] bg-[#ffffff0a] px-4 text-sm text-white outline-none placeholder:text-[#ffffff4d] focus:border-[#00a0e3]/70"
+                      placeholder="Phone number"
+                      required
+                    />
+                  </div>
+                  <textarea
+                    value={supportDraft.message}
+                    onChange={(event) => updateSupportDraft("message", event.target.value)}
+                    aria-label="Support message"
+                    className="min-h-20 resize-none rounded-2xl border border-[#ffffff1a] bg-[#ffffff0a] px-4 py-3 text-sm leading-6 text-white outline-none placeholder:text-[#ffffff4d] focus:border-[#00a0e3]/70"
+                    placeholder="What do you need help with?"
+                    required
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className="h-11 rounded-full border border-[#ffffff1a] px-4 text-xs font-semibold text-white/62 transition hover:border-white/35 hover:text-white"
+                      onClick={() => setSupportMode(false)}
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="submit"
+                      className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#00a0e3] px-5 text-xs font-semibold text-white transition hover:bg-white hover:text-[#050505]"
+                    >
+                      <MessageCircle size={15} />
+                      Send To WhatsApp
+                    </button>
+                  </div>
+                </div>
+              </form>
+            ) : (
+              <form
+                className="border-t border-[#ffffff1a] p-4"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  sendPrompt(input);
+                }}
+              >
+                <div className="flex items-center gap-2 rounded-full border border-[#ffffff1a] bg-[#ffffff0a] p-2">
+                  <input
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    aria-label="Product advisor message"
+                    className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-[#ffffff4d]"
+                    placeholder="Ask for audio, travel, desk, gift..."
+                  />
+                  <button
+                    type="submit"
+                    aria-label="Send product advisor message"
+                    className="grid size-10 place-items-center rounded-full bg-[#00a0e3] text-white transition hover:bg-white hover:text-[#050505]"
+                  >
+                    <Send size={16} />
+                  </button>
+                </div>
+              </form>
+            )}
           </motion.aside>
         )}
       </AnimatePresence>
