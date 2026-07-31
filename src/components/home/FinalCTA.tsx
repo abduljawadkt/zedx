@@ -74,15 +74,6 @@ export function FinalCTA() {
             >
               Ready to upgrade your everyday tech?
             </motion.h2>
-            <motion.p
-              className="mt-6 max-w-xl type-body text-white/74"
-              initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ type: "spring", stiffness: 90, damping: 22, delay: 0.06 }}
-            >
-              Shop ZEDX power banks, wireless audio, fast chargers, smart wearables, and mobile accessories for Dubai and the UAE.
-            </motion.p>
             <motion.div
               className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4"
               initial={reduceMotion ? false : { opacity: 0, y: 24 }}

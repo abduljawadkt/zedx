@@ -83,9 +83,6 @@ export function ProductCard({
         <h3 className="mt-4 line-clamp-2 min-h-14 type-product-title sm:min-h-14">
           {displayName}
         </h3>
-        <p className="mt-3 line-clamp-2 min-h-11 type-muted">
-          {product.shortDescription}
-        </p>
         {!hidePricing && (
           <div className="mt-6 flex items-center justify-between gap-4">
             <p className="text-2xl font-semibold leading-8 text-[var(--foreground)]">

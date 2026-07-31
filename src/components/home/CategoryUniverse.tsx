@@ -60,9 +60,6 @@ export function CategoryUniverse() {
             Explore focused product categories.
           </h2>
         </div>
-        <p className="max-w-sm text-white/58">
-          Discover focused collections built around sound, power, mobility, and everyday utility.
-        </p>
       </div>
       <div className="-mx-5 flex gap-5 overflow-x-auto px-5 pb-3 sm:-mx-8 sm:px-8 lg:mx-0 lg:grid lg:grid-cols-4 lg:px-0">
         {visibleCategories.map((category, index) => {
@@ -107,9 +104,6 @@ export function CategoryUniverse() {
                   <h3 className="text-2xl font-semibold text-white">
                     {category.name}
                   </h3>
-                  <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/58">
-                    {category.description}
-                  </p>
                 </div>
               </Link>
             </motion.div>

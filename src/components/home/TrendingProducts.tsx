@@ -81,16 +81,13 @@ function FeaturedSkuCard({ product }: { product: Product }) {
           sizes="(min-width: 1280px) 260px, 240px"
         />
       </div>
-      <div className="min-h-[10.75rem] px-6 py-6">
+      <div className="min-h-[7.5rem] px-6 py-6">
         <p className="text-[0.68rem] font-semibold text-[#00a0e3]">
           {product.category}
         </p>
         <h3 className="mt-4 line-clamp-2 text-[1.32rem] font-bold leading-[1.08] tracking-normal text-[#050505]">
           {formatProductName(product.name)}
         </h3>
-        <p className="mt-3 line-clamp-2 text-base leading-6 text-black/50">
-          {product.shortDescription}
-        </p>
       </div>
     </Link>
   );

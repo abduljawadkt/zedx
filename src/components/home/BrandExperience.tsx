@@ -13,7 +13,6 @@ import {
 import { products } from "@/data/products";
 
 type ExperiencePanel = {
-  copy: string;
   eyebrow: string;
   href: string;
   productId: string;
@@ -26,7 +25,6 @@ const panels: ExperiencePanel[] = [
   {
     eyebrow: "Portable power",
     title: "Power for every moment.",
-    copy: "Powerbanks, wall chargers, and cables made for travel, work, and always-on days.",
     productId: "zedx-power-bank-10000-zx-pb115",
     href: "/categories/power-banks",
     tone: "graphite",
@@ -34,7 +32,6 @@ const panels: ExperiencePanel[] = [
   {
     eyebrow: "Premium audio",
     title: "Audio that feels composed.",
-    copy: "Earbuds, speakers, and headphones tuned for immersive listening and clear everyday calls.",
     productId: "zedx-headphone-lumen-100",
     visualSrc: "/hero-animation/headphones.png",
     href: "/categories/over-heads",
@@ -43,7 +40,6 @@ const panels: ExperiencePanel[] = [
   {
     eyebrow: "Smart wearables",
     title: "A sharper everyday setup.",
-    copy: "Smart displays, watches, and accessories that keep your day visible, connected, and refined.",
     productId: "zedx-zen5-round-watch",
     href: "/categories/smart-watches",
     tone: "blue",
@@ -106,12 +102,9 @@ export function BrandExperience() {
                     <h3 className="mt-4 type-section-title sm:text-5xl">
                       {panel.title}
                     </h3>
-                    <p className="mt-5 max-w-lg type-body">
-                      {panel.copy}
-                    </p>
                     <Link
                       href={panel.href}
-                      className={`mt-8 inline-flex h-14 w-fit items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition active:scale-95 ${
+                      className={`mt-7 inline-flex h-14 w-fit items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition active:scale-95 ${
                         panel.tone === "dark"
                           ? "bg-white text-[#050505] hover:bg-[var(--brand-blue-soft)]"
                           : "bg-[#00a0e3] text-white hover:bg-white hover:text-[#050505]"

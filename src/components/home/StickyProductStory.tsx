@@ -18,7 +18,6 @@ const storySteps = [
   {
     label: "01",
     title: "Precision Audio",
-    copy: "Immersive tuning, low-latency response, and clear voice capture for daily listening.",
     icon: Headphones,
     categorySlug: "earpods",
     pickSlugs: ["earpods", "speakers", "over-heads"],
@@ -27,7 +26,6 @@ const storySteps = [
   {
     label: "02",
     title: "Smart Wearables",
-    copy: "Sharp AMOLED surfaces and health intelligence wrapped in a refined everyday object.",
     icon: Watch,
     categorySlug: "smart-watches",
     pickSlugs: ["smart-watches", "car-holders", "charging-cables"],
@@ -36,7 +34,6 @@ const storySteps = [
   {
     label: "03",
     title: "Portable Power",
-    copy: "Fast charging support designed around travel, work, and long days away from outlets.",
     icon: BatteryCharging,
     categorySlug: "power-banks",
     pickSlugs: ["power-banks", "chargers", "car-chargers"],
@@ -45,7 +42,6 @@ const storySteps = [
   {
     label: "04",
     title: "Everyday Accessories",
-    copy: "Useful details, compact forms, and premium finishes across the full tech ritual.",
     icon: Package,
     categorySlug: "car-holders",
     pickSlugs: ["car-holders", "charging-cables", "adapters"],
@@ -151,9 +147,6 @@ export function StickyProductStory() {
             <h3 className="mt-3 type-card-title">
               {formatProductName(product.name)}
             </h3>
-            <p className="mt-3 type-muted">
-              {step.copy}
-            </p>
             <Link
               href={`/products/${product.slug}`}
               className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#00a0e3] px-5 type-control text-white shadow-lg shadow-[#00a0e3]/20"
@@ -209,9 +202,6 @@ export function StickyProductStory() {
               <h3 className="mt-14 max-w-xl type-section-title sm:mt-16 sm:text-4xl">
                 {step.title}
               </h3>
-              <p className="mt-6 max-w-lg type-body">
-                {step.copy}
-              </p>
             </motion.article>
           );
         })}
@@ -279,9 +269,6 @@ export function StickyProductStory() {
               <h3 className="mt-3 max-w-xl type-card-title">
                 {formatProductName(product.name)}
               </h3>
-              <p className="mt-3 max-w-xl type-muted">
-                {product.shortDescription}
-              </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <span className="rounded-full border border-white/12 px-4 py-2 type-micro text-white/66">
                   {product.badge}

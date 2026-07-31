@@ -8,7 +8,6 @@ const featureCards = [
   {
     label: "Audio",
     title: "Precision Audio",
-    copy: "Shop wireless earbuds, headphones, neckbands, and speakers for calls, gaming, and everyday listening.",
     href: "/collections/audio",
     productSlug: "zedx-headphone-lumen-100",
     metric: "Shop audio",
@@ -18,7 +17,6 @@ const featureCards = [
   {
     label: "Wearables",
     title: "Future on Your Wrist",
-    copy: "Smart watches with bright displays, refined straps, and daily health-ready utility.",
     href: "/categories/smart-watches",
     productSlug: "zedx-at-24-ultra-watch",
     metric: "Shop watches",
@@ -28,7 +26,6 @@ const featureCards = [
   {
     label: "Power",
     title: "Power Your Workflow",
-    copy: "Shop GaN chargers, charging docks, power banks, and cables for desks, travel, and multi-device setups.",
     href: "/collections/power",
     productSlug: "zedx-power-dock-x-gan-105w",
     metric: "Shop power",
@@ -71,9 +68,6 @@ export function CategoryStrip() {
               Shop ZEDX by setup.
             </h2>
           </div>
-          <p className="max-w-md type-muted sm:text-right">
-            Find wireless audio, fast chargers, power banks, smart watches, and car accessories for Dubai and UAE shoppers.
-          </p>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
@@ -126,9 +120,6 @@ function CategoryFeatureCard({
         >
           {card.title}
         </h3>
-        <p className="mt-4 max-w-md type-muted sm:text-base sm:leading-7">
-          {card.copy}
-        </p>
 
         <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-auto sm:pt-8">
           <span className="inline-flex h-12 items-center gap-3 rounded-full bg-white px-4 type-control text-[#050505] shadow-lg shadow-white/5 transition group-hover:bg-[var(--brand-blue-soft)]">

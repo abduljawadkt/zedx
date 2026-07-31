@@ -22,7 +22,6 @@ type StoryVideoProps = {
   src: string;
   label: string;
   title: string;
-  description?: string;
   className?: string;
   mediaClassName?: string;
   cta?: string;
@@ -33,21 +32,18 @@ type StoryVideoProps = {
 const storyVariantClassNames = {
   feature: {
     content: "p-6 sm:p-9 lg:p-11 xl:p-12",
-    description: "max-w-lg text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
     product: "sm:max-w-[26rem]",
     title:
       "max-w-[13ch] text-[2.25rem] font-medium leading-[1.04] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-tight lg:text-[3.25rem] xl:text-[3.45rem]",
   },
   compact: {
     content: "p-6 sm:p-8 lg:p-8 xl:p-9",
-    description: "max-w-md text-sm leading-6 text-white/72 sm:text-base sm:leading-7",
     product: "sm:max-w-[22rem]",
     title:
       "max-w-[14ch] text-[2rem] font-medium leading-[1.06] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.35rem] lg:text-[2.45rem] xl:text-[2.7rem]",
   },
   wide: {
     content: "p-6 sm:p-9 lg:p-10 xl:p-11",
-    description: "max-w-xl text-base leading-7 text-white/74 sm:text-lg sm:leading-8",
     product: "sm:max-w-[25rem]",
     title:
       "max-w-[16ch] text-[2.15rem] font-medium leading-[1.05] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.7)] sm:text-[2.8rem] lg:text-[2.95rem] xl:text-[3.2rem]",
@@ -58,7 +54,6 @@ function StoryVideo({
   src,
   label,
   title,
-  description,
   className = "",
   mediaClassName = "object-center",
   cta,
@@ -133,11 +128,6 @@ function StoryVideo({
         <h3 className={`mt-5 ${variantClassNames.title}`}>
           {title}
         </h3>
-        {description ? (
-          <p className={`mt-4 drop-shadow-[0_3px_14px_rgba(0,0,0,0.68)] ${variantClassNames.description}`}>
-            {description}
-          </p>
-        ) : null}
         {product ? (
           <Link
             href={`/products/${product.slug}`}
@@ -200,15 +190,6 @@ export function ImmersiveProductStories() {
               Power, audio, and accessories for daily UAE routines.
             </h2>
           </motion.div>
-          <motion.p
-            className="max-w-2xl type-body text-white/72 lg:pt-12 xl:text-lg xl:leading-8"
-            initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ type: "spring", stiffness: 100, damping: 22, delay: 0.08 }}
-          >
-            Choose compact power banks, wireless earbuds, fast chargers, car chargers, and cables with clear pricing and product-focused detail.
-          </motion.p>
         </div>
 
         <div className="mt-16 grid gap-7 lg:grid-cols-[1.08fr_0.92fr] xl:gap-8">
@@ -222,7 +203,6 @@ export function ImmersiveProductStories() {
               src={storyVideos.powerbankCta}
               label="Powerbank"
               title="Pocket power for work, travel, and long days."
-              description="Carry backup power for phones, earbuds, and everyday devices without adding bulk to your bag."
               className="sm:min-h-[42rem] lg:min-h-[48rem] xl:min-h-[52rem]"
               mediaClassName="object-center"
               cta="Shop power"
@@ -259,7 +239,6 @@ export function ImmersiveProductStories() {
                 src={storyVideos.headphoneV1}
                 label="Headphones"
                 title="Over-ear comfort for focused listening."
-                description="Choose headphones for longer sessions, stronger isolation, and a more immersive sound profile."
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-headphone-zx-hf-110"
@@ -283,12 +262,9 @@ export function ImmersiveProductStories() {
             <p className="mt-10 text-2xl font-medium leading-[1.12] text-white sm:text-3xl">
               Accessories that complete your phone, car, and desk setup.
             </p>
-            <p className="mt-5 type-body">
-              Shop durable charging cables, car adapters, mounts, and audio essentials built for everyday use.
-            </p>
             <Link
               href="/products"
-              className="mt-8 inline-flex h-12 items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 type-control text-[#050505] transition hover:bg-[var(--brand-blue)]"
+              className="mt-6 inline-flex h-12 items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 type-control text-[#050505] transition hover:bg-[var(--brand-blue)]"
             >
               <Play size={14} className="fill-current" />
               View collection
@@ -299,7 +275,6 @@ export function ImmersiveProductStories() {
             src={storyVideos.retractableCable}
             label="Retractable cable"
             title="Fast charging without cable clutter."
-            description="Retractable Type-C cables help keep desks, cars, and travel bags cleaner."
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             cta="Shop essentials"
@@ -319,7 +294,6 @@ export function ImmersiveProductStories() {
             src={storyVideos.carCharger}
             label="Car charger"
             title="High output for the dashboard."
-            description="Keep phones topped up during commutes, rideshare work, and road trips across the UAE."
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-38w-car-charger-cr100"
@@ -329,7 +303,6 @@ export function ImmersiveProductStories() {
             src={storyVideos.headphoneV2}
             label="Wireless headphones"
             title="Battery-ready sound for work and travel."
-            description="Compare headphones and earbuds by comfort, portability, and everyday listening style."
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-headphone-lumen-100"
