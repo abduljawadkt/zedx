@@ -205,7 +205,6 @@ export function ImmersiveProductStories() {
               title="Pocket power for work, travel, and long days."
               className="sm:min-h-[42rem] lg:min-h-[48rem] xl:min-h-[52rem]"
               mediaClassName="object-center"
-              cta="Shop power"
               productSlug="zedx-power-bank-10000-zx-pb115"
               variant="feature"
             />
