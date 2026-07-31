@@ -13,7 +13,6 @@ import {
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
 import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 const primaryLinks = [
   { href: "/collections/audio", label: "Audio" },
@@ -83,10 +82,6 @@ export function MobileMenu() {
               >
                 <X size={18} />
               </button>
-            </div>
-
-            <div className="mt-8">
-              <ThemeToggle />
             </div>
 
             <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5">

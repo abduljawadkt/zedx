@@ -8,7 +8,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
-import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
 import { formatCategoryName, formatProductName, productGroups } from "@/lib/productDisplay";
@@ -102,9 +101,6 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-1.5 sm:gap-3">
-          <div className="hidden sm:block">
-            <ThemeToggle compact />
-          </div>
           <button
             type="button"
             aria-label="Open cart"

@@ -5,7 +5,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
 
@@ -22,41 +21,20 @@ const THEME_STORAGE_KEY = "zedx-theme";
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>("dark");
-  const [hydrated, setHydrated] = useState(false);
-
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setThemeState(savedTheme);
-    } else if (
-      document.documentElement.dataset.theme === "light" ||
-      document.documentElement.dataset.theme === "dark"
-    ) {
-      const currentTheme = document.documentElement.dataset.theme;
-      setThemeState(currentTheme);
-    }
-
-    setHydrated(true);
+    document.documentElement.dataset.theme = "dark";
+    document.documentElement.style.colorScheme = "dark";
+    window.localStorage.setItem(THEME_STORAGE_KEY, "dark");
   }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [hydrated, theme]);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
-      isLight: theme === "light",
-      setTheme: setThemeState,
-      theme,
-      toggleTheme: () => setThemeState((current) => (current === "light" ? "dark" : "light")),
+      isLight: false,
+      setTheme: () => {},
+      theme: "dark",
+      toggleTheme: () => {},
     }),
-    [theme],
+    [],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
