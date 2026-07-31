@@ -30,9 +30,9 @@ export default function Home() {
     <main className="flex-1 -mt-[5rem]">
       <Hero />
       <CategoryStrip />
+      <TrendingProducts />
       <ImmersiveProductStories />
       <StickyProductStory />
-      <TrendingProducts />
       <CategoryUniverse />
       <BrandExperience />
       <HomeSeoContent />
