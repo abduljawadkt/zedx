@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { ProductImage } from "@/components/product/ProductImage";
 import { products, type Product } from "@/data/products";
 import { formatProductName } from "@/lib/productDisplay";
@@ -52,8 +55,21 @@ const toneClassNames = {
   },
 };
 
+const headerReveal = {
+  hidden: { opacity: 0, y: 34, filter: "blur(8px)" },
+  visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+};
+
+const cardReveal = {
+  hidden: { opacity: 0, y: 72, scale: 0.975, filter: "blur(12px)" },
+  visible: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+};
+
 export function CategoryStrip() {
   const [primaryCard, ...secondaryCards] = featureCards;
+  const reduceMotion = useReducedMotion();
+  const initialState = reduceMotion ? false : "hidden";
+  const viewport = { once: true, amount: 0.24, margin: "-12% 0px -14% 0px" };
 
   return (
     <section
@@ -61,23 +77,55 @@ export function CategoryStrip() {
       className="border-y border-white/10 bg-[#030405] px-4 py-14 text-white sm:px-8 lg:py-20"
     >
       <div className="mx-auto max-w-[92rem]">
-        <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+        <motion.div
+          className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between"
+          initial={initialState}
+          transition={{ type: "spring", stiffness: 92, damping: 22 }}
+          variants={headerReveal}
+          viewport={viewport}
+          whileInView="visible"
+        >
           <div>
             <p className="type-eyebrow">Shop By Setup</p>
             <h2 className="mt-3 type-section-title">
               Shop ZEDX by setup.
             </h2>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
-          <CategoryFeatureCard card={primaryCard} priority />
+        <motion.div
+          className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]"
+          initial={initialState}
+          transition={{ staggerChildren: 0.12, delayChildren: 0.08 }}
+          viewport={viewport}
+          whileInView="visible"
+        >
+          <motion.div
+            className="min-w-0"
+            transition={{ type: "spring", stiffness: 78, damping: 20, mass: 0.92 }}
+            variants={cardReveal}
+          >
+            <CategoryFeatureCard card={primaryCard} priority />
+          </motion.div>
           <div className="grid gap-5">
-            {secondaryCards.map((card) => (
-              <CategoryFeatureCard key={card.label} card={card} />
+            {secondaryCards.map((card, index) => (
+              <motion.div
+                key={card.label}
+                className="min-w-0"
+                transition={{
+                  type: "spring",
+                  stiffness: 82,
+                  damping: 20,
+                  mass: 0.88,
+                  delay: index * 0.04,
+                }}
+                variants={cardReveal}
+              >
+                <CategoryFeatureCard card={card} />
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
