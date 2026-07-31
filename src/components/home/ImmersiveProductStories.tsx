@@ -277,7 +277,6 @@ export function ImmersiveProductStories() {
             title="Fast charging without cable clutter."
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
-            cta="Shop essentials"
             productSlug="zedx-retractable-cable-100w-ze-03-type-c"
             variant="wide"
           />
