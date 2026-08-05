@@ -187,7 +187,7 @@ export function ImmersiveProductStories() {
               ZEDX Essentials
             </p>
             <h2 className="mt-5 max-w-3xl type-section-title font-medium drop-shadow-[0_6px_28px_rgba(0,0,0,0.52)] xl:text-6xl">
-              Power, audio, and accessories for daily UAE routines.
+              Power, audio, and accessories for daily UAE routines
             </h2>
           </motion.div>
         </div>
@@ -202,7 +202,7 @@ export function ImmersiveProductStories() {
             <StoryVideo
               src={storyVideos.powerbankCta}
               label="Powerbank"
-              title="Pocket power for work, travel, and long days."
+              title="Pocket power for work, travel, and long days"
               className="sm:min-h-[42rem] lg:min-h-[48rem] xl:min-h-[52rem]"
               mediaClassName="object-center"
               productSlug="zedx-power-bank-10000-zx-pb115"
@@ -220,7 +220,7 @@ export function ImmersiveProductStories() {
               <StoryVideo
                 src={storyVideos.earpodsLandscape}
                 label="Wireless Earbuds"
-                title="Clear calls and music in a compact case."
+                title="Clear calls and music in a compact case"
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-zee-pods-pro"
@@ -237,7 +237,7 @@ export function ImmersiveProductStories() {
               <StoryVideo
                 src={storyVideos.headphoneV1}
                 label="Headphones"
-                title="Over-ear comfort for focused listening."
+                title="Over-ear comfort for focused listening"
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-headphone-zx-hf-110"
@@ -274,7 +274,7 @@ export function ImmersiveProductStories() {
                 Everyday Accessories
               </p>
               <p className="mt-5 max-w-[14ch] text-2xl font-medium leading-[1.08] text-white drop-shadow-[0_8px_26px_rgba(0,0,0,0.62)] sm:text-3xl">
-                Accessories that complete your phone, car, and desk setup.
+                Accessories that complete your phone, car, and desk setup
               </p>
               <span className="mt-7 inline-flex h-12 w-fit items-center justify-center gap-3 rounded-full border border-white/18 bg-white px-5 type-control text-[#050505] shadow-2xl shadow-black/20 transition group-hover:bg-[var(--brand-blue)] group-hover:text-white">
                 <Play size={14} className="fill-current" />
@@ -286,7 +286,7 @@ export function ImmersiveProductStories() {
           <StoryVideo
             src={storyVideos.retractableCable}
             label="Retractable Cable"
-            title="Fast charging without cable clutter."
+            title="Fast charging without cable clutter"
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-retractable-cable-100w-ze-03-type-c"
@@ -304,7 +304,7 @@ export function ImmersiveProductStories() {
           <StoryVideo
             src={storyVideos.carCharger}
             label="Car Charger"
-            title="High output for the dashboard."
+            title="High output for the dashboard"
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-38w-car-charger-cr100"
@@ -313,7 +313,7 @@ export function ImmersiveProductStories() {
           <StoryVideo
             src={storyVideos.headphoneV2}
             label="Wireless Headphones"
-            title="Battery-ready sound for work and travel."
+            title="Battery-ready sound for work and travel"
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-headphone-lumen-100"
