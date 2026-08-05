@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { ProductImage } from "@/components/product/ProductImage";
 import { products, type Product } from "@/data/products";
+import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 const featuredSlugs = [
   "zedx-zee-pods-pro",
@@ -18,7 +19,35 @@ const featuredProducts = featuredSlugs
   .map((slug) => products.find((product) => product.slug === slug))
   .filter((product): product is Product => Boolean(product));
 
+const newArrivalSlugs = [
+  "zedx-car-charger-52-5w-ze-01",
+  "zedx-gan-charger-65w-z430",
+  "zedx-z-mag-mini-10000-mah-zx-w11p",
+  "zedx-headphone-lumen-100",
+  "zedx-world-travel-adapter-70w-gan",
+];
+
+const newArrivalProducts = newArrivalSlugs
+  .map((slug) => products.find((product) => product.slug === slug))
+  .filter((product): product is Product => Boolean(product));
+
 export function TrendingProducts() {
+  return <ProductCarouselSection title="Featured items" products={featuredProducts} />;
+}
+
+export function NewArrivals() {
+  return <ProductCarouselSection title="New Arrivals" products={newArrivalProducts} hideProductNames />;
+}
+
+function ProductCarouselSection({
+  title,
+  products,
+  hideProductNames = false,
+}: {
+  title: string;
+  products: Product[];
+  hideProductNames?: boolean;
+}) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -27,7 +56,7 @@ export function TrendingProducts() {
         <div className="mb-8 flex items-center justify-between gap-5">
           <div>
             <p className="inline-flex rounded-[1.4rem] bg-[var(--brand-blue)] px-7 py-4 text-sm font-bold text-white shadow-[0_18px_55px_rgba(0,160,227,0.24)] sm:px-8">
-              Featured items
+              {title}
             </p>
           </div>
           <Link
@@ -41,7 +70,7 @@ export function TrendingProducts() {
 
         <div className="-mx-5 overflow-x-auto px-5 pb-5 [scrollbar-width:none] sm:-mx-8 sm:px-8 xl:mx-0 xl:px-0 [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max gap-5 xl:w-full">
-            {featuredProducts.map((product, index) => (
+            {products.map((product, index) => (
               <motion.div
                 key={product.slug}
                 className="xl:flex-1"
@@ -50,7 +79,7 @@ export function TrendingProducts() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ type: "spring", stiffness: 120, damping: 22, delay: index * 0.035 }}
               >
-                <FeaturedSkuCard product={product} />
+                <FeaturedSkuCard product={product} hideProductName={hideProductNames} />
               </motion.div>
             ))}
           </div>
@@ -64,7 +93,13 @@ export function TrendingProducts() {
   );
 }
 
-function FeaturedSkuCard({ product }: { product: Product }) {
+function FeaturedSkuCard({
+  product,
+  hideProductName = false,
+}: {
+  product: Product;
+  hideProductName?: boolean;
+}) {
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -81,28 +116,16 @@ function FeaturedSkuCard({ product }: { product: Product }) {
           sizes="(min-width: 1280px) 260px, 240px"
         />
       </div>
-      <div className="min-h-[7.5rem] px-6 py-6">
+      <div className={hideProductName ? "px-6 py-4" : "min-h-[7.5rem] px-6 py-6"}>
         <p className="text-[0.68rem] font-semibold text-[#00a0e3]">
-          {product.category}
+          {formatCategoryName(product.category)}
         </p>
-        <h3 className="mt-4 line-clamp-2 text-[1.32rem] font-bold leading-[1.08] tracking-normal text-[#050505]">
-          {formatProductName(product.name)}
-        </h3>
+        {!hideProductName && (
+          <h3 className="mt-4 line-clamp-2 text-[1.32rem] font-bold leading-[1.08] tracking-normal text-[#050505]">
+            {formatProductName(product.name)}
+          </h3>
+        )}
       </div>
     </Link>
   );
-}
-
-function formatProductName(name: string) {
-  return name
-    .toLowerCase()
-    .replace(/\b[\w.()/-]+/g, (word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .replace(/\bZedx\b/g, "Zedx")
-    .replace(/\bGan\b/g, "Gan")
-    .replace(/\bMah\b/g, "Mah")
-    .replace(/\bZ\.Mag\b/g, "Z.mag")
-    .replace(/\bZx\b/g, "ZX")
-    .replace(/\(zx-/g, "(ZX-")
-    .replace(/\bW\b/g, "W")
-    .replace(/\b3-In-1\b/g, "3-in-1");
 }

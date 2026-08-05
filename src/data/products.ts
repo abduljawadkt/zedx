@@ -16,6 +16,9 @@ export type Product = {
   description: string;
   specs: string[];
   highlights: string[];
+  sku?: string | null;
+  medusaProductId?: string;
+  medusaVariantId?: string;
 };
 
 export const products = [
@@ -521,7 +524,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-elite",
-    "name": "Zedx Zeepods Elite",
+    "name": "AirPods Elite 360X",
     "slug": "zedx-zeepods-elite",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -538,7 +541,7 @@ export const products = [
       "/products/Zedx Zeepods Elite - 03.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Elite delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "AirPods Elite 360X delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -554,7 +557,7 @@ export const products = [
   },
   {
     "id": "zedx-zee-pods-pro",
-    "name": "Zedx Zee Pods Pro",
+    "name": "ZeePods Pro",
     "slug": "zedx-zee-pods-pro",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -571,7 +574,7 @@ export const products = [
       "/products/Zedx Zee Pods Pro - 03.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zee Pods Pro delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods Pro delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -587,7 +590,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-ultra",
-    "name": "Zedx Zeepods Ultra",
+    "name": "ZeePods Ultra",
     "slug": "zedx-zeepods-ultra",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -604,7 +607,7 @@ export const products = [
       "/products/Zedx Zeepods Ultra 3.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Ultra delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods Ultra delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -620,7 +623,7 @@ export const products = [
   },
   {
     "id": "zedx-ace-pro-ear-buds",
-    "name": "Zedx Ace Pro Ear Buds",
+    "name": "ACE Pro",
     "slug": "zedx-ace-pro-ear-buds",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -635,7 +638,7 @@ export const products = [
       "/hero-animation/earbuds.png"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Ace Pro Ear Buds delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ACE Pro delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -651,7 +654,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-pro-2025",
-    "name": "Zedx Zeepods Pro (2025)",
+    "name": "ZeePods Pro",
     "slug": "zedx-zeepods-pro-2025",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -669,7 +672,7 @@ export const products = [
       "/products/Zedx Zeepods Pro 2026 Tws - 02.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Pro (2025) delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods Pro delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -685,7 +688,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-4-2025",
-    "name": "Zedx Zeepods 4 (2025)",
+    "name": "ZeePods 4",
     "slug": "zedx-zeepods-4-2025",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -702,7 +705,7 @@ export const products = [
       "/products/Zedx Zeepods 4 (2025) - 03.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods 4 (2025) delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods 4 delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -718,7 +721,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-ultra-2025",
-    "name": "Zedx Zeepods Ultra (2025)",
+    "name": "ZeePods Ultra",
     "slug": "zedx-zeepods-ultra-2025",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -735,7 +738,7 @@ export const products = [
       "/products/Zedx Zeepods Ultra 3.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Ultra (2025) delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods Ultra delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -751,7 +754,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-elite-2025",
-    "name": "Zedx Zeepods Elite (2025)",
+    "name": "AirPods Elite 360X",
     "slug": "zedx-zeepods-elite-2025",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -768,7 +771,7 @@ export const products = [
       "/products/Zedx Zeepods Elite - 03.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Elite (2025) delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "AirPods Elite 360X delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -784,7 +787,7 @@ export const products = [
   },
   {
     "id": "zedx-nitro-x-gaming-tws",
-    "name": "Zedx Nitro X Gaming Tws",
+    "name": "Nitro X",
     "slug": "zedx-nitro-x-gaming-tws",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -801,7 +804,7 @@ export const products = [
       "/products/Zedx Nitro X Gaming Tws.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Nitro X Gaming Tws delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "Nitro X delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -817,7 +820,7 @@ export const products = [
   },
   {
     "id": "zedx-stellar-pro-enc-anc-tws",
-    "name": "Zedx Stellar Pro Enc+anc Tws",
+    "name": "StellarPro",
     "slug": "zedx-stellar-pro-enc-anc-tws",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -834,7 +837,7 @@ export const products = [
       "/products/Zedx Zeepods Pro 2026 Tws.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Stellar Pro Enc+anc Tws delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "StellarPro delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -850,7 +853,7 @@ export const products = [
   },
   {
     "id": "zedx-olympus-enc-anc-tws",
-    "name": "Zedx Olympus Enc+anc Tws",
+    "name": "Olympus",
     "slug": "zedx-olympus-enc-anc-tws",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -865,7 +868,7 @@ export const products = [
       "/hero-animation/earbuds.png"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Olympus Enc+anc Tws delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "Olympus delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -881,7 +884,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-ultra-3",
-    "name": "Zedx Zeepods Ultra 3",
+    "name": "ZeePods Ultra",
     "slug": "zedx-zeepods-ultra-3",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -898,7 +901,7 @@ export const products = [
       "/products/Zedx Zeepods Ultra 3 - 03.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Ultra 3 delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods Ultra delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -914,7 +917,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-pro-2026-tws",
-    "name": "Zedx Zeepods Pro 2026 Tws",
+    "name": "ZeePods Pro",
     "slug": "zedx-zeepods-pro-2026-tws",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -932,7 +935,7 @@ export const products = [
       "/products/Zedx Zeepods Pro (2025) - 02.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods Pro 2026 Tws delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods Pro delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -948,7 +951,7 @@ export const products = [
   },
   {
     "id": "zedx-zeepods-4-2026",
-    "name": "Zedx Zeepods 4 2026",
+    "name": "ZeePods 4",
     "slug": "zedx-zeepods-4-2026",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -965,7 +968,7 @@ export const products = [
       "/products/Zedx Zeepods 4 2026 - 03.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeepods 4 2026 delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "ZeePods 4 delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -981,7 +984,7 @@ export const products = [
   },
   {
     "id": "zedx-zeeclip-harmony",
-    "name": "Zedx Zeeclip Harmony",
+    "name": "Zeeclip Harmony",
     "slug": "zedx-zeeclip-harmony",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -996,7 +999,7 @@ export const products = [
       "/hero-animation/earbuds.png"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeeclip Harmony delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "Zeeclip Harmony delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -1012,7 +1015,7 @@ export const products = [
   },
   {
     "id": "zedx-eclipse-tws",
-    "name": "Zedx Eclipse Tws",
+    "name": "Eclipse",
     "slug": "zedx-eclipse-tws",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -1027,7 +1030,7 @@ export const products = [
       "/hero-animation/earbuds.png"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Eclipse Tws delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "Eclipse delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -1043,7 +1046,7 @@ export const products = [
   },
   {
     "id": "zedx-zeeclip-2",
-    "name": "Zedx Zeeclip 2",
+    "name": "Zeeclip 2",
     "slug": "zedx-zeeclip-2",
     "category": "Earpods",
     "categorySlug": "earpods",
@@ -1059,7 +1062,7 @@ export const products = [
       "/products/Zedx Zeeclip 2 - 02.jpg"
     ],
     "shortDescription": "Low-latency audio. Clear voice calls.",
-    "description": "Zedx Zeeclip 2 delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
+    "description": "Zeeclip 2 delivers compact wireless audio with clear calls, comfortable fit, and dependable battery life for everyday listening.",
     "specs": [
       "Low-latency audio",
       "Clear voice calls",
@@ -1075,7 +1078,7 @@ export const products = [
   },
   {
     "id": "zedx-headphone-zx-hf-110",
-    "name": "Zedx Headphone (Zx-hf-110)",
+    "name": "ZX-110 (Karama)",
     "slug": "zedx-headphone-zx-hf-110",
     "category": "Over Heads",
     "categorySlug": "over-heads",
@@ -1092,7 +1095,7 @@ export const products = [
       "/products/Zedx Headphone (Zx-hf-110) - 03.jpg"
     ],
     "shortDescription": "Immersive over-ear sound. Soft cushion comfort.",
-    "description": "Zedx Headphone (Zx-hf-110) delivers immersive over-ear sound, soft comfort, and a confident finish for music, calls, and long listening sessions.",
+    "description": "ZX-110 (Karama) delivers immersive over-ear sound, soft comfort, and a confident finish for music, calls, and long listening sessions.",
     "specs": [
       "Immersive over-ear sound",
       "Soft cushion comfort",
@@ -1141,7 +1144,7 @@ export const products = [
   },
   {
     "id": "zedx-headphone-lumen-100",
-    "name": "Zedx Headphone Lumen 100",
+    "name": "Lumen100",
     "slug": "zedx-headphone-lumen-100",
     "category": "Over Heads",
     "categorySlug": "over-heads",
@@ -1159,7 +1162,7 @@ export const products = [
       "/products/Zedx Headphone Lumen 100.jpg"
     ],
     "shortDescription": "Immersive over-ear sound. Soft cushion comfort.",
-    "description": "Zedx Headphone Lumen 100 delivers immersive over-ear sound, soft comfort, and a confident finish for music, calls, and long listening sessions.",
+    "description": "Lumen100 balances all-day comfort, stable wireless audio, and quick access controls for commute, workouts, and calls.",
     "specs": [
       "Immersive over-ear sound",
       "Soft cushion comfort",
@@ -1365,7 +1368,7 @@ export const products = [
   },
   {
     "id": "zedx-zee-band-zb24",
-    "name": "Zedx Zee Band (Zb24)",
+    "name": "Lumen100",
     "slug": "zedx-zee-band-zb24",
     "category": "Neck Band",
     "categorySlug": "neck-band",
@@ -1382,7 +1385,7 @@ export const products = [
       "/products/Zedx Zee Band (Zb24) - 03.jpg"
     ],
     "shortDescription": "Flexible neckband fit. Long-call comfort.",
-    "description": "Zedx Zee Band (Zb24) balances all-day comfort, stable wireless audio, and quick access controls for commute, workouts, and calls.",
+    "description": "Lumen100 balances all-day comfort, stable wireless audio, and quick access controls for commute, workouts, and calls.",
     "specs": [
       "Flexible neckband fit",
       "Long-call comfort",
@@ -1398,7 +1401,7 @@ export const products = [
   },
   {
     "id": "zedx-neck-band-z48-wiresless-earphone",
-    "name": "Zedx Neck Band Z48 - Wiresless Earphone",
+    "name": "Z48 (Touch + ENC)",
     "slug": "zedx-neck-band-z48-wiresless-earphone",
     "category": "Neck Band",
     "categorySlug": "neck-band",
@@ -1415,7 +1418,7 @@ export const products = [
       "/products/Zedx Neck Band Z48 - Wiresless Earphone.jpg"
     ],
     "shortDescription": "Flexible neckband fit. Long-call comfort.",
-    "description": "Zedx Neck Band Z48 - Wiresless Earphone balances all-day comfort, stable wireless audio, and quick access controls for commute, workouts, and calls.",
+    "description": "Z48 (Touch + ENC) balances all-day comfort, stable wireless audio, and quick access controls for commute, workouts, and calls.",
     "specs": [
       "Flexible neckband fit",
       "Long-call comfort",

@@ -98,6 +98,27 @@ export function getGroupAsCategory(groupId: ProductGroupId): Category {
 }
 
 export function formatProductName(name: string) {
+  const exactProductNames = new Set([
+    "AirPods Elite 360X",
+    "ZeePods Pro",
+    "ZeePods Ultra",
+    "ACE Pro",
+    "ZeePods 4",
+    "Nitro X",
+    "StellarPro",
+    "Olympus",
+    "Zeeclip Harmony",
+    "Eclipse",
+    "Zeeclip 2",
+    "ZX-110 (Karama)",
+    "Lumen100",
+    "Z48 (Touch + ENC)",
+  ]);
+
+  if (exactProductNames.has(name)) {
+    return name;
+  }
+
   return name
     .replace(/\bZEDX\b/g, "ZEDX")
     .replace(/\bZedx\b/g, "ZEDX")

@@ -7,7 +7,7 @@ import { Hero } from "@/components/home/Hero";
 import { HomeSeoContent } from "@/components/home/HomeSeoContent";
 import { ImmersiveProductStories } from "@/components/home/ImmersiveProductStories";
 import { StickyProductStory } from "@/components/home/StickyProductStory";
-import { TrendingProducts } from "@/components/home/TrendingProducts";
+import { NewArrivals, TrendingProducts } from "@/components/home/TrendingProducts";
 
 export const metadata: Metadata = {
   title: "ZEDX UAE | Premium Mobile Accessories, Chargers, Power Banks & Smart Devices",
@@ -30,6 +30,7 @@ export default function Home() {
     <main className="flex-1 -mt-[5rem]">
       <Hero />
       <CategoryStrip />
+      <NewArrivals />
       <ImmersiveProductStories />
       <TrendingProducts />
       <StickyProductStory />
