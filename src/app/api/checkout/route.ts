@@ -16,9 +16,16 @@ const checkoutSchema = z.object({
   customerName: z.string().min(1),
   email: z.string().email(),
   phone: z.string().min(1),
+  phoneCountryCode: z.string().min(1).default("+971"),
+  countryCode: z.string().min(2).default("ae"),
+  emirate: z.string().min(1),
   city: z.string().min(1),
   addressLine: z.string().min(1),
+  buildingName: z.string().min(1),
   apartment: z.string().optional(),
+  landmark: z.string().optional(),
+  postalCode: z.string().min(1),
+  deliveryNotes: z.string().optional(),
   paymentMethod: z.string().min(1),
   items: z.array(z.object({
     productId: z.string().min(1),
@@ -84,6 +91,20 @@ function splitName(name: string) {
   };
 }
 
+function normalizePhone(countryCode: string, phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  const callingCode = countryCode.trim().startsWith("+") ? countryCode.trim() : `+${countryCode.trim()}`;
+
+  if (phone.trim().startsWith("+")) {
+    return `+${digits}`;
+  }
+
+  const countryDigits = callingCode.replace(/\D/g, "");
+  const localDigits = digits.startsWith("0") ? digits.slice(1) : digits;
+
+  return `+${countryDigits}${localDigits}`;
+}
+
 async function resolveVariantId(item: CheckoutInput["items"][number]) {
   if (item.variantId) return item.variantId;
   if (!item.productSlug) return null;
@@ -104,13 +125,22 @@ async function createMedusaOrder(input: CheckoutInput, customerToken?: string) {
   }
 
   const name = splitName(input.customerName);
+  const phone = normalizePhone(input.phoneCountryCode, input.phone);
+  const countryCode = input.countryCode.trim().toLowerCase() || "ae";
+  const addressLine2 = [
+    input.buildingName,
+    input.apartment,
+    input.landmark ? `Landmark: ${input.landmark}` : "",
+  ].filter(Boolean).join(", ");
   const address = {
     ...name,
     address_1: input.addressLine,
-    address_2: input.apartment || "",
+    address_2: addressLine2,
     city: input.city,
-    country_code: "ae",
-    phone: input.phone,
+    province: input.emirate,
+    postal_code: input.postalCode,
+    country_code: countryCode,
+    phone,
   };
 
   const { cart } = await medusaFetch<MedusaCartResponse>("/store/carts", {
@@ -124,6 +154,13 @@ async function createMedusaOrder(input: CheckoutInput, customerToken?: string) {
         source: "zedx-frontend",
         customer_name: input.customerName,
         requested_payment_method: input.paymentMethod,
+        phone_country_code: input.phoneCountryCode,
+        emirate: input.emirate,
+        building_name: input.buildingName,
+        apartment: input.apartment || "",
+        landmark: input.landmark || "",
+        postal_code: input.postalCode,
+        delivery_notes: input.deliveryNotes || "",
       },
     }),
   });
@@ -238,8 +275,19 @@ export async function POST(request: NextRequest) {
     }
 
     const customerSession = await getCustomerSession(request);
+    const fallbackAddressLine = [
+      parsed.data.addressLine,
+      parsed.data.buildingName,
+      parsed.data.apartment,
+      parsed.data.landmark ? `Landmark: ${parsed.data.landmark}` : "",
+      parsed.data.postalCode ? `Postal code: ${parsed.data.postalCode}` : "",
+      parsed.data.emirate,
+      parsed.data.countryCode.toUpperCase(),
+    ].filter(Boolean).join(", ");
     const order = await createPendingOrder({
       ...parsed.data,
+      phone: normalizePhone(parsed.data.phoneCountryCode, parsed.data.phone),
+      addressLine: fallbackAddressLine,
       customerId: customerSession?.customerId,
       email: customerSession?.customer.email ?? parsed.data.email,
     });

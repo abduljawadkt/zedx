@@ -8,6 +8,9 @@ import { useCommerce } from "@/components/providers/CommerceProvider";
 import { ProductImage } from "@/components/product/ProductImage";
 
 const paymentOptions = ["Cash on delivery", "Store pickup"] as const;
+const defaultCountryCode = "ae";
+const defaultPhoneCountryCode = "+971";
+const emirates = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"] as const;
 
 const paymentOptionMeta = {
   "Cash on delivery": {
@@ -26,9 +29,16 @@ export function CheckoutPage() {
   const [customerName, setCustomerName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneCountryCode] = useState(defaultPhoneCountryCode);
+  const [countryCode] = useState(defaultCountryCode);
+  const [emirate, setEmirate] = useState<(typeof emirates)[number]>("Dubai");
   const [city, setCity] = useState("");
   const [addressLine, setAddressLine] = useState("");
+  const [buildingName, setBuildingName] = useState("");
   const [apartment, setApartment] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [deliveryNotes, setDeliveryNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<(typeof paymentOptions)[number]>("Cash on delivery");
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -84,8 +94,8 @@ export function CheckoutPage() {
     setSubmitting(true);
     setStatus(null);
     try {
-      if (!customerName || !email || !phone || !city || !addressLine) {
-        throw new Error("Please complete customer and delivery details before placing the order.");
+      if (!customerName || !email || !phone || !emirate || !city || !addressLine || !buildingName || !postalCode) {
+        throw new Error("Please complete all required contact and delivery fields before placing the order.");
       }
 
       const response = await fetch("/api/checkout", {
@@ -95,9 +105,16 @@ export function CheckoutPage() {
           customerName,
           email,
           phone,
+          phoneCountryCode,
+          countryCode,
+          emirate,
           city,
           addressLine,
+          buildingName,
           apartment,
+          landmark,
+          postalCode,
+          deliveryNotes,
           paymentMethod,
           items: cartItems.reduce(
             (items, product) => {
@@ -142,10 +159,10 @@ export function CheckoutPage() {
           Checkout
         </p>
         <h1 className="relative mt-5 max-w-5xl text-5xl font-semibold leading-[0.9] text-white sm:text-8xl">
-          A polished path to purchase.
+          Secure your ZEDX order.
         </h1>
         <p className="relative mt-5 max-w-2xl text-base leading-7 text-white/62 sm:mt-6 sm:text-lg sm:leading-8">
-          Review your selected ZEDX products, delivery details, payment option, and launch savings in one polished checkout flow.
+          Add your contact details, full UAE delivery address, and preferred COD or pickup option so the order can be created correctly in the backend.
         </p>
       </motion.section>
 
@@ -164,25 +181,31 @@ export function CheckoutPage() {
         <section className="mt-10 grid gap-8 lg:grid-cols-[1fr_0.46fr]">
           <div className="space-y-6">
             <div className="rounded-[1.5rem] border border-[#ffffff1a] bg-[#ffffff09] p-5 sm:rounded-[2rem] sm:p-7">
-              <h2 className="text-2xl font-semibold text-white sm:text-3xl">Customer</h2>
+              <StepHeader step="1" title="Contact details" note="Used for order confirmation and delivery coordination." />
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <Input label="Full name" value={customerName} onChange={setCustomerName} className="sm:col-span-2" />
-                <Input label="Email address" value={email} onChange={setEmail} />
-                <Input label="Phone number" value={phone} onChange={setPhone} />
+                <Input label="Full name" value={customerName} onChange={setCustomerName} className="sm:col-span-2" required autoComplete="name" />
+                <Input label="Email address" value={email} onChange={setEmail} type="email" required autoComplete="email" />
+                <PhoneInput label="Mobile number" value={phone} onChange={setPhone} countryCode={phoneCountryCode} required />
               </div>
             </div>
 
             <div className="rounded-[1.5rem] border border-[#ffffff1a] bg-[#ffffff09] p-5 sm:rounded-[2rem] sm:p-7">
-              <h2 className="text-2xl font-semibold text-white sm:text-3xl">Delivery</h2>
+              <StepHeader step="2" title="Delivery address" note="Required fields are sent to Medusa for shipping and fulfillment." />
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <Input label="City" value={city} onChange={setCity} />
-                <Input label="Area or street" value={addressLine} onChange={setAddressLine} />
-                <Input label="Apartment or villa" value={apartment} onChange={setApartment} className="sm:col-span-2" />
+                <SelectInput label="Emirate" value={emirate} onChange={(value) => setEmirate(value as (typeof emirates)[number])} options={emirates} required />
+                <ReadOnlyField label="Country" value="United Arab Emirates" required />
+                <Input label="City" value={city} onChange={setCity} required autoComplete="address-level2" />
+                <Input label="Postal code" value={postalCode} onChange={setPostalCode} required autoComplete="postal-code" inputMode="numeric" />
+                <Input label="Area, street, or community" value={addressLine} onChange={setAddressLine} className="sm:col-span-2" required autoComplete="address-line1" />
+                <Input label="Building, villa, or tower name" value={buildingName} onChange={setBuildingName} required autoComplete="address-line2" />
+                <Input label="Apartment, floor, or unit" value={apartment} onChange={setApartment} />
+                <Input label="Nearest landmark" value={landmark} onChange={setLandmark} className="sm:col-span-2" />
+                <TextArea label="Delivery notes" value={deliveryNotes} onChange={setDeliveryNotes} className="sm:col-span-2" placeholder="Gate code, preferred delivery time, or extra directions" />
               </div>
             </div>
 
             <div className="rounded-[1.5rem] border border-[#ffffff1a] bg-[#ffffff09] p-5 sm:rounded-[2rem] sm:p-7">
-              <h2 className="text-2xl font-semibold text-white sm:text-3xl">Payment method</h2>
+              <StepHeader step="3" title="Payment method" note="Online card payments can be enabled when the gateway is ready." />
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 {paymentOptions.map((option) => {
                   const Icon = paymentOptionMeta[option].icon;
@@ -262,11 +285,163 @@ export function CheckoutPage() {
   );
 }
 
-function Input({ label, value, onChange, className = "" }: { label: string; value: string; onChange: (value: string) => void; className?: string; }) {
+function StepHeader({ step, title, note }: { step: string; title: string; note: string }) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--brand-blue-soft)]">Step {step}</p>
+        <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">{title}</h2>
+      </div>
+      <p className="max-w-md text-sm leading-6 text-white/52">{note}</p>
+    </div>
+  );
+}
+
+function RequiredMark() {
+  return <span className="text-[var(--brand-blue-soft)]">*</span>;
+}
+
+function FieldLabel({ label, required }: { label: string; required?: boolean }) {
+  return (
+    <span className="text-xs font-semibold text-[#ffffff66]">
+      {label} {required && <RequiredMark />}
+    </span>
+  );
+}
+
+function Input({
+  label,
+  value,
+  onChange,
+  className = "",
+  required = false,
+  type = "text",
+  inputMode,
+  autoComplete,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+  required?: boolean;
+  type?: string;
+  inputMode?: "text" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | "search";
+  autoComplete?: string;
+  placeholder?: string;
+}) {
   return (
     <label className={`block ${className}`}>
-      <span className="text-xs font-semibold text-[#ffffff66]">{label}</span>
-      <input value={value} onChange={(event) => onChange(event.target.value)} className="mt-2 h-14 w-full rounded-2xl border border-[#ffffff1a] bg-black/24 px-4 text-white outline-none transition placeholder:text-[#ffffff40] focus:border-[#00a0e3]/70" placeholder={label} />
+      <FieldLabel label={label} required={required} />
+      <input
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        type={type}
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        required={required}
+        className="mt-2 h-14 w-full rounded-2xl border border-[#ffffff1a] bg-black/24 px-4 text-white outline-none transition placeholder:text-[#ffffff40] focus:border-[#00a0e3]/70"
+        placeholder={placeholder ?? label}
+      />
+    </label>
+  );
+}
+
+function PhoneInput({
+  label,
+  value,
+  onChange,
+  countryCode,
+  required,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  countryCode: string;
+  required?: boolean;
+}) {
+  return (
+    <label className="block">
+      <FieldLabel label={label} required={required} />
+      <div className="mt-2 grid h-14 grid-cols-[5.25rem_1fr] overflow-hidden rounded-2xl border border-[#ffffff1a] bg-black/24 transition focus-within:border-[#00a0e3]/70">
+        <span className="grid place-items-center border-r border-[#ffffff1a] bg-white/[0.04] text-sm font-semibold text-white/80">{countryCode}</span>
+        <input
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          inputMode="tel"
+          autoComplete="tel-national"
+          required={required}
+          className="h-full w-full bg-transparent px-4 text-white outline-none placeholder:text-[#ffffff40]"
+          placeholder="50 123 4567"
+        />
+      </div>
+    </label>
+  );
+}
+
+function SelectInput({
+  label,
+  value,
+  onChange,
+  options,
+  required,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: readonly string[];
+  required?: boolean;
+}) {
+  return (
+    <label className="block">
+      <FieldLabel label={label} required={required} />
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        required={required}
+        className="mt-2 h-14 w-full rounded-2xl border border-[#ffffff1a] bg-black/24 px-4 text-white outline-none transition focus:border-[#00a0e3]/70"
+      >
+        {options.map((option) => (
+          <option key={option} value={option} className="bg-[#101014] text-white">
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function ReadOnlyField({ label, value, required }: { label: string; value: string; required?: boolean }) {
+  return (
+    <label className="block">
+      <FieldLabel label={label} required={required} />
+      <input value={value} readOnly className="mt-2 h-14 w-full rounded-2xl border border-[#ffffff1a] bg-white/[0.04] px-4 text-white/72 outline-none" />
+    </label>
+  );
+}
+
+function TextArea({
+  label,
+  value,
+  onChange,
+  className = "",
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+  placeholder?: string;
+}) {
+  return (
+    <label className={`block ${className}`}>
+      <FieldLabel label={label} />
+      <textarea
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="mt-2 min-h-28 w-full resize-y rounded-2xl border border-[#ffffff1a] bg-black/24 px-4 py-3 text-white outline-none transition placeholder:text-[#ffffff40] focus:border-[#00a0e3]/70"
+        placeholder={placeholder ?? label}
+      />
     </label>
   );
 }
