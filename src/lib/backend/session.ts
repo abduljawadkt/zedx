@@ -4,6 +4,7 @@ import { prisma } from "@/lib/backend/prisma";
 
 export const ADMIN_SESSION_COOKIE = "zedx_admin_session";
 export const CUSTOMER_SESSION_COOKIE = "zedx_customer_session";
+export const MEDUSA_CUSTOMER_TOKEN_COOKIE = "zedx_medusa_customer_token";
 const SESSION_DAYS = 7;
 
 function hashToken(token: string) {
@@ -135,4 +136,30 @@ export function createCustomerSessionCookie(token: string, expiresAt: Date) {
     path: "/",
     expires: expiresAt,
   };
+}
+
+export function createMedusaCustomerTokenCookie(token: string, expiresAt: Date) {
+  return {
+    name: MEDUSA_CUSTOMER_TOKEN_COOKIE,
+    value: token,
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    expires: expiresAt,
+  };
+}
+
+export function serializeCookie(cookie: {
+  name: string;
+  value: string;
+  path: string;
+  httpOnly: boolean;
+  sameSite: "lax";
+  secure: boolean;
+  expires: Date;
+}) {
+  return `${cookie.name}=${cookie.value}; Path=${cookie.path}; ${cookie.httpOnly ? "HttpOnly; " : ""}SameSite=Lax; ${
+    cookie.secure ? "Secure; " : ""
+  }Expires=${cookie.expires.toUTCString()}`;
 }

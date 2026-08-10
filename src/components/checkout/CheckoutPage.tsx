@@ -1,16 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { CreditCard, Minus, Plus, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
+import { Banknote, Minus, Plus, ShieldCheck, ShoppingBag, Store, Truck } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { ProductImage } from "@/components/product/ProductImage";
 
-const paymentOptions = ["Card", "Cash on delivery", "Store pickup"] as const;
+const paymentOptions = ["Cash on delivery", "Store pickup"] as const;
+
+const paymentOptionMeta = {
+  "Cash on delivery": {
+    icon: Banknote,
+    note: "Pay when the UAE delivery reaches the customer.",
+  },
+  "Store pickup": {
+    icon: Store,
+    note: "Reserve the order and collect after confirmation.",
+  },
+} satisfies Record<(typeof paymentOptions)[number], { icon: typeof Banknote; note: string }>;
 
 export function CheckoutPage() {
-  const { addToCart, cartItems, removeFromCart } = useCommerce();
+  const { addToCart, cartItems, clearCart, removeFromCart } = useCommerce();
   const reduceMotion = useReducedMotion();
   const [customerName, setCustomerName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +29,7 @@ export function CheckoutPage() {
   const [city, setCity] = useState("");
   const [addressLine, setAddressLine] = useState("");
   const [apartment, setApartment] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<(typeof paymentOptions)[number]>("Card");
+  const [paymentMethod, setPaymentMethod] = useState<(typeof paymentOptions)[number]>("Cash on delivery");
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -66,14 +77,17 @@ export function CheckoutPage() {
   );
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const discount = subtotal > 300 ? Math.round(subtotal * 0.08) : 0;
-  const shipping = subtotal > 0 && subtotal < 250 ? 18 : 0;
-  const total = subtotal - discount + shipping;
+  const shipping = subtotal > 0 && paymentMethod !== "Store pickup" ? 18 : 0;
+  const total = subtotal + shipping;
 
   async function placeOrder() {
     setSubmitting(true);
     setStatus(null);
     try {
+      if (!customerName || !email || !phone || !city || !addressLine) {
+        throw new Error("Please complete customer and delivery details before placing the order.");
+      }
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -89,21 +103,25 @@ export function CheckoutPage() {
             (items, product) => {
               const existing = items.find((item) => item.productId === product.id);
               if (existing) existing.quantity += 1;
-              else items.push({ productId: product.id, quantity: 1 });
+              else items.push({ productId: product.id, productSlug: product.slug, variantId: product.medusaVariantId, quantity: 1 });
               return items;
             },
-            [] as Array<{ productId: string; quantity: number }>,
+            [] as Array<{ productId: string; productSlug: string; variantId?: string; quantity: number }>,
           ),
         }),
       });
       const payload = await response.json();
-      if (!response.ok) throw new Error(payload?.error?.message ?? "Unable to place order.");
-      const data = payload.data;
+      if (!response.ok) {
+        const message = typeof payload?.error === "string" ? payload.error : payload?.error?.message;
+        throw new Error(message ?? "Unable to place order.");
+      }
+      const data = payload.data ?? payload;
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
       }
-      setStatus(`Order ${data.orderNumber} created. Total ${data.currency} ${data.total}.`);
+      clearCart();
+      setStatus(`Order ${data.orderNumber} created in Medusa Admin. Total ${data.currency} ${data.total}.`);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Unable to place order.");
     } finally {
@@ -165,17 +183,26 @@ export function CheckoutPage() {
 
             <div className="rounded-[1.5rem] border border-[#ffffff1a] bg-[#ffffff09] p-5 sm:rounded-[2rem] sm:p-7">
               <h2 className="text-2xl font-semibold text-white sm:text-3xl">Payment method</h2>
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {paymentOptions.map((option) => (
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {paymentOptions.map((option) => {
+                  const Icon = paymentOptionMeta[option].icon;
+                  return (
                   <label key={option} className="flex min-h-24 cursor-pointer items-center gap-3 rounded-2xl border border-[#ffffff1a] bg-[#00000033] p-4 text-sm font-semibold text-[#ffffffb3] transition hover:border-[#00a0e3]/60">
                     <input type="radio" name="payment" checked={paymentMethod === option} onChange={() => setPaymentMethod(option)} className="size-4 accent-[#00a0e3]" />
-                    {option}
+                    <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-[var(--brand-blue-soft)]">
+                      <Icon size={18} />
+                    </span>
+                    <span>
+                      <span className="block text-white">{option}</span>
+                      <span className="mt-1 block text-xs font-medium leading-5 text-white/52">{paymentOptionMeta[option].note}</span>
+                    </span>
                   </label>
-                ))}
+                  );
+                })}
               </div>
               <div className="mt-5 flex items-start gap-3 rounded-2xl border border-[#00a0e3]/30 bg-[#00a0e3]/10 p-4 text-sm leading-6 text-[#ffffff99]">
                 <ShieldCheck className="mt-0.5 shrink-0 text-[var(--brand-blue-soft)]" size={18} />
-                Payment fields are visual only. No card data is processed yet.
+                Card payments are temporarily hidden. Cash on delivery and store pickup create real pending orders in Medusa Admin.
               </div>
             </div>
           </div>
@@ -207,7 +234,6 @@ export function CheckoutPage() {
 
             <div className="mt-6 space-y-3 border-t border-[#ffffff1a] pt-5 text-sm">
               <SummaryRow label="Subtotal" value={`AED ${subtotal}`} />
-              <SummaryRow label="Launch discount" value={`-AED ${discount}`} />
               <SummaryRow label="Shipping" value={shipping ? `AED ${shipping}` : "Free"} />
               <div className="flex items-center justify-between pt-3 text-white">
                 <span className="text-sm text-[#ffffff73]">Total</span>
@@ -221,13 +247,13 @@ export function CheckoutPage() {
               onClick={placeOrder}
               className="mt-6 inline-flex h-14 w-full items-center justify-center gap-3 rounded-full bg-[#00a0e3] text-sm font-semibold text-white transition hover:scale-[1.02] hover:bg-white hover:text-[#050505] disabled:opacity-70"
             >
-              <CreditCard size={17} />
-              {submitting ? "Placing order..." : "Place order"}
+              <ShieldCheck size={17} />
+              {submitting ? "Placing order..." : paymentMethod === "Store pickup" ? "Confirm pickup order" : "Confirm COD order"}
             </button>
             {status && <p className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-white/70">{status}</p>}
             <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#ffffff1a] bg-[#ffffff09] p-4 text-sm leading-6 text-white/60">
               <Truck className="mt-0.5 shrink-0 text-[var(--brand-blue-soft)]" size={18} />
-              Estimated delivery: 3-7 business days. No fulfillment provider is connected yet.
+              Estimated UAE delivery: 3-7 business days. Fulfillment can be managed from Medusa Admin after order confirmation.
             </div>
           </aside>
         </section>

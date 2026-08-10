@@ -16,6 +16,7 @@ type CommerceContextValue = {
   isSearchOpen: boolean;
   quickViewProduct: Product | null;
   addToCart: (product: Product, options?: { openCart?: boolean }) => void;
+  clearCart: () => void;
   closeCart: () => void;
   closeMenu: () => void;
   closeQuickView: () => void;
@@ -48,6 +49,10 @@ export function CommerceProvider({ children }: { children: ReactNode }) {
         if (options.openCart !== false) {
           setIsCartOpen(true);
         }
+      },
+      clearCart: () => {
+        setCartItems([]);
+        setIsCartOpen(false);
       },
       closeCart: () => setIsCartOpen(false),
       closeMenu: () => setIsMenuOpen(false),
