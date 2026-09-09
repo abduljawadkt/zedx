@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { Headset, MessageCircle, Send, ShoppingBag, Sparkles, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { ProductImage } from "@/components/product/ProductImage";
-import { products, type Product } from "@/data/products";
+import { type Product } from "@/data/products";
+import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 type ChatMessage = {
   id: number;
@@ -30,7 +32,7 @@ const quickPrompts = [
   "Gift under AED 150",
 ];
 
-function getRecommendations(prompt: string) {
+function getRecommendations(prompt: string, products: Product[]) {
   const normalized = prompt.toLowerCase();
   let matches: Product[];
   let intro: string;
@@ -70,6 +72,7 @@ function getRecommendations(prompt: string) {
 
 export function ProductAdvisorChat() {
   const { addToCart } = useCommerce();
+  const { products, productById } = useCatalog();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [supportMode, setSupportMode] = useState(false);
@@ -82,21 +85,19 @@ export function ProductAdvisorChat() {
     {
       id: 1,
       role: "assistant",
-      text: "Hi, I am the Zedx product advisor. Tell me your use case and I will compare products that fit your setup.",
+      text: "Hi, I am the ZEDX product advisor. Tell me your use case and I will compare products that fit your setup.",
       productIds: products.slice(0, 3).map((product) => product.id),
     },
   ]);
 
-  const recommendedProductsById = useMemo(() => {
-    return new Map(products.map((product) => [product.id, product]));
-  }, []);
+  const recommendedProductsById = productById;
 
   function sendPrompt(prompt: string) {
     const cleanPrompt = prompt.trim();
     if (!cleanPrompt) return;
 
     setSupportMode(false);
-    const answer = getRecommendations(cleanPrompt);
+    const answer = getRecommendations(cleanPrompt, products);
     setMessages((current) => [
       ...current,
       { id: Date.now(), role: "user", text: cleanPrompt },
@@ -158,14 +159,14 @@ export function ProductAdvisorChat() {
     <>
       <motion.button
         type="button"
-        aria-label="Open Zedx product advisor chatbot"
-        className="fixed bottom-5 right-5 z-[70] grid size-16 place-items-center rounded-full border border-[#ffffff26] bg-[#00a0e3] text-white shadow-2xl shadow-[#00a0e3]/30 transition hover:scale-105 active:scale-95"
+        aria-label="Open ZEDX product advisor chatbot"
+        className="fixed bottom-4 right-4 z-[70] grid size-12 place-items-center rounded-full border border-[#ffffff26] bg-[#00a0e3] text-white shadow-2xl shadow-[#00a0e3]/30 transition hover:scale-105 active:scale-95 sm:bottom-5 sm:right-5 sm:size-16"
         onClick={() => setOpen(true)}
         whileHover={{ y: -3 }}
         whileTap={{ scale: 0.96 }}
       >
-        <Headset size={27} />
-        <span className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-white text-[#050505]">
+        <Headset className="size-5 sm:size-[27px]" />
+        <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-white text-[#050505] sm:size-6">
           <Sparkles size={13} />
         </span>
       </motion.button>
@@ -175,8 +176,8 @@ export function ProductAdvisorChat() {
           <motion.aside
             role="dialog"
             aria-modal="true"
-            aria-label="Zedx product advisor"
-            className="fixed bottom-24 right-4 z-[82] flex max-h-[calc(100vh-7rem)] w-[calc(100vw-2rem)] max-w-[28rem] flex-col overflow-hidden rounded-[2rem] border border-[#ffffff1a] bg-[#08080a]/94 shadow-2xl shadow-[#00000080] backdrop-blur-2xl sm:right-5"
+            aria-label="ZEDX product advisor"
+            className="fixed bottom-20 right-3 z-[82] flex max-h-[calc(100svh-6rem)] w-[calc(100vw-1.5rem)] max-w-[28rem] flex-col overflow-hidden rounded-[1.35rem] border border-[#ffffff1a] bg-[#08080a]/94 shadow-2xl shadow-[#00000080] backdrop-blur-2xl sm:bottom-24 sm:right-5 sm:w-[calc(100vw-2rem)] sm:rounded-[2rem]"
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
@@ -189,7 +190,7 @@ export function ProductAdvisorChat() {
                     <Headset size={21} />
                   </span>
                   <div>
-                    <h2 className="text-lg font-semibold text-white">Zedx Advisor</h2>
+                    <h2 className="text-lg font-semibold text-white">ZEDX Advisor</h2>
                     <p className="text-xs text-[#ffffff73]">Product recommendations</p>
                   </div>
                 </div>
@@ -262,9 +263,11 @@ export function ProductAdvisorChat() {
                             </div>
                             <div className="min-w-0">
                               <p className="line-clamp-2 text-sm font-semibold leading-5 text-white">
-                                {product.name}
+                                {formatProductName(product.name)}
                               </p>
-                              <p className="mt-1 text-xs text-[#ffffff6b]">{product.category}</p>
+                              <p className="mt-1 text-xs text-[#ffffff6b]">
+                                {formatCategoryName(product.category)}
+                              </p>
                               <p className="mt-2 text-sm font-semibold text-[var(--brand-blue-soft)]">
                                 {product.currency} {product.price}
                               </p>

@@ -556,9 +556,9 @@ export const products = [
     ]
   },
   {
-    "id": "zedx-zee-pods-pro",
+    "id": "zedx-zeepods-pro-2025",
     "name": "ZeePods Pro",
-    "slug": "zedx-zee-pods-pro",
+    "slug": "zedx-zeepods-pro-2025",
     "category": "Earpods",
     "categorySlug": "earpods",
     "collection": "Audio",

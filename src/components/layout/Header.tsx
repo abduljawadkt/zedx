@@ -7,9 +7,8 @@ import { ChevronRight, Menu, Search, ShoppingBag, User } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
-import { categories } from "@/data/categories";
-import { products } from "@/data/products";
 import { formatCategoryName, formatProductName, productGroups } from "@/lib/productDisplay";
 
 const navGroups = [
@@ -35,6 +34,7 @@ const navGroups = [
 
 export function Header() {
   const { cartItems, openCart, openMenu, openSearch } = useCommerce();
+  const { products, categories } = useCatalog();
   const pathname = usePathname();
   const [activeMega, setActiveMega] = useState<(typeof navGroups)[number] | null>(null);
   const activeProducts = products

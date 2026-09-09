@@ -4,7 +4,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { ProductImage } from "@/components/product/ProductImage";
-import { products, type Product } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
+import { type Product } from "@/data/products";
 import { formatProductName } from "@/lib/productDisplay";
 
 const featureCards = [
@@ -138,6 +139,7 @@ function CategoryFeatureCard({
   card: (typeof featureCards)[number];
   priority?: boolean;
 }) {
+  const { products } = useCatalog();
   const product = products.find((item) => item.slug === card.productSlug) ?? products[0];
   const isLarge = card.size === "large";
   const tone = toneClassNames[card.tone];

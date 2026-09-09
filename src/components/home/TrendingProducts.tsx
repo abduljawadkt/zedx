@@ -4,20 +4,17 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { ProductImage } from "@/components/product/ProductImage";
-import { products, type Product } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
+import { type Product } from "@/data/products";
 import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 const featuredSlugs = [
-  "zedx-zee-pods-pro",
+  "zedx-zeepods-pro-2025",
   "zedx-3-in-1-foldable-wireless-charging-station-zx-026",
   "zedx-power-dock-x-gan-105w",
   "zedx-z-mag-mini-10000-mah-zx-w11p",
   "zedx-zee-holder-360-car-mount",
 ];
-
-const featuredProducts = featuredSlugs
-  .map((slug) => products.find((product) => product.slug === slug))
-  .filter((product): product is Product => Boolean(product));
 
 const newArrivalSlugs = [
   "zedx-car-charger-52-5w-ze-01",
@@ -27,15 +24,26 @@ const newArrivalSlugs = [
   "zedx-world-travel-adapter-70w-gan",
 ];
 
-const newArrivalProducts = newArrivalSlugs
-  .map((slug) => products.find((product) => product.slug === slug))
-  .filter((product): product is Product => Boolean(product));
+function resolveCurated(products: Product[], slugs: string[], fallbackCount: number) {
+  const bySlug = new Map(products.map((product) => [product.slug, product]));
+  const resolved = slugs
+    .map((slug) => bySlug.get(slug))
+    .filter((product): product is Product => Boolean(product));
+
+  return resolved.length > 0 ? resolved : products.slice(0, fallbackCount);
+}
 
 export function TrendingProducts() {
+  const { products } = useCatalog();
+  const featuredProducts = resolveCurated(products, featuredSlugs, 5);
+
   return <ProductCarouselSection title="Featured items" products={featuredProducts} />;
 }
 
 export function NewArrivals() {
+  const { products } = useCatalog();
+  const newArrivalProducts = resolveCurated(products, newArrivalSlugs, 5);
+
   return <ProductCarouselSection title="New Arrivals" products={newArrivalProducts} hideProductNames />;
 }
 

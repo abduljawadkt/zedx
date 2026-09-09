@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef } from "react";
-import { products } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
 import { formatProductName } from "@/lib/productDisplay";
 
@@ -60,6 +60,7 @@ function StoryVideo({
   productSlug,
   variant = "compact",
 }: StoryVideoProps) {
+  const { products } = useCatalog();
   const product = productSlug ? products.find((item) => item.slug === productSlug) : undefined;
   const variantClassNames = storyVariantClassNames[variant];
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -223,7 +224,7 @@ export function ImmersiveProductStories() {
                 title="Clear calls and music in a compact case"
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
-                productSlug="zedx-zee-pods-pro"
+                productSlug="zedx-zeepods-pro-2025"
                 variant="compact"
               />
             </motion.div>

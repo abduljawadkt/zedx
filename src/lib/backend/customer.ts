@@ -12,6 +12,10 @@ export async function getCustomerProfile(customerId: string) {
   return prisma.customer.findUnique({ where: { id: customerId } });
 }
 
+export async function getCustomerByEmail(email: string) {
+  return prisma.customer.findUnique({ where: { email } });
+}
+
 export async function getCustomerOrders(customerId: string) {
   return prisma.order.findMany({
     where: { customerId },
@@ -68,6 +72,30 @@ export async function createCustomerAccount(input: {
       email: input.email,
       phone: input.phone ?? "",
       passwordHash: hashPassword(input.password),
+    },
+  });
+}
+
+export async function upsertCustomerAccount(input: {
+  name: string;
+  email: string;
+  phone?: string | null;
+  password: string;
+}) {
+  const passwordHash = hashPassword(input.password);
+
+  return prisma.customer.upsert({
+    where: { email: input.email },
+    create: {
+      name: input.name,
+      email: input.email,
+      phone: input.phone ?? "",
+      passwordHash,
+    },
+    update: {
+      name: input.name,
+      phone: input.phone ?? "",
+      passwordHash,
     },
   });
 }

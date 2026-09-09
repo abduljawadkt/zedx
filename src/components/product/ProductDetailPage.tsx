@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Minus, Plus, ShieldCheck, ShoppingBag, Truck, Zap } from "lucide-react";
+import { ChevronDown, Minus, Plus, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { Badge } from "@/components/ui/Badge";
@@ -45,7 +45,6 @@ export function ProductDetailPage({
   const reduceMotion = useReducedMotion();
   const price = `${product.currency} ${product.price}`;
   const gallery = useMemo(() => product.gallery.length ? product.gallery : [product.image], [product]);
-  const savings = Math.max(product.oldPrice - product.price, 0);
   const displayName = formatProductName(product.name);
   const displayDescription = formatProductDescription(product);
 
@@ -154,24 +153,6 @@ export function ProductDetailPage({
           <div className="mt-7 flex flex-wrap items-end gap-3 sm:mt-8 sm:gap-4">
             <p className="text-3xl font-semibold text-white sm:text-4xl">
               {price}
-            </p>
-            <p className="pb-1 text-lg text-white/35 line-through">
-              {product.currency} {product.oldPrice}
-            </p>
-          {savings > 0 && (
-              <span className="mb-1 rounded-full bg-[#00a0e3]/16 px-3 py-1 type-micro text-[var(--brand-blue-soft)]">
-                Launch price: {product.currency} {savings} less than list
-              </span>
-            )}
-          </div>
-
-          <div className="mt-7 rounded-[1.25rem] border border-[#00a0e3]/30 bg-[#00a0e3]/10 p-4">
-            <div className="flex items-center gap-3 type-control text-white">
-              <Zap size={17} className="text-[var(--brand-blue-soft)]" />
-              Auto-applied launch offer
-            </div>
-            <p className="mt-2 type-muted">
-              Current demo pricing is shown clearly before checkout. Timed offers will appear only after ZEDX confirms campaign dates.
             </p>
           </div>
 
