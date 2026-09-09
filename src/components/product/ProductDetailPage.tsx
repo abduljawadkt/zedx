@@ -154,9 +154,6 @@ export function ProductDetailPage({
             <p className="text-3xl font-semibold text-white sm:text-4xl">
               {price}
             </p>
-            <p className="pb-1 text-lg text-white/35 line-through">
-              {product.currency} {product.oldPrice}
-            </p>
           </div>
 
           <div className="mt-7 flex flex-col gap-4 sm:mt-8 sm:flex-row sm:items-center">
