@@ -9,7 +9,7 @@ import { type Product } from "@/data/products";
 import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 const featuredSlugs = [
-  "zedx-zee-pods-pro",
+  "zedx-zeepods-pro-2025",
   "zedx-3-in-1-foldable-wireless-charging-station-zx-026",
   "zedx-power-dock-x-gan-105w",
   "zedx-z-mag-mini-10000-mah-zx-w11p",
