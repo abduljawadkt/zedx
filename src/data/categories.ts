@@ -29,7 +29,7 @@ export const categories = [
   },
   {
     "slug": "earpods",
-    "name": "Earpods",
+    "name": "Wireless Earbuds",
     "description": "Compact wireless audio for calls, gaming, commute, and daily focus.",
     "accent": "blue",
     "collection": "Audio",
@@ -38,7 +38,7 @@ export const categories = [
   },
   {
     "slug": "over-heads",
-    "name": "Over Heads",
+    "name": "Over-Ear Headphones",
     "description": "Over-ear headphones tuned for comfort, bass, and immersive listening.",
     "accent": "violet",
     "collection": "Audio",
@@ -56,7 +56,7 @@ export const categories = [
   },
   {
     "slug": "neck-band",
-    "name": "Neck Band",
+    "name": "Neckbands",
     "description": "Flexible all-day wireless audio made for movement and long calls.",
     "accent": "green",
     "collection": "Audio",
@@ -101,7 +101,7 @@ export const categories = [
   },
   {
     "slug": "car-holders",
-    "name": "Car Holders",
+    "name": "Car Mounts",
     "description": "Magnetic, suction, and 360-degree mounts for cleaner driving and desk visibility.",
     "accent": "silver",
     "collection": "Mounts",

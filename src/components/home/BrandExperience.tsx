@@ -10,7 +10,7 @@ import {
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
-import { products } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 
 type ExperiencePanel = {
   eyebrow: string;
@@ -47,6 +47,7 @@ const panels: ExperiencePanel[] = [
 ];
 
 export function BrandExperience() {
+  const { products } = useCatalog();
   const reduceMotion = useReducedMotion();
 
   return (

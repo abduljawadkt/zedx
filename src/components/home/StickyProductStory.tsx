@@ -11,7 +11,8 @@ import {
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
-import { products } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
+import { type Product } from "@/data/products";
 import { formatProductName } from "@/lib/productDisplay";
 
 const storySteps = [
@@ -54,6 +55,7 @@ const storySteps = [
 ];
 
 export function StickyProductStory() {
+  const { products } = useCatalog();
   const [activeStep, setActiveStep] = useState(0);
   const reduceMotion = useReducedMotion();
   const step = storySteps[activeStep];
@@ -61,7 +63,7 @@ export function StickyProductStory() {
   const recommendedProducts = step.pickSlugs
     .map((slug) => products.find((item) => item.categorySlug === slug))
     .filter(Boolean)
-    .slice(0, 3) as typeof products;
+    .slice(0, 3) as Product[];
 
   return (
     <section className="relative mx-auto max-w-[92rem] px-5 py-16 text-white sm:px-8 lg:grid lg:grid-cols-[0.82fr_1.18fr] lg:gap-10 lg:py-28">
@@ -303,7 +305,7 @@ export function StickyProductStory() {
   );
 }
 
-function CompactRecommendationCard({ item }: { item: (typeof products)[number] }) {
+function CompactRecommendationCard({ item }: { item: Product }) {
   return (
     <Link
       href={`/products/${item.slug}`}

@@ -3,6 +3,14 @@ import { collections as staticCollectionNames, products as staticProducts } from
 import { prisma } from "@/lib/backend/prisma";
 import { seedDatabaseIfNeeded } from "@/lib/backend/seed";
 import type { Category, Collection, DashboardSummary, HomepageSection, Product, ProductQuery, SeoMetadata, SiteSettings } from "@/lib/backend/types";
+import {
+  getMedusaConfig,
+  mapMedusaProduct,
+  medusaGetProduct,
+  medusaListCategories,
+  medusaListCollections,
+  medusaListProducts,
+} from "@/lib/medusa";
 
 function slugify(value: string) {
   return value
@@ -223,6 +231,64 @@ export async function getProducts({
   sort = "featured",
 }: ProductQuery = {}) {
   const fallback = () => fallbackProducts({ badge, category, collection, limit, maxPrice, minPrice, search, sort });
+  if (getMedusaConfig()) {
+    try {
+      let items = (await medusaListProducts()).products?.map(mapMedusaProduct) ?? [];
+
+      if (category) {
+        items = items.filter((product) => product.categorySlug === category);
+      }
+
+      if (collection) {
+        items = items.filter((product) => slugify(product.collection) === collection);
+      }
+
+      if (badge) {
+        items = items.filter((product) => product.badge.toLowerCase() === badge.toLowerCase());
+      }
+
+      if (typeof minPrice === "number") {
+        items = items.filter((product) => product.price >= minPrice);
+      }
+
+      if (typeof maxPrice === "number") {
+        items = items.filter((product) => product.price <= maxPrice);
+      }
+
+      if (search) {
+        const query = search.toLowerCase();
+        items = items.filter((product) =>
+          [
+            product.name,
+            product.sku,
+            product.category,
+            product.collection,
+            product.badge,
+            product.color,
+            product.shortDescription,
+            product.description,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase()
+            .includes(query),
+        );
+      }
+
+      items = [...items].sort((a, b) => {
+        if (sort === "price-asc") return a.price - b.price;
+        if (sort === "price-desc") return b.price - a.price;
+        if (sort === "name") return a.name.localeCompare(b.name);
+        if (sort === "newest") return b.id.localeCompare(a.id);
+        return Number(b.badge === "Premium") - Number(a.badge === "Premium");
+      });
+
+      return typeof limit === "number" ? items.slice(0, limit) : items;
+    } catch {
+      return fallback();
+    }
+  }
+
   let rows: Array<Parameters<typeof mapProduct>[0]>;
 
   try {
@@ -287,6 +353,13 @@ export async function getProducts({
 }
 
 export async function getProduct(slug: string) {
+  if (getMedusaConfig()) {
+    try {
+      const product = (await medusaGetProduct(slug)).product;
+      if (product) return mapMedusaProduct(product);
+    } catch {}
+  }
+
   try {
     await seedDatabaseIfNeeded();
     const product = await prisma.product.findFirst({
@@ -304,6 +377,33 @@ export async function getProduct(slug: string) {
 }
 
 export async function getCategories() {
+  if (getMedusaConfig()) {
+    try {
+      const [categoryResponse, products] = await Promise.all([
+        medusaListCategories(),
+        getProducts(),
+      ]);
+
+      return (categoryResponse.product_categories ?? categoryResponse.categories ?? []).map((category, index) => {
+        const staticCategory = staticCategories.find((item) => item.slug === category.handle);
+        const metadata = "metadata" in category && typeof category.metadata === "object" && category.metadata
+          ? category.metadata as Record<string, unknown>
+          : {};
+        return {
+          slug: category.handle ?? category.id,
+          name: category.name ?? staticCategory?.name ?? "Category",
+          description: category.description ?? staticCategory?.description ?? "",
+          accent: staticCategory?.accent ?? "blue",
+          collection: typeof metadata.collection === "string" ? metadata.collection : staticCategory?.collection ?? "ZedX",
+          image: typeof metadata.image === "string" ? metadata.image : staticCategory?.image ?? "/brand/zedx-logo-transparent.png",
+          productCount: products.filter((product) => product.categorySlug === category.handle).length,
+          featured: index < 6,
+          sortOrder: index + 1,
+        } satisfies Category;
+      });
+    } catch {}
+  }
+
   try {
     await seedDatabaseIfNeeded();
     const [rows, products] = await Promise.all([
@@ -327,6 +427,30 @@ export async function getCategory(slug: string) {
 }
 
 export async function getCollections() {
+  if (getMedusaConfig()) {
+    try {
+      const [collectionResponse, products] = await Promise.all([
+        medusaListCollections(),
+        getProducts(),
+      ]);
+
+      return (collectionResponse.collections ?? []).map((collection, index) => {
+        const slug = collection.handle ?? slugify(collection.title ?? collection.id);
+        const collectionProducts = products.filter((product) => slugify(product.collection) === slug);
+        return {
+          id: collection.id,
+          slug,
+          name: collection.title ?? collection.handle ?? "Collection",
+          description: collection.description ?? `Curated ZedX ${collection.title?.toLowerCase() ?? "collection"} products.`,
+          image: collectionProducts[0]?.image ?? "/brand/zedx-logo-transparent.png",
+          productCount: collectionProducts.length,
+          featured: index < 4,
+          sortOrder: index + 1,
+        } satisfies Collection;
+      });
+    } catch {}
+  }
+
   try {
     await seedDatabaseIfNeeded();
     const [rows, products] = await Promise.all([

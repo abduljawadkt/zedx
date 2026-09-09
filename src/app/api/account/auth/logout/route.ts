@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { jsonResponse } from "@/lib/backend/http";
-import { CUSTOMER_SESSION_COOKIE, destroyCustomerSession } from "@/lib/backend/session";
+import { CUSTOMER_SESSION_COOKIE, MEDUSA_CUSTOMER_TOKEN_COOKIE, destroyCustomerSession } from "@/lib/backend/session";
 
 export async function POST(request: NextRequest) {
   const token = request.cookies.get(CUSTOMER_SESSION_COOKIE)?.value;
@@ -8,5 +8,6 @@ export async function POST(request: NextRequest) {
 
   const response = jsonResponse({ ok: true });
   response.headers.append("Set-Cookie", `${CUSTOMER_SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+  response.headers.append("Set-Cookie", `${MEDUSA_CUSTOMER_TOKEN_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
   return response;
 }

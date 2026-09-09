@@ -5,12 +5,13 @@ import { Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { ProductImage } from "@/components/product/ProductImage";
-import { products } from "@/data/products";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 export function SearchOverlay() {
   const { closeSearch, isSearchOpen } = useCommerce();
+  const { products } = useCatalog();
   const [query, setQuery] = useState("");
   const results = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -21,7 +22,7 @@ export function SearchOverlay() {
         .toLowerCase()
         .includes(normalized),
     );
-  }, [query]);
+  }, [products, query]);
 
   useEffect(() => {
     if (!isSearchOpen) return;
@@ -93,7 +94,7 @@ export function SearchOverlay() {
                   </div>
                   <div>
                     <p className="font-semibold text-white">{formatProductName(product.name)}</p>
-                    <p className="text-sm text-[#ffffff73]">{product.category}</p>
+                    <p className="text-sm text-[#ffffff73]">{formatCategoryName(product.category)}</p>
                     <p className="mt-2 text-sm font-semibold text-[var(--brand-blue-soft)]">
                       {product.currency} {product.price}
                     </p>

@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 type InfoPageProps = {
   eyebrow: string;
   title: string;
   description: string;
   sections: {
-    body: string;
+    body: ReactNode;
     title: string;
   }[];
 };
@@ -28,7 +30,9 @@ export function InfoPage({ description, eyebrow, sections, title }: InfoPageProp
             className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5 sm:p-7"
           >
             <h2 className="text-xl font-semibold text-white sm:text-2xl">{section.title}</h2>
-            <p className="mt-3 text-sm leading-7 text-white/58 sm:text-base">{section.body}</p>
+            <div className="mt-3 space-y-3 text-sm leading-7 text-white/58 sm:text-base [&_strong]:font-semibold [&_strong]:text-white/78 [&_ul]:space-y-2 [&_li]:pl-1">
+              {section.body}
+            </div>
           </article>
         ))}
       </section>

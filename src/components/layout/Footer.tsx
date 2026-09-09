@@ -1,7 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Mail, MapPin, ShieldCheck, Sparkles, Truck } from "lucide-react";
-import { categories } from "@/data/categories";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { storefrontConfig } from "@/config/storefront";
 
 const footerLinks = [
@@ -56,6 +58,8 @@ const glassVeilClassName =
   "absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_42%,rgba(0,160,227,0.04))]";
 
 export function Footer() {
+  const { categories } = useCatalog();
+
   return (
     <footer className="relative overflow-hidden border-t border-[var(--shell-border)] bg-[var(--footer-bg)] px-5 pt-20 text-[var(--foreground)] sm:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_54%_0%,rgba(0,160,227,0.18),transparent_30rem),radial-gradient(circle_at_12%_36%,rgba(255,255,255,0.07),transparent_22rem)]" />

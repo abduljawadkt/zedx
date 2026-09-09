@@ -5,13 +5,12 @@ import Image from "next/image";
 import { ChevronRight, Search, ShoppingBag, User, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import {
   getTransparentProductImageSrc,
   productImageGroundShadowClassName,
   productImageStageClassName,
 } from "@/components/product/ProductImage";
-import { categories } from "@/data/categories";
-import { products } from "@/data/products";
 import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 const primaryLinks = [
@@ -30,6 +29,7 @@ const secondaryLinks = [
 
 export function MobileMenu() {
   const { closeMenu, isMenuOpen, openCart, openSearch } = useCommerce();
+  const { products, categories } = useCatalog();
 
   function openSearchFromMenu() {
     closeMenu();
