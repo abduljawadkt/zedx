@@ -76,25 +76,18 @@ function ProductCarouselSection({
           </Link>
         </div>
 
-        <div className="-mx-5 overflow-x-auto px-5 pb-5 [scrollbar-width:none] sm:-mx-8 sm:px-8 xl:mx-0 xl:px-0 [&::-webkit-scrollbar]:hidden">
-          <div className="flex w-max gap-5 xl:w-full">
-            {products.map((product, index) => (
-              <motion.div
-                key={product.slug}
-                className="xl:flex-1"
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ type: "spring", stiffness: 120, damping: 22, delay: index * 0.035 }}
-              >
-                <FeaturedSkuCard product={product} hideProductName={hideProductNames} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-1 h-[3px] overflow-hidden rounded-full bg-white/40">
-          <div className="h-full w-[14%] rounded-full bg-[var(--brand-blue)] shadow-[0_0_22px_rgba(0,160,227,0.7)]" />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {products.slice(0, 4).map((product, index) => (
+            <motion.div
+              key={product.slug}
+              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ type: "spring", stiffness: 120, damping: 22, delay: index * 0.035 }}
+            >
+              <FeaturedSkuCard product={product} hideProductName={hideProductNames} />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -112,7 +105,7 @@ function FeaturedSkuCard({
     <Link
       href={`/products/${product.slug}`}
       aria-label={`View ${product.name} product details`}
-      className="group block w-[20.5rem] overflow-hidden rounded-[1.15rem] bg-[#f2f3f4] text-[#050505] shadow-[0_22px_65px_rgba(0,0,0,0.24)] transition duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_30px_90px_rgba(0,160,227,0.16)] xl:w-full"
+      className="group block w-full overflow-hidden rounded-[1.15rem] bg-[#f2f3f4] text-[#050505] shadow-[0_22px_65px_rgba(0,0,0,0.24)] transition duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_30px_90px_rgba(0,160,227,0.16)]"
     >
       <div className="relative grid h-[20rem] place-items-center overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#ffffff_0%,#f9fafb_42%,#e9edf1_100%)]">
         <div className="pointer-events-none absolute inset-x-[18%] bottom-[17%] h-8 rounded-full bg-slate-950/13 blur-2xl" />

@@ -65,6 +65,8 @@ export function BrandExperience() {
           {panels.map((panel, index) => {
             const product =
               products.find((item) => item.slug === panel.productSlug) ?? products[index % Math.max(products.length, 1)];
+            // Derive the link from the resolved product so a removed/renamed product never 404s.
+            const href = product ? `/products/${product.slug}` : panel.href;
             const isWide = index === 0;
 
             return (
@@ -104,7 +106,7 @@ export function BrandExperience() {
                       {panel.title}
                     </h3>
                     <Link
-                      href={panel.href}
+                      href={href}
                       className={`mt-7 inline-flex h-14 w-fit items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition active:scale-95 ${
                         panel.tone === "dark"
                           ? "bg-white text-[#050505] hover:bg-[var(--brand-blue-soft)]"

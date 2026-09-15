@@ -284,7 +284,8 @@ export async function getProducts({
       });
 
       return typeof limit === "number" ? items.slice(0, limit) : items;
-    } catch {
+    } catch (error) {
+      console.error("[catalog] Medusa product fetch failed; serving fallback catalog:", error);
       return fallback();
     }
   }
@@ -319,7 +320,8 @@ export async function getProducts({
                 ? [{ createdAt: "desc" }]
                 : [{ featured: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
     });
-  } catch {
+  } catch (error) {
+    console.error("[catalog] Database product fetch failed; serving fallback catalog:", error);
     return fallback();
   }
 

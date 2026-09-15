@@ -140,13 +140,18 @@ function CategoryFeatureCard({
   priority?: boolean;
 }) {
   const { products } = useCatalog();
-  const product = products.find((item) => item.slug === card.productSlug) ?? products[0];
+  const product =
+    products.find((item) => item.slug === card.productSlug) ??
+    products.find((item) => item.collection.toLowerCase() === card.label.toLowerCase()) ??
+    products[0];
+  // Derive the link from the resolved product so a removed/renamed product never 404s.
+  const href = product ? `/products/${product.slug}` : card.href;
   const isLarge = card.size === "large";
   const tone = toneClassNames[card.tone];
 
   return (
     <Link
-      href={card.href}
+      href={href}
       className={`group relative isolate grid overflow-hidden rounded-[1.35rem] border border-white/12 bg-[#0b0d11] shadow-2xl shadow-black/30 transition duration-500 hover:-translate-y-1 hover:border-[#00a0e3]/45 hover:bg-[#10141a] sm:rounded-[1.7rem] ${
         isLarge
           ? "min-h-[36rem] gap-7 p-5 sm:min-h-[38rem] sm:p-7 lg:min-h-[44rem] lg:p-8"
