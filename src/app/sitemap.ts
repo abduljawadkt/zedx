@@ -1,20 +1,19 @@
 import type { MetadataRoute } from "next";
-import { getCategories, getProducts } from "@/lib/backend/catalog";
+import { getCategories, getCollections, getProducts } from "@/lib/backend/catalog";
 import { siteUrl } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, categories] = await Promise.all([
+  const [products, categories, collections] = await Promise.all([
     getProducts().catch(() => []),
     getCategories().catch(() => []),
+    getCollections().catch(() => []),
   ]);
 
   return [
     "",
     "/products",
     "/collections",
-    "/collections/audio",
-    "/collections/power",
-    "/collections/accessories",
+    ...collections.map((collection) => `/collections/${collection.slug}`),
     "/about",
     "/contact",
     "/support",

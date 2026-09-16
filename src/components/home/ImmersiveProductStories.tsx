@@ -265,7 +265,7 @@ export function ImmersiveProductStories() {
           transition={{ type: "spring", stiffness: 96, damping: 22 }}
         >
           <Link
-            href="/collections/accessories"
+            href="/collections"
             className="group relative grid min-h-[26rem] overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#080a0d] p-8 shadow-2xl shadow-black/24 transition duration-500 hover:-translate-y-1 hover:border-[#00a0e3]/45 sm:rounded-[1.8rem] sm:p-10 lg:min-h-[31rem]"
           >
             <Image

@@ -13,13 +13,6 @@ import {
 } from "@/components/product/ProductImage";
 import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
-const primaryLinks = [
-  { href: "/collections/audio", label: "Audio" },
-  { href: "/collections/power", label: "Power" },
-  { href: "/collections/accessories", label: "Accessories" },
-  { href: "/products", label: "Explore" },
-];
-
 const secondaryLinks = [
   { href: "/login", label: "Sign in" },
   { href: "/signup", label: "Create account" },
@@ -29,7 +22,15 @@ const secondaryLinks = [
 
 export function MobileMenu() {
   const { closeMenu, isMenuOpen, openCart, openSearch } = useCommerce();
-  const { products, categories } = useCatalog();
+  const { products, categories, collections } = useCatalog();
+  // Primary nav is driven by live Medusa collections.
+  const primaryLinks = [
+    ...collections.slice(0, 5).map((collection) => ({
+      href: `/collections/${collection.slug}`,
+      label: collection.name,
+    })),
+    { href: "/products", label: "Explore" },
+  ];
 
   function openSearchFromMenu() {
     closeMenu();
