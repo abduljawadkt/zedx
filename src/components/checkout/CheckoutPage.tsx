@@ -87,8 +87,7 @@ export function CheckoutPage() {
   );
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const shipping = subtotal > 0 && paymentMethod !== "Store pickup" ? 18 : 0;
-  const total = subtotal + shipping;
+  const total = subtotal;
 
   async function placeOrder() {
     setSubmitting(true);
@@ -257,7 +256,6 @@ export function CheckoutPage() {
 
             <div className="mt-6 space-y-3 border-t border-[#ffffff1a] pt-5 text-sm">
               <SummaryRow label="Subtotal" value={`AED ${subtotal}`} />
-              <SummaryRow label="Shipping" value={shipping ? `AED ${shipping}` : "Free"} />
               <div className="flex items-center justify-between pt-3 text-white">
                 <span className="text-sm text-[#ffffff73]">Total</span>
                 <span className="text-2xl font-semibold sm:text-3xl">AED {total}</span>

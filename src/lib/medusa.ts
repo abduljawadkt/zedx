@@ -15,6 +15,7 @@ type MedusaProduct = {
   description?: string;
   thumbnail?: string;
   images?: MedusaProductImage[];
+  updated_at?: string;
   variants?: Array<{
     id?: string;
     sku?: string;
@@ -278,7 +279,7 @@ export async function medusaListProducts() {
   const region = await medusaGetDefaultRegion();
   const params = new URLSearchParams({
     limit: "100",
-    fields: "id,title,handle,subtitle,description,thumbnail,metadata,*variants,*variants.calculated_price,*categories,*collection,*images",
+    fields: "id,title,handle,subtitle,description,thumbnail,updated_at,metadata,*variants,*variants.calculated_price,*categories,*collection,*images",
   });
 
   if (region?.id) {
@@ -293,7 +294,7 @@ export async function medusaGetProduct(handle: string) {
   const params = new URLSearchParams({
     handle,
     limit: "1",
-    fields: "id,title,handle,subtitle,description,thumbnail,metadata,*variants,*variants.calculated_price,*categories,*collection,*images",
+    fields: "id,title,handle,subtitle,description,thumbnail,updated_at,metadata,*variants,*variants.calculated_price,*categories,*collection,*images",
   });
 
   if (region?.id) {
@@ -347,6 +348,15 @@ function stringMetadata(value: unknown, fallback = "") {
   return typeof value === "string" ? value : fallback;
 }
 
+// Append a version query to remote image URLs so that when a product's image is
+// changed in Medusa (which bumps updated_at), the URL changes and every cache
+// layer (Next image optimizer, browser, CDN) fetches the new image.
+function withCacheBust(url: string, version?: string) {
+  if (!version || !/^https?:\/\//i.test(url)) return url;
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}v=${version}`;
+}
+
 function numberMetadata(value: unknown, fallback = 0) {
   return typeof value === "number" ? value : fallback;
 }
@@ -361,12 +371,18 @@ export function mapMedusaProduct(product: MedusaProduct) {
   const amount = price?.calculated_amount ?? price?.original_amount ?? 0;
   const currency = price?.currency_code?.toUpperCase() ?? "AED";
   const metadata = product.metadata ?? {};
-  const image = normalizeMedusaImage(
-    stringMetadata(metadata.local_image) || product.thumbnail || product.images?.[0]?.url || "/hero-animation/dock.png",
+  // The live Medusa thumbnail/images are the source of truth; metadata is only a fallback.
+  const version = product.updated_at ? Date.parse(product.updated_at).toString() : undefined;
+  const image = withCacheBust(
+    normalizeMedusaImage(
+      product.thumbnail || product.images?.[0]?.url || stringMetadata(metadata.local_image) || "/hero-animation/dock.png",
+    ),
+    version,
   );
-  const gallery = stringArrayMetadata(metadata.local_gallery).length
-    ? stringArrayMetadata(metadata.local_gallery)
-    : (product.images ?? []).map((item) => normalizeMedusaImage(item.url ?? "")).filter(Boolean);
+  const galleryUrls = (product.images ?? []).map((item) => normalizeMedusaImage(item.url ?? "")).filter(Boolean);
+  const gallery = (galleryUrls.length ? galleryUrls : stringArrayMetadata(metadata.local_gallery)).map((url) =>
+    withCacheBust(url, version),
+  );
 
   return {
     id: product.id,

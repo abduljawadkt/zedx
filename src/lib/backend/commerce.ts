@@ -161,7 +161,7 @@ export async function createPendingOrder(input: {
     });
     const subtotal = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const discount = subtotal > 300 ? Math.round(subtotal * 0.08) : 0;
-    const shipping = subtotal > 0 && subtotal < 250 ? 18 : 0;
+    const shipping = 0;
     const total = subtotal - discount + shipping;
 
     const order = await tx.order.create({
