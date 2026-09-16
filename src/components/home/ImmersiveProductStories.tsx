@@ -26,6 +26,7 @@ type StoryVideoProps = {
   mediaClassName?: string;
   cta?: string;
   productSlug?: string;
+  categorySlug?: string;
   variant?: "feature" | "compact" | "wide";
 };
 
@@ -58,10 +59,15 @@ function StoryVideo({
   mediaClassName = "object-center",
   cta,
   productSlug,
+  categorySlug,
   variant = "compact",
 }: StoryVideoProps) {
   const { products } = useCatalog();
-  const product = productSlug ? products.find((item) => item.slug === productSlug) : undefined;
+  // Prefer the specific product; if its slug isn't in the live catalog, fall back
+  // to any product in the same category so the "Shop This Product" button always shows.
+  const product =
+    (productSlug ? products.find((item) => item.slug === productSlug) : undefined) ??
+    (categorySlug ? products.find((item) => item.categorySlug === categorySlug) : undefined);
   const variantClassNames = storyVariantClassNames[variant];
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();
@@ -207,6 +213,7 @@ export function ImmersiveProductStories() {
               className="sm:min-h-[42rem] lg:min-h-[48rem] xl:min-h-[52rem]"
               mediaClassName="object-center"
               productSlug="zedx-power-bank-10000-zx-pb115"
+              categorySlug="power-banks"
               variant="feature"
             />
           </motion.div>
@@ -225,6 +232,7 @@ export function ImmersiveProductStories() {
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-zeepods-pro-2025"
+                categorySlug="earpods"
                 variant="compact"
               />
             </motion.div>
@@ -242,6 +250,7 @@ export function ImmersiveProductStories() {
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
                 productSlug="zedx-headphone-zx-hf-110"
+                categorySlug="over-heads"
                 variant="compact"
               />
             </motion.div>
@@ -291,6 +300,7 @@ export function ImmersiveProductStories() {
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-retractable-cable-100w-ze-03-type-c"
+            categorySlug="charging-cables"
             variant="wide"
           />
         </motion.div>
@@ -309,6 +319,7 @@ export function ImmersiveProductStories() {
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-38w-car-charger-cr100"
+            categorySlug="car-chargers"
             variant="wide"
           />
           <StoryVideo
@@ -318,6 +329,7 @@ export function ImmersiveProductStories() {
             className="sm:min-h-[28rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
             productSlug="zedx-headphone-lumen-100"
+            categorySlug="over-heads"
             variant="wide"
           />
         </motion.div>

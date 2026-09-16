@@ -29,10 +29,28 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   // Backend-driven selections from the live catalog (Medusa/DB) — no hardcoded SKUs.
-  const [featured, newArrivals] = await Promise.all([
+  const [featured, newestAll] = await Promise.all([
     getProducts({ sort: "featured", limit: 4 }) as Promise<Product[]>,
-    getProducts({ sort: "newest", limit: 4 }) as Promise<Product[]>,
+    getProducts({ sort: "newest", limit: 40 }) as Promise<Product[]>,
   ]);
+
+  // New Arrivals: newest products, but spread across distinct categories so the
+  // row isn't all one category; top up with remaining newest if categories run out.
+  const newArrivals: Product[] = [];
+  const seenCategories = new Set<string>();
+  for (const product of newestAll) {
+    if (seenCategories.has(product.categorySlug)) continue;
+    seenCategories.add(product.categorySlug);
+    newArrivals.push(product);
+    if (newArrivals.length >= 4) break;
+  }
+  if (newArrivals.length < 4) {
+    for (const product of newestAll) {
+      if (newArrivals.some((item) => item.id === product.id)) continue;
+      newArrivals.push(product);
+      if (newArrivals.length >= 4) break;
+    }
+  }
 
   return (
     <main className="flex-1 -mt-[5rem]">

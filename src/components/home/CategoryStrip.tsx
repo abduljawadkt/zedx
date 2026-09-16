@@ -212,7 +212,7 @@ function ProductStage({
 
   return (
     <div
-      className={`relative z-10 grid min-h-72 place-items-center overflow-hidden rounded-[1.1rem] border border-black/10 bg-[#F5F5F7] shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_24px_70px_rgba(0,0,0,0.24)] sm:rounded-[1.35rem] ${
+      className={`relative z-10 grid min-h-72 place-items-center overflow-hidden rounded-[1.1rem] border border-black/10 bg-white px-6 pb-16 pt-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_24px_70px_rgba(0,0,0,0.24)] sm:rounded-[1.35rem] ${
         isLarge ? "lg:min-h-[27rem]" : "xl:min-h-72"
       }`}
     >
