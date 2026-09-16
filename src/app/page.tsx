@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getProducts } from "@/lib/backend/catalog";
+import type { Product } from "@/data/products";
 import { BrandExperience } from "@/components/home/BrandExperience";
 import { CategoryUniverse } from "@/components/home/CategoryUniverse";
 import { CategoryStrip } from "@/components/home/CategoryStrip";
@@ -25,14 +27,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  // Backend-driven selections from the live catalog (Medusa/DB) — no hardcoded SKUs.
+  const [featured, newArrivals] = await Promise.all([
+    getProducts({ sort: "featured", limit: 4 }) as Promise<Product[]>,
+    getProducts({ sort: "newest", limit: 4 }) as Promise<Product[]>,
+  ]);
+
   return (
     <main className="flex-1 -mt-[5rem]">
       <Hero />
       <CategoryStrip />
-      <NewArrivals />
+      <NewArrivals products={newArrivals} />
       <ImmersiveProductStories />
-      <TrendingProducts />
+      <TrendingProducts products={featured} />
       <StickyProductStory />
       <CategoryUniverse />
       <BrandExperience />
