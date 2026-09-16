@@ -8,6 +8,16 @@ import { storefrontConfig } from "@/config/storefront";
 
 const footerLinks = [
   {
+    title: "Shop",
+    links: [
+      { href: "/products", label: "All products" },
+      { href: "/collections/audio", label: "Audio" },
+      { href: "/collections/power", label: "Power" },
+      { href: "/collections/accessories", label: "Accessories" },
+      { href: "/categories/car-holders", label: "Car mounts" },
+    ],
+  },
+  {
     title: "Company",
     links: [
       { href: "/about", label: "About ZEDX" },
@@ -48,21 +58,7 @@ const glassVeilClassName =
   "absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018)_42%,rgba(0,160,227,0.04))]";
 
 export function Footer() {
-  const { categories, collections } = useCatalog();
-  // Shop links are driven by live Medusa collections.
-  const navGroups = [
-    {
-      title: "Shop",
-      links: [
-        { href: "/products", label: "All products" },
-        ...collections.slice(0, 5).map((collection) => ({
-          href: `/collections/${collection.slug}`,
-          label: collection.name,
-        })),
-      ],
-    },
-    ...footerLinks,
-  ];
+  const { categories } = useCatalog();
 
   return (
     <footer className="relative overflow-hidden border-t border-[var(--shell-border)] bg-[var(--footer-bg)] px-5 pt-20 text-[var(--foreground)] sm:px-8">
@@ -191,7 +187,7 @@ export function Footer() {
               Focused product discovery, clear pricing, and verified claim-based shopping flows for the UAE market.
             </p>
           </div>
-          {navGroups.map((group) => (
+          {footerLinks.map((group) => (
             <div key={group.title} className="relative z-10 min-w-40">
               <p className="text-sm font-semibold text-[#ffffff]">{group.title}</p>
               <div className="mt-3 grid gap-2">

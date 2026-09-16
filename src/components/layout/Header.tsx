@@ -9,31 +9,40 @@ import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { useCatalog } from "@/components/providers/CatalogProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
-import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
-import type { Collection } from "@/lib/backend/types";
+import { formatCategoryName, formatProductName, productGroups } from "@/lib/productDisplay";
+
+const navGroups = [
+  {
+    id: "audio",
+    label: "Audio",
+    href: "/collections/audio",
+    ...productGroups.audio,
+  },
+  {
+    id: "power",
+    label: "Power",
+    href: "/collections/power",
+    ...productGroups.power,
+  },
+  {
+    id: "accessories",
+    label: "Accessories",
+    href: "/collections/accessories",
+    ...productGroups.accessories,
+  },
+];
 
 export function Header() {
   const { cartItems, openCart, openMenu, openSearch } = useCommerce();
-  const { products, categories, collections } = useCatalog();
+  const { products, categories } = useCatalog();
   const pathname = usePathname();
-  // Nav is driven by live Medusa collections (featured first, capped for layout).
-  const navGroups = (collections.some((collection) => collection.featured)
-    ? collections.filter((collection) => collection.featured)
-    : collections
-  ).slice(0, 5);
-  const [activeMega, setActiveMega] = useState<Collection | null>(null);
-  const activeProducts = activeMega
-    ? products.filter((product) => product.collection === activeMega.name).slice(0, 3)
-    : [];
-  const activeCategories = activeMega
-    ? categories
-        .filter((category) =>
-          products.some(
-            (product) => product.collection === activeMega.name && product.categorySlug === category.slug,
-          ),
-        )
-        .slice(0, 4)
-    : [];
+  const [activeMega, setActiveMega] = useState<(typeof navGroups)[number] | null>(null);
+  const activeProducts = products
+    .filter((product) => activeMega?.collections.includes(product.collection))
+    .slice(0, 3);
+  const activeCategories = categories.filter((category) =>
+    activeMega?.categorySlugs.includes(category.slug),
+  );
 
   return (
     <motion.header
@@ -66,20 +75,21 @@ export function Header() {
           className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 text-sm font-medium text-[var(--muted)] md:flex lg:text-base"
         >
           {navGroups.map((link) => {
-            const href = `/collections/${link.slug}`;
-            const active = pathname.startsWith(href);
+            const active =
+              pathname.startsWith(link.href) ||
+              link.categorySlugs.some((slug) => pathname.startsWith(`/categories/${slug}`));
 
             return (
               <Link
-                key={link.slug}
+                key={link.href}
                 className={`group relative py-2 transition hover:text-[var(--foreground)] ${
                   active ? "text-[var(--brand-blue-soft)]" : ""
                 }`}
-                href={href}
+                href={link.href}
                 onFocus={() => setActiveMega(link)}
                 onMouseEnter={() => setActiveMega(link)}
               >
-                {link.name}
+                {link.label}
                 <span
                   className={`absolute -bottom-1 left-1/2 h-1 -translate-x-1/2 rounded-full bg-[var(--brand-blue)] transition-all duration-300 group-hover:w-8 ${
                     active ? "w-8" : "w-0"
@@ -141,17 +151,17 @@ export function Header() {
             <div className="grid gap-4 lg:grid-cols-[0.8fr_1fr_1.1fr]">
               <div className="rounded-[1.25rem] border border-[var(--shell-border)] bg-[var(--shell-soft)] p-6">
                 <p className="type-eyebrow">
-                  {activeMega.name} Universe
+                  {activeMega.label} Universe
                 </p>
                 <h2 className="mt-4 type-card-title sm:text-3xl">
-                  Shop the full {activeMega.name.toLowerCase()} range.
+                  Shop the full {activeMega.label.toLowerCase()} range.
                 </h2>
                 <Link
-                  href={`/collections/${activeMega.slug}`}
+                  href={activeMega.href}
                   className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--brand-blue)] px-5 py-3 type-control text-white transition hover:bg-[var(--foreground)] hover:text-[var(--background)]"
                   onClick={() => setActiveMega(null)}
                 >
-                  Explore {activeMega.name}
+                  Explore {activeMega.label}
                   <ChevronRight size={16} />
                 </Link>
               </div>

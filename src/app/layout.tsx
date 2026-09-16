@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { getCategories, getCollections, getProducts } from "@/lib/backend/catalog";
+import { getCategories, getProducts } from "@/lib/backend/catalog";
 import type { Category } from "@/data/categories";
 import type { Product } from "@/data/products";
-import type { Collection } from "@/lib/backend/types";
 import { absoluteUrl, siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -89,10 +88,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [products, categories, collections] = await Promise.all([
+  const [products, categories] = await Promise.all([
     getProducts().catch(() => [] as Product[]),
     getCategories().catch(() => [] as Category[]),
-    getCollections().catch(() => [] as Collection[]),
   ]);
 
   const themeScript = `
@@ -110,11 +108,7 @@ export default async function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <StructuredData data={[organizationJsonLd, websiteJsonLd]} />
-        <SiteShell
-          products={products as Product[]}
-          categories={categories as Category[]}
-          collections={collections as Collection[]}
-        >
+        <SiteShell products={products as Product[]} categories={categories as Category[]}>
           {children}
         </SiteShell>
       </body>

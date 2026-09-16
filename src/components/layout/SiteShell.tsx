@@ -9,7 +9,6 @@ import { CommerceProvider, useCommerce } from "@/components/providers/CommercePr
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import type { Category } from "@/data/categories";
 import type { Product } from "@/data/products";
-import type { Collection } from "@/lib/backend/types";
 
 const MobileMenu = dynamic(() =>
   import("@/components/layout/MobileMenu").then((module) => module.MobileMenu),
@@ -45,12 +44,10 @@ export function SiteShell({
   children,
   products,
   categories,
-  collections = [],
 }: {
   children: React.ReactNode;
   products: Product[];
   categories: Category[];
-  collections?: Collection[];
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith("/admin");
@@ -61,7 +58,7 @@ export function SiteShell({
 
   return (
     <ThemeProvider>
-      <CatalogProvider products={products} categories={categories} collections={collections}>
+      <CatalogProvider products={products} categories={categories}>
         <CommerceProvider>
           <Header />
           {children}
