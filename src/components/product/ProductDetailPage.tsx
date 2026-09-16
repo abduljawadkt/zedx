@@ -78,7 +78,7 @@ export function ProductDetailPage({
       <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr]">
         <section aria-label={`${displayName} gallery`} className="space-y-5">
           <motion.div
-            className={`${productImageStageClassName} min-h-[330px] rounded-[1.2rem] shadow-2xl shadow-cyan-500/10 sm:min-h-[640px] sm:rounded-[1.8rem]`}
+            className={`${productImageStageClassName} min-h-[330px] rounded-[1.2rem] shadow-2xl shadow-black/20 sm:min-h-[640px] sm:rounded-[1.8rem]`}
             initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
             animate={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 90, damping: 22 }}
