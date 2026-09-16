@@ -187,12 +187,7 @@ function CategoryFeatureCard({
         </div>
       </div>
 
-      <ProductStage
-        isLarge={isLarge}
-        priority={priority}
-        product={product}
-        tone={card.tone}
-      />
+      <ProductStage isLarge={isLarge} priority={priority} product={product} />
     </Link>
   );
 }
@@ -201,34 +196,22 @@ function ProductStage({
   isLarge,
   priority,
   product,
-  tone: toneName,
 }: {
   isLarge: boolean;
   priority: boolean;
   product: Product;
-  tone: keyof typeof toneClassNames;
 }) {
-  const tone = toneClassNames[toneName];
-
   return (
     <div
       className={`relative z-10 grid min-h-72 place-items-center overflow-hidden rounded-[1.1rem] border border-black/10 bg-white px-6 pb-16 pt-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_24px_70px_rgba(0,0,0,0.24)] sm:rounded-[1.35rem] ${
         isLarge ? "lg:min-h-[27rem]" : "xl:min-h-72"
       }`}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_15%,rgba(255,255,255,0.94),transparent_42%),radial-gradient(circle_at_50%_88%,rgba(0,160,227,0.08),transparent_36%)]" />
-      <div className={`pointer-events-none absolute bottom-[20%] h-[30%] w-[58%] rounded-full blur-3xl opacity-45 ${tone.glow}`} />
-      <div className="pointer-events-none absolute inset-x-[14%] bottom-[15%] h-10 rounded-full bg-slate-950/16 blur-2xl" />
       <ProductImage
         product={product}
         alt={`${formatProductName(product.name)} category feature`}
         priority={priority}
-        className={
-          isLarge
-            ? "!w-[min(62%,520px)] !drop-shadow-[0_36px_70px_rgba(15,23,42,0.22)]"
-            : "!w-[min(72%,340px)] !drop-shadow-[0_30px_58px_rgba(15,23,42,0.2)]"
-        }
-        imageClassName="brightness-[1.03] contrast-[1.05]"
+        className={isLarge ? "!w-[min(62%,520px)]" : "!w-[min(72%,340px)]"}
         sizes={isLarge ? "(min-width: 1024px) 40vw, 82vw" : "(min-width: 1280px) 24vw, 74vw"}
       />
       <span className="absolute bottom-4 left-4 right-4 truncate rounded-full border border-black/10 bg-[#1b2027]/88 px-4 py-2 text-center type-micro text-white/78 shadow-lg shadow-black/10 backdrop-blur-md">
