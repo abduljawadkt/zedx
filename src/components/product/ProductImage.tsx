@@ -45,7 +45,7 @@ export function ProductImage({
   return (
     <div
       className={cn(
-        "relative z-10 aspect-square w-[min(78%,440px)] drop-shadow-[0_35px_80px_rgba(56,189,248,0.18)]",
+        "relative z-10 aspect-square w-[min(78%,440px)] drop-shadow-[0_28px_60px_rgba(15,23,42,0.12)]",
         className,
       )}
     >

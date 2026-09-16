@@ -141,7 +141,7 @@ function StoryVideo({
             className={`mt-5 flex w-full items-center gap-3 rounded-[1.1rem] border border-white/16 bg-black/58 p-2.5 text-left shadow-2xl shadow-black/35 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[var(--brand-blue)] hover:bg-black/66 sm:mt-4 sm:bg-black/44 ${variantClassNames.product}`}
             aria-label={`View ${formatProductName(product.name)}`}
           >
-            <span className="relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/16 bg-[radial-gradient(circle_at_50%_18%,#ffffff,#dfe7ef)] sm:size-20">
+            <span className="relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl border border-white/16 bg-white sm:size-20">
               <Image
                 src={getTransparentProductImageSrc(product.image)}
                 alt={`${formatProductName(product.name)} product image`}
