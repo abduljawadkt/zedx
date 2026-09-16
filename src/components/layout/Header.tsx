@@ -194,7 +194,7 @@ export function Header() {
                     className="group overflow-hidden rounded-[1.15rem] border border-[var(--shell-border)] bg-[var(--shell-card)] text-[var(--foreground)] transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#00a0e3]/10"
                     onClick={() => setActiveMega(null)}
                   >
-                    <div className="relative grid min-h-40 place-items-center overflow-hidden bg-[radial-gradient(circle_at_50%_18%,#eef3f7,#9facb8_52%,#202832)]">
+                    <div className="relative grid min-h-40 place-items-center overflow-hidden bg-white">
                       <Image
                         src={getTransparentProductImageSrc(product.image)}
                         alt={`${formatProductName(product.name)} menu product image`}

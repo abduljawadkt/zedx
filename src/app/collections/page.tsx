@@ -35,8 +35,7 @@ export default async function CollectionsPage() {
             href={`/collections/${collection.slug}`}
             className="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.045] transition hover:-translate-y-1 hover:border-[#00a0e3]/40"
           >
-            <div className="relative grid min-h-64 place-items-center overflow-hidden bg-[#f4f4f6]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(0,160,227,0.18),transparent_48%)]" />
+            <div className="relative grid min-h-64 place-items-center overflow-hidden bg-white">
               <Image
                 src={getTransparentProductImageSrc(collection.image)}
                 alt={`${collection.name} collection`}
