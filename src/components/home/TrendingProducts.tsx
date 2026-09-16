@@ -75,9 +75,9 @@ function FeaturedSkuCard({
     <Link
       href={`/products/${product.slug}`}
       aria-label={`View ${product.name} product details`}
-      className="group block w-full overflow-hidden rounded-[1.15rem] bg-[#f2f3f4] text-[#050505] shadow-[0_22px_65px_rgba(0,0,0,0.24)] transition duration-500 hover:-translate-y-1 hover:bg-white hover:shadow-[0_30px_90px_rgba(0,160,227,0.16)]"
+      className="group block w-full overflow-hidden rounded-[1.15rem] bg-white text-[#050505] shadow-[0_22px_65px_rgba(0,0,0,0.24)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(0,160,227,0.16)]"
     >
-      <div className="relative grid h-[20rem] place-items-center overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#ffffff_0%,#f9fafb_42%,#e9edf1_100%)]">
+      <div className="relative grid h-[20rem] place-items-center overflow-hidden bg-white">
         <div className="pointer-events-none absolute inset-x-[18%] bottom-[17%] h-8 rounded-full bg-slate-950/13 blur-2xl" />
         <ProductImage
           product={product}
