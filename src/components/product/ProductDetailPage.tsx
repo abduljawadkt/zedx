@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/Badge";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import {
   ProductImage,
-  productImageGroundShadowClassName,
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
@@ -84,7 +83,6 @@ export function ProductDetailPage({
             transition={{ type: "spring", stiffness: 90, damping: 22 }}
           >
             <div className={productImageStageGlowClassName} />
-            <div className={productImageGroundShadowClassName} />
             <motion.div
               key={activeImage}
               className="relative z-10 grid w-full place-items-center"
@@ -98,7 +96,7 @@ export function ProductDetailPage({
                 src={activeImage}
                 alt={`${displayName} gallery image`}
                 priority
-                className="!w-[min(84%,560px)] !drop-shadow-[0_34px_60px_rgba(15,23,42,0.28)] sm:!w-[min(76%,620px)]"
+                className="!w-[min(84%,560px)] sm:!w-[min(76%,620px)]"
                 imageClassName="brightness-[1.03] contrast-[1.04]"
                 sizes="(min-width: 1024px) 620px, 86vw"
               />
@@ -118,12 +116,11 @@ export function ProductDetailPage({
                 aria-label={`Select ${displayName} gallery image ${index + 1}`}
                 onClick={() => setActiveImage(image)}
               >
-                <div className={productImageGroundShadowClassName} />
                 <ProductImage
                   product={product}
                   src={image}
                   alt={`${displayName} thumbnail ${index + 1}`}
-                  className="!w-[58%] !drop-shadow-[0_18px_28px_rgba(15,23,42,0.22)]"
+                  className="!w-[58%]"
                   imageClassName="brightness-[1.03] contrast-[1.04]"
                   sizes="180px"
                 />
