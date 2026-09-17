@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { useCatalog } from "@/components/providers/CatalogProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
-import { formatCategoryName, formatProductName, productGroups } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName, productGroups, formatPrice } from "@/lib/productDisplay";
 
 const navGroups = [
   {
@@ -211,7 +211,7 @@ export function Header() {
                         {formatProductName(product.name)}
                       </p>
                       <p className="mt-3 type-control text-[var(--brand-blue-soft)]">
-                        {product.currency} {product.price}
+                        {formatPrice(product)}
                       </p>
                     </div>
                   </Link>

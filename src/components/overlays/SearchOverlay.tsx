@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { useCatalog } from "@/components/providers/CatalogProvider";
 import { ProductImage } from "@/components/product/ProductImage";
-import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName, formatPrice } from "@/lib/productDisplay";
 
 export function SearchOverlay() {
   const { closeSearch, isSearchOpen } = useCommerce();
@@ -96,7 +96,7 @@ export function SearchOverlay() {
                     <p className="font-semibold text-white">{formatProductName(product.name)}</p>
                     <p className="text-sm text-[#ffffff73]">{formatCategoryName(product.category)}</p>
                     <p className="mt-2 text-sm font-semibold text-[var(--brand-blue-soft)]">
-                      {product.currency} {product.price}
+                      {formatPrice(product)}
                     </p>
                   </div>
                 </Link>

@@ -7,7 +7,7 @@ import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef } from "react";
 import { useCatalog } from "@/components/providers/CatalogProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatProductName, formatPrice } from "@/lib/productDisplay";
 
 const storyVideos = {
   powerbankCta: "/story-videos/zedx-powerbank-cta.mp4",
@@ -158,7 +158,7 @@ function StoryVideo({
                 {formatProductName(product.name)}
               </span>
               <span className="mt-1 block type-micro text-white/72">
-                {product.currency} {product.price}
+                {formatPrice(product)}
               </span>
             </span>
           </Link>

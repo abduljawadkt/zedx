@@ -8,7 +8,7 @@ import { useCommerce } from "@/components/providers/CommerceProvider";
 import { useCatalog } from "@/components/providers/CatalogProvider";
 import { ProductImage } from "@/components/product/ProductImage";
 import { type Product } from "@/data/products";
-import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName, formatPrice } from "@/lib/productDisplay";
 
 type ChatMessage = {
   id: number;
@@ -269,7 +269,7 @@ export function ProductAdvisorChat() {
                                 {formatCategoryName(product.category)}
                               </p>
                               <p className="mt-2 text-sm font-semibold text-[var(--brand-blue-soft)]">
-                                {product.currency} {product.price}
+                                {formatPrice(product)}
                               </p>
                               <div className="mt-3 flex gap-2">
                                 <button

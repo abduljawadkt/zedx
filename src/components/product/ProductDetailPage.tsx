@@ -13,7 +13,7 @@ import {
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
 import type { Product } from "@/data/products";
-import { formatCategoryName, formatProductDescription, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductDescription, formatProductName, formatPrice } from "@/lib/productDisplay";
 import { storefrontConfig } from "@/config/storefront";
 
 const shippingItems = [
@@ -42,7 +42,7 @@ export function ProductDetailPage({
   const [openShipping, setOpenShipping] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const reduceMotion = useReducedMotion();
-  const price = `${product.currency} ${product.price}`;
+  const price = formatPrice(product);
   const gallery = useMemo(() => product.gallery.length ? product.gallery : [product.image], [product]);
   const displayName = formatProductName(product.name);
   const displayDescription = formatProductDescription(product);

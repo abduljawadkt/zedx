@@ -5,7 +5,7 @@ import { Minus, Plus, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { ProductImage } from "@/components/product/ProductImage";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatProductName, formatPrice } from "@/lib/productDisplay";
 
 export function CartDrawer() {
   const { addToCart, cartItems, closeCart, isCartOpen, removeFromCart } = useCommerce();
@@ -100,7 +100,7 @@ export function CartDrawer() {
                         </button>
                       </div>
                       <p className="mt-1 text-sm text-[#ffffff73]">
-                        {product.currency} {product.price}
+                        {formatPrice(product)}
                       </p>
                       <div className="mt-4 inline-flex items-center overflow-hidden rounded-full border border-[#ffffff1a]">
                         <button
