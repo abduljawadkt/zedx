@@ -15,7 +15,6 @@ import {
 import { motion, useReducedMotion } from "motion/react";
 import {
   ProductImage,
-  productImageGroundShadowClassName,
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
@@ -90,10 +89,9 @@ export function CategoryUniverse() {
                 <div className="relative z-10 mt-3 grid place-items-center">
                   <div className={`${productImageStageClassName} min-h-44 w-full rounded-[1rem]`}>
                     <div className={productImageStageGlowClassName} />
-                    <div className={productImageGroundShadowClassName} />
                   <ProductImage
                     product={heroProduct}
-                    className="!w-[min(82%,220px)] !drop-shadow-[0_20px_36px_rgba(15,23,42,0.22)]"
+                    className="!w-[min(82%,220px)]"
                     imageClassName="brightness-[1.03] contrast-[1.04]"
                     sizes="240px"
                     alt={`${category.name} category product: ${formatProductName(heroProduct.name)}`}

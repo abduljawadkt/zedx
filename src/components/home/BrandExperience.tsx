@@ -135,7 +135,7 @@ export function BrandExperience() {
                           alt={`${product.name} transparent featured product`}
                           fill
                           sizes={isWide ? "(min-width: 1024px) 520px, 86vw" : "420px"}
-                          className="object-contain drop-shadow-[0_45px_90px_rgba(56,189,248,0.26)]"
+                          className="object-contain"
                         />
                       </div>
                     ) : (
@@ -150,8 +150,8 @@ export function BrandExperience() {
                           product={product}
                           className={
                             isWide
-                              ? "!w-[min(82%,520px)] !drop-shadow-[0_34px_60px_rgba(15,23,42,0.28)]"
-                              : "!w-[min(82%,360px)] !drop-shadow-[0_28px_48px_rgba(15,23,42,0.25)]"
+                              ? "!w-[min(82%,520px)]"
+                              : "!w-[min(82%,360px)]"
                           }
                           imageClassName="brightness-[1.03] contrast-[1.04]"
                           sizes={isWide ? "(min-width: 1024px) 520px, 86vw" : "420px"}
