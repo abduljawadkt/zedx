@@ -7,10 +7,9 @@ import { ChevronRight, Menu, Search, ShoppingBag, User } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { getTransparentProductImageSrc } from "@/components/product/ProductImage";
-import { categories } from "@/data/categories";
-import { products } from "@/data/products";
-import { formatCategoryName, formatProductName, productGroups } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName, productGroups, formatPrice } from "@/lib/productDisplay";
 
 const navGroups = [
   {
@@ -35,6 +34,7 @@ const navGroups = [
 
 export function Header() {
   const { cartItems, openCart, openMenu, openSearch } = useCommerce();
+  const { products, categories } = useCatalog();
   const pathname = usePathname();
   const [activeMega, setActiveMega] = useState<(typeof navGroups)[number] | null>(null);
   const activeProducts = products
@@ -194,7 +194,7 @@ export function Header() {
                     className="group overflow-hidden rounded-[1.15rem] border border-[var(--shell-border)] bg-[var(--shell-card)] text-[var(--foreground)] transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#00a0e3]/10"
                     onClick={() => setActiveMega(null)}
                   >
-                    <div className="relative grid min-h-40 place-items-center overflow-hidden bg-[radial-gradient(circle_at_50%_18%,#eef3f7,#9facb8_52%,#202832)]">
+                    <div className="relative grid min-h-40 place-items-center overflow-hidden bg-white">
                       <Image
                         src={getTransparentProductImageSrc(product.image)}
                         alt={`${formatProductName(product.name)} menu product image`}
@@ -211,7 +211,7 @@ export function Header() {
                         {formatProductName(product.name)}
                       </p>
                       <p className="mt-3 type-control text-[var(--brand-blue-soft)]">
-                        {product.currency} {product.price}
+                        {formatPrice(product)}
                       </p>
                     </div>
                   </Link>

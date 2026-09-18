@@ -1,39 +1,64 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
+import { storefrontConfig } from "@/config/storefront";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contact ZEDX for premium tech accessories and product support.",
+  description: "Contact ZEDX for product help, support, and UAE shopping questions.",
 };
 
 export default function ContactPage() {
   return (
-    <main className="relative mx-auto grid w-full max-w-7xl flex-1 gap-10 px-5 py-20 text-white sm:px-8 lg:grid-cols-[0.95fr_1.05fr]">
-      <div className="pointer-events-none absolute right-10 top-10 -z-10 h-[30rem] w-[30rem] rounded-full bg-[#00a0e3]/12 blur-3xl" />
-      <div>
-        <p className="text-xs font-semibold text-cyan-200/80">
-          Contact
-        </p>
-        <h1 className="mt-4 text-6xl font-semibold leading-[0.86] text-white sm:text-8xl">
-          Let&apos;s build the next drop.
+    <main className="mx-auto w-full max-w-[72rem] flex-1 px-4 py-14 text-white sm:px-8 sm:py-24">
+      <section className="rounded-[1.6rem] border border-white/10 bg-[#0b0d11]/78 p-6 shadow-2xl shadow-black/30 sm:rounded-[2rem] sm:p-10">
+        <p className="text-xs font-semibold text-[var(--brand-blue-soft)]">Contact ZEDX</p>
+        <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-tight sm:text-7xl sm:leading-[0.96]">
+          Product help and support for Dubai & UAE shoppers.
         </h1>
-      </div>
-      <form className="glass-panel grid gap-5 rounded-[2rem] p-8 shadow-2xl shadow-black/30">
-        <input
-          className="h-14 rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-white outline-none transition placeholder:text-white/35 focus:border-cyan-300/60"
-          placeholder="Name"
-        />
-        <input
-          className="h-14 rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-white outline-none transition placeholder:text-white/35 focus:border-cyan-300/60"
-          placeholder="Email"
-        />
-        <textarea
-          className="min-h-36 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-white outline-none transition placeholder:text-white/35 focus:border-cyan-300/60"
-          placeholder="Message"
-        />
-        <button className="h-14 rounded-full bg-white px-7 text-sm font-semibold text-[#050505] transition hover:scale-[1.02] hover:bg-[var(--brand-blue-soft)]">
-          Send
-        </button>
-      </form>
+        <p className="mt-6 max-w-3xl text-base leading-7 text-white/62 sm:text-lg sm:leading-8">
+          Ask about ZEDX audio, power banks, fast chargers, smart wearables, car mounts, cables, warranty support,
+          shipping information, or product compatibility.
+        </p>
+      </section>
+
+      <section className="mt-8 grid gap-4 sm:grid-cols-3">
+        {[
+          {
+            icon: Mail,
+            title: "Email",
+            body: storefrontConfig.contactEmail,
+            href: `mailto:${storefrontConfig.contactEmail}`,
+          },
+          {
+            icon: MapPin,
+            title: "Region",
+            body: storefrontConfig.regionLabel,
+            href: "/shipping",
+          },
+          {
+            icon: MessageCircle,
+            title: "Support",
+            body: "Product and order help",
+            href: "/support",
+          },
+        ].map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.title}
+              href={item.href}
+              className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-5 transition hover:border-[#00a0e3]/50 hover:bg-white/[0.055]"
+            >
+              <span className="grid size-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-[var(--brand-blue-soft)]">
+                <Icon size={20} />
+              </span>
+              <h2 className="mt-5 text-xl font-semibold text-white">{item.title}</h2>
+              <p className="mt-2 text-sm leading-7 text-white/58">{item.body}</p>
+            </Link>
+          );
+        })}
+      </section>
     </main>
   );
 }

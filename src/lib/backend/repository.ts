@@ -18,6 +18,10 @@ function stringify(value: unknown) {
   return JSON.stringify(value);
 }
 
+function productSku(slug: string) {
+  return slug.toUpperCase().replace(/[^A-Z0-9]/g, "-");
+}
+
 function toProductCreate(input: Partial<Product> & {
   id?: string;
   slug: string;
@@ -139,6 +143,19 @@ export async function upsertProduct(input: Partial<Product> & {
     create,
     update,
   });
+  await prisma.inventoryItem.upsert({
+    where: { productId: product.id },
+    create: {
+      productId: product.id,
+      sku: product.sku ?? productSku(product.slug),
+      quantity: 0,
+      reserved: 0,
+      lowStockAt: 5,
+    },
+    update: {
+      sku: product.sku ?? productSku(product.slug),
+    },
+  });
 
   await syncCategoryAndCollectionCounts(product.categorySlug, product.collection);
   return getProduct(product.slug);
@@ -157,6 +174,19 @@ export async function updateProductBySlug(slug: string, input: Partial<Product> 
   const product = await prisma.product.update({
     where: { slug },
     data: toProductUpdate(input),
+  });
+  await prisma.inventoryItem.upsert({
+    where: { productId: product.id },
+    create: {
+      productId: product.id,
+      sku: product.sku ?? productSku(product.slug),
+      quantity: 0,
+      reserved: 0,
+      lowStockAt: 5,
+    },
+    update: {
+      sku: product.sku ?? productSku(product.slug),
+    },
   });
   await syncCategoryAndCollectionCounts(existing.categorySlug, existing.collection);
   await syncCategoryAndCollectionCounts(product.categorySlug, product.collection);

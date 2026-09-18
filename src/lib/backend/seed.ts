@@ -195,26 +195,24 @@ export async function seedDatabaseIfNeeded() {
     }
   }
 
-  if (inventoryCount === 0) {
-    await Promise.all(
-      seedProducts.map((product) =>
-        prisma.inventoryItem.upsert({
-          where: { productId: product.id },
-          create: {
-            productId: product.id,
-            sku: productSku(product.slug),
-            quantity: 50,
-            reserved: 0,
-            lowStockAt: 5,
-          },
-          update: {
-            sku: productSku(product.slug),
-            quantity: 50,
-            reserved: 0,
-            lowStockAt: 5,
-          },
-        }),
-      ),
-    );
-  }
+  const inventoryProducts = await prisma.product.findMany({
+    select: { id: true, slug: true, sku: true },
+  });
+  await Promise.all(
+    inventoryProducts.map((product) =>
+      prisma.inventoryItem.upsert({
+        where: { productId: product.id },
+        create: {
+          productId: product.id,
+          sku: product.sku ?? productSku(product.slug),
+          quantity: inventoryCount === 0 ? 50 : 0,
+          reserved: 0,
+          lowStockAt: 5,
+        },
+        update: {
+          sku: product.sku ?? productSku(product.slug),
+        },
+      }),
+    ),
+  );
 }

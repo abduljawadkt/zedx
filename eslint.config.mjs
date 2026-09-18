@@ -5,9 +5,12 @@ const eslintConfig = [
   {
     ignores: [
       ".next/**",
+      ".next.stale-*/**",
+      "**/*.ecanceled-backup",
       "node_modules/**",
       "Product Animation/**",
       "public/product-animation/**",
+      "tmp/**",
     ],
   },
 ];

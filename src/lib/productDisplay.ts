@@ -3,6 +3,16 @@ import { products, type Product } from "@/data/products";
 
 export type ProductGroupId = "audio" | "power" | "accessories";
 
+// Show a price only when the backend actually has one; otherwise a neutral label
+// instead of a misleading "AED 0" for products missing a price in Medusa.
+export function formatPrice(product: { currency: string; price: number }): string {
+  return product.price > 0 ? `${product.currency} ${product.price}` : "Price on request";
+}
+
+export function hasPrice(product: { price: number }): boolean {
+  return product.price > 0;
+}
+
 export const productGroups: Record<
   ProductGroupId,
   {

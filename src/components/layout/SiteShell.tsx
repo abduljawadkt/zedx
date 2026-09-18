@@ -4,8 +4,11 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CatalogProvider } from "@/components/providers/CatalogProvider";
 import { CommerceProvider, useCommerce } from "@/components/providers/CommerceProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import type { Category } from "@/data/categories";
+import type { Product } from "@/data/products";
 
 const MobileMenu = dynamic(() =>
   import("@/components/layout/MobileMenu").then((module) => module.MobileMenu),
@@ -37,7 +40,15 @@ function CommerceOverlays() {
   );
 }
 
-export function SiteShell({ children }: { children: React.ReactNode }) {
+export function SiteShell({
+  children,
+  products,
+  categories,
+}: {
+  children: React.ReactNode;
+  products: Product[];
+  categories: Category[];
+}) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith("/admin");
 
@@ -47,12 +58,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider>
-      <CommerceProvider>
-        <Header />
-        {children}
-        <Footer />
-        <CommerceOverlays />
-      </CommerceProvider>
+      <CatalogProvider products={products} categories={categories}>
+        <CommerceProvider>
+          <Header />
+          {children}
+          <Footer />
+          <CommerceOverlays />
+        </CommerceProvider>
+      </CatalogProvider>
     </ThemeProvider>
   );
 }

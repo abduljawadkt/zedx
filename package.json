@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "NEXT_TELEMETRY_DISABLED=1 next dev --turbopack",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build --webpack",
+    "db:generate": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma generate",
+    "db:push": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma db push",
+    "db:studio": "DATABASE_URL=${DATABASE_URL:-file:./prisma/dev.db} prisma studio",
     "start": "next start",
     "lint": "eslint src next.config.mjs eslint.config.mjs"
   },

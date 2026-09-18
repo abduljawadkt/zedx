@@ -2,7 +2,8 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { errorResponse, jsonResponse } from "@/lib/backend/http";
 import { prisma } from "@/lib/backend/prisma";
-import { getCustomerSession } from "@/lib/backend/session";
+import { MEDUSA_CUSTOMER_TOKEN_COOKIE, getCustomerSession } from "@/lib/backend/session";
+import { getMedusaConfig, medusaUpsertCustomerAddress } from "@/lib/medusa";
 
 const addressSchema = z.object({
   label: z.string().min(1).default("Default"),
@@ -59,6 +60,18 @@ export async function PUT(request: NextRequest) {
     where: { id: session.customerId },
     data: { name: parsed.data.fullName, phone: parsed.data.phone },
   });
+
+  const medusaToken = request.cookies.get(MEDUSA_CUSTOMER_TOKEN_COOKIE)?.value;
+  if (getMedusaConfig() && medusaToken) {
+    await medusaUpsertCustomerAddress(medusaToken, {
+      label: parsed.data.label,
+      fullName: parsed.data.fullName,
+      phone: parsed.data.phone,
+      city: parsed.data.city,
+      addressLine: parsed.data.addressLine,
+      apartment: parsed.data.apartment,
+    }).catch(() => undefined);
+  }
 
   return jsonResponse({ address });
 }

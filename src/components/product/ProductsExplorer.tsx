@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronDown, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { categories } from "@/data/categories";
-import { collections, products, type Product } from "@/data/products";
+import { categories as staticCategories, type Category } from "@/data/categories";
+import { collections as staticCollections, products as staticProducts, type Product } from "@/data/products";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { productGroups } from "@/lib/productDisplay";
 
@@ -18,7 +18,15 @@ const sortLabels: Record<SortMode, string> = {
   "price-desc": "Price High to Low",
 };
 
-export function ProductsExplorer() {
+export function ProductsExplorer({
+  categories = staticCategories,
+  collections = staticCollections,
+  products = staticProducts,
+}: {
+  categories?: Category[];
+  collections?: string[];
+  products?: Product[];
+}) {
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeCollection, setActiveCollection] = useState("all");
   const [priceMode, setPriceMode] = useState<PriceMode>("all");
@@ -57,7 +65,7 @@ export function ProductsExplorer() {
     }
 
     return sorted;
-  }, [activeCategory, activeCollection, priceMode, query, sortMode]);
+  }, [activeCategory, activeCollection, priceMode, products, query, sortMode]);
 
   return (
     <main className="mx-auto w-full max-w-[92rem] flex-1 px-4 py-12 text-white sm:px-8 sm:py-20">

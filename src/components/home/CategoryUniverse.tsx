@@ -19,8 +19,7 @@ import {
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
-import { categories } from "@/data/categories";
-import { products } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 import { formatProductName } from "@/lib/productDisplay";
 
 const iconMap = {
@@ -45,6 +44,7 @@ const hiddenCategorySlugs = new Set([
 ]);
 
 export function CategoryUniverse() {
+  const { products, categories } = useCatalog();
   const reduceMotion = useReducedMotion();
   const visibleCategories = categories.filter((category) => !hiddenCategorySlugs.has(category.slug));
 

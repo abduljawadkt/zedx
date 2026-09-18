@@ -4,10 +4,9 @@ import { cn } from "@/lib/utils";
 import type { Product } from "@/data/products";
 
 export const productImageStageClassName =
-  "relative grid place-items-center overflow-hidden border border-black/10 bg-[#F5F5F7] shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_18px_50px_rgba(0,0,0,0.22)]";
+  "relative grid place-items-center overflow-hidden border border-black/10 bg-white shadow-[inset_0_1px_0_rgba(255,255,255,0.86),0_18px_50px_rgba(0,0,0,0.22)]";
 
-export const productImageStageGlowClassName =
-  "pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_14%,rgba(255,255,255,0.9),transparent_42%),radial-gradient(circle_at_50%_92%,rgba(0,160,227,0.08),transparent_36%)]";
+export const productImageStageGlowClassName = "pointer-events-none absolute inset-0";
 
 export const productImageGroundShadowClassName =
   "pointer-events-none absolute inset-x-[18%] bottom-[12%] h-9 rounded-full bg-slate-950/16 blur-2xl";
@@ -46,7 +45,7 @@ export function ProductImage({
   return (
     <div
       className={cn(
-        "relative z-10 aspect-square w-[min(78%,440px)] drop-shadow-[0_35px_80px_rgba(56,189,248,0.18)]",
+        "relative z-10 aspect-square w-[min(78%,440px)]",
         className,
       )}
     >

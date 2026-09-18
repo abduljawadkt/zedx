@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { ProductImage } from "@/components/product/ProductImage";
+import { formatPrice } from "@/lib/productDisplay";
 
 const paymentOptions = ["Cash on delivery", "Store pickup"] as const;
 const defaultCountryCode = "ae";
@@ -87,8 +88,7 @@ export function CheckoutPage() {
   );
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const shipping = subtotal > 0 && paymentMethod !== "Store pickup" ? 18 : 0;
-  const total = subtotal + shipping;
+  const total = subtotal;
 
   async function placeOrder() {
     setSubmitting(true);
@@ -240,7 +240,7 @@ export function CheckoutPage() {
                   </div>
                   <div>
                     <p className="line-clamp-2 text-sm font-semibold leading-5 text-white">{product.name}</p>
-                    <p className="mt-1 text-sm text-[#ffffff73]">{product.currency} {product.price}</p>
+                    <p className="mt-1 text-sm text-[#ffffff73]">{formatPrice(product)}</p>
                     <div className="mt-3 inline-flex items-center overflow-hidden rounded-full border border-[#ffffff1a]">
                       <button type="button" aria-label={`Decrease ${product.name} quantity`} className="grid size-8 place-items-center text-[#ffffff99] hover:bg-[#ffffff1a] hover:text-white" onClick={() => removeFromCart(product.id)}>
                         <Minus size={13} />
@@ -257,7 +257,6 @@ export function CheckoutPage() {
 
             <div className="mt-6 space-y-3 border-t border-[#ffffff1a] pt-5 text-sm">
               <SummaryRow label="Subtotal" value={`AED ${subtotal}`} />
-              <SummaryRow label="Shipping" value={shipping ? `AED ${shipping}` : "Free"} />
               <div className="flex items-center justify-between pt-3 text-white">
                 <span className="text-sm text-[#ffffff73]">Total</span>
                 <span className="text-2xl font-semibold sm:text-3xl">AED {total}</span>

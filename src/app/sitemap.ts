@@ -1,20 +1,35 @@
 import type { MetadataRoute } from "next";
-import { categories } from "@/data/categories";
-import { products } from "@/data/products";
+import { getCategories, getCollections, getProducts } from "@/lib/backend/catalog";
+import { siteUrl } from "@/lib/seo";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://zedx-demo.example";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [products, categories, collections] = await Promise.all([
+    getProducts().catch(() => []),
+    getCategories().catch(() => []),
+    getCollections().catch(() => []),
+  ]);
 
   return [
     "",
     "/products",
-    "/collections/audio",
-    "/collections/power",
+    "/collections",
+    ...collections.map((collection) => `/collections/${collection.slug}`),
     "/collections/accessories",
+    "/about",
+    "/contact",
+    "/support",
+    "/faq",
+    "/warranty",
+    "/shipping",
+    "/returns",
+    "/refunds",
+    "/privacy",
+    "/terms",
+    "/track-order",
     ...categories.map((category) => `/categories/${category.slug}`),
     ...products.map((product) => `/products/${product.slug}`),
   ].map((path) => ({
-    url: `${baseUrl}${path}`,
+    url: `${siteUrl}${path}`,
     lastModified: new Date(),
   }));
 }

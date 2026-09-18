@@ -10,12 +10,12 @@ import {
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
-import { products } from "@/data/products";
+import { useCatalog } from "@/components/providers/CatalogProvider";
 
 type ExperiencePanel = {
   eyebrow: string;
   href: string;
-  productId: string;
+  productSlug: string;
   title: string;
   tone: "blue" | "dark" | "graphite";
   visualSrc?: string;
@@ -25,14 +25,14 @@ const panels: ExperiencePanel[] = [
   {
     eyebrow: "Portable Power",
     title: "Power for every moment.",
-    productId: "zedx-power-bank-10000-zx-pb115",
+    productSlug: "zedx-power-bank-10000-zx-pb115",
     href: "/products/zedx-power-bank-10000-zx-pb115",
     tone: "graphite",
   },
   {
     eyebrow: "Premium Audio",
     title: "Audio that feels composed.",
-    productId: "zedx-headphone-lumen-100",
+    productSlug: "zedx-headphone-lumen-100",
     visualSrc: "/hero-animation/headphones.png",
     href: "/products/zedx-headphone-lumen-100",
     tone: "dark",
@@ -40,13 +40,14 @@ const panels: ExperiencePanel[] = [
   {
     eyebrow: "Smart Wearables",
     title: "A sharper everyday setup.",
-    productId: "zedx-zen5-round-watch",
+    productSlug: "zedx-zen5-round-watch",
     href: "/products/zedx-zen5-round-watch",
     tone: "blue",
   },
 ];
 
 export function BrandExperience() {
+  const { products } = useCatalog();
   const reduceMotion = useReducedMotion();
 
   return (
@@ -63,7 +64,9 @@ export function BrandExperience() {
         <div className="grid gap-5 lg:grid-cols-2">
           {panels.map((panel, index) => {
             const product =
-              products.find((item) => item.id === panel.productId) ?? products[index];
+              products.find((item) => item.slug === panel.productSlug) ?? products[index % Math.max(products.length, 1)];
+            // Derive the link from the resolved product so a removed/renamed product never 404s.
+            const href = product ? `/products/${product.slug}` : panel.href;
             const isWide = index === 0;
 
             return (
@@ -103,7 +106,7 @@ export function BrandExperience() {
                       {panel.title}
                     </h3>
                     <Link
-                      href={panel.href}
+                      href={href}
                       className={`mt-7 inline-flex h-14 w-fit items-center justify-center gap-3 rounded-full px-6 text-sm font-semibold transition active:scale-95 ${
                         panel.tone === "dark"
                           ? "bg-white text-[#050505] hover:bg-[var(--brand-blue-soft)]"

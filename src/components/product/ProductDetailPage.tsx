@@ -2,19 +2,18 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Minus, Plus, ShieldCheck, ShoppingBag, Truck, Zap } from "lucide-react";
+import { ChevronDown, Minus, Plus, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { Badge } from "@/components/ui/Badge";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import {
   ProductImage,
-  productImageGroundShadowClassName,
   productImageStageClassName,
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
 import type { Product } from "@/data/products";
-import { formatCategoryName, formatProductDescription, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductDescription, formatProductName, formatPrice } from "@/lib/productDisplay";
 import { storefrontConfig } from "@/config/storefront";
 
 const shippingItems = [
@@ -43,9 +42,8 @@ export function ProductDetailPage({
   const [openShipping, setOpenShipping] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const reduceMotion = useReducedMotion();
-  const price = `${product.currency} ${product.price}`;
+  const price = formatPrice(product);
   const gallery = useMemo(() => product.gallery.length ? product.gallery : [product.image], [product]);
-  const savings = Math.max(product.oldPrice - product.price, 0);
   const displayName = formatProductName(product.name);
   const displayDescription = formatProductDescription(product);
 
@@ -79,13 +77,12 @@ export function ProductDetailPage({
       <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr]">
         <section aria-label={`${displayName} gallery`} className="space-y-5">
           <motion.div
-            className={`${productImageStageClassName} min-h-[330px] rounded-[1.2rem] shadow-2xl shadow-cyan-500/10 sm:min-h-[640px] sm:rounded-[1.8rem]`}
+            className={`${productImageStageClassName} min-h-[330px] rounded-[1.2rem] shadow-2xl shadow-black/20 sm:min-h-[640px] sm:rounded-[1.8rem]`}
             initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
             animate={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 90, damping: 22 }}
           >
             <div className={productImageStageGlowClassName} />
-            <div className={productImageGroundShadowClassName} />
             <motion.div
               key={activeImage}
               className="relative z-10 grid w-full place-items-center"
@@ -99,7 +96,7 @@ export function ProductDetailPage({
                 src={activeImage}
                 alt={`${displayName} gallery image`}
                 priority
-                className="!w-[min(84%,560px)] !drop-shadow-[0_34px_60px_rgba(15,23,42,0.28)] sm:!w-[min(76%,620px)]"
+                className="!w-[min(84%,560px)] sm:!w-[min(76%,620px)]"
                 imageClassName="brightness-[1.03] contrast-[1.04]"
                 sizes="(min-width: 1024px) 620px, 86vw"
               />
@@ -119,12 +116,11 @@ export function ProductDetailPage({
                 aria-label={`Select ${displayName} gallery image ${index + 1}`}
                 onClick={() => setActiveImage(image)}
               >
-                <div className={productImageGroundShadowClassName} />
                 <ProductImage
                   product={product}
                   src={image}
                   alt={`${displayName} thumbnail ${index + 1}`}
-                  className="!w-[58%] !drop-shadow-[0_18px_28px_rgba(15,23,42,0.22)]"
+                  className="!w-[58%]"
                   imageClassName="brightness-[1.03] contrast-[1.04]"
                   sizes="180px"
                 />
@@ -154,24 +150,6 @@ export function ProductDetailPage({
           <div className="mt-7 flex flex-wrap items-end gap-3 sm:mt-8 sm:gap-4">
             <p className="text-3xl font-semibold text-white sm:text-4xl">
               {price}
-            </p>
-            <p className="pb-1 text-lg text-white/35 line-through">
-              {product.currency} {product.oldPrice}
-            </p>
-          {savings > 0 && (
-              <span className="mb-1 rounded-full bg-[#00a0e3]/16 px-3 py-1 type-micro text-[var(--brand-blue-soft)]">
-                Launch price: {product.currency} {savings} less than list
-              </span>
-            )}
-          </div>
-
-          <div className="mt-7 rounded-[1.25rem] border border-[#00a0e3]/30 bg-[#00a0e3]/10 p-4">
-            <div className="flex items-center gap-3 type-control text-white">
-              <Zap size={17} className="text-[var(--brand-blue-soft)]" />
-              Auto-applied launch offer
-            </div>
-            <p className="mt-2 type-muted">
-              Current demo pricing is shown clearly before checkout. Timed offers will appear only after ZEDX confirms campaign dates.
             </p>
           </div>
 

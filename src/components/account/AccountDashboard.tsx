@@ -55,11 +55,11 @@ export function AccountDashboard({ customer }: { customer: Customer }) {
       if (!active) return;
       if (ordersResponse.ok) {
         const data = await ordersResponse.json();
-        setOrders(data.data?.orders ?? []);
+        setOrders(data.orders ?? data.data?.orders ?? []);
       }
       if (addressesResponse.ok) {
         const data = await addressesResponse.json();
-        const defaultAddress = data.data?.addresses?.[0] as Address | undefined;
+        const defaultAddress = (data.addresses ?? data.data?.addresses)?.[0] as Address | undefined;
         if (defaultAddress) {
           setAddress(defaultAddress);
           setFullName(defaultAddress.fullName);
@@ -95,7 +95,7 @@ export function AccountDashboard({ customer }: { customer: Customer }) {
       setStatus(data?.error?.message ?? "Unable to save delivery details.");
       return;
     }
-    setAddress(data.data?.address);
+    setAddress(data.address ?? data.data?.address);
     setStatus("Delivery details saved.");
   }
 
@@ -191,7 +191,7 @@ export function AccountDashboard({ customer }: { customer: Customer }) {
               <div>
                 <ShoppingBag className="mx-auto text-[var(--brand-blue-soft)]" size={34} />
                 <p className="mt-4 text-2xl font-semibold">No orders yet.</p>
-                <p className="mt-2 text-sm text-white/52">Your completed local checkout orders will appear here.</p>
+                <p className="mt-2 text-sm text-white/52">Your completed ZEDX checkout orders will appear here.</p>
                 <Link
                   href="/products"
                   className="mt-6 inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#050505] transition hover:bg-[var(--brand-blue)] hover:text-white"

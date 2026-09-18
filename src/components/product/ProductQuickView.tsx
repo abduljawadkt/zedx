@@ -11,7 +11,7 @@ import {
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
 import type { Product } from "@/data/products";
-import { formatProductName } from "@/lib/productDisplay";
+import { formatProductName, formatPrice } from "@/lib/productDisplay";
 
 export function ProductQuickView({
   onClose,
@@ -73,11 +73,13 @@ export function ProductQuickView({
               </h2>
               <div className="mt-6 flex items-end gap-4">
                 <p className="text-3xl font-semibold text-white">
-                  {product.currency} {product.price}
+                  {formatPrice(product)}
                 </p>
-                <p className="pb-1 text-white/35 line-through">
-                  {product.currency} {product.oldPrice}
-                </p>
+                {product.oldPrice > product.price && (
+                  <p className="pb-1 text-white/35 line-through">
+                    {product.currency} {product.oldPrice}
+                  </p>
+                )}
               </div>
               <div className="mt-7 flex flex-wrap gap-2">
                 {product.highlights.map((highlight) => (

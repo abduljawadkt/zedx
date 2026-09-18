@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { getCategories, getProducts } from "@/lib/backend/catalog";
+import type { Category } from "@/data/categories";
+import type { Product } from "@/data/products";
 import { absoluteUrl, siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -80,11 +83,16 @@ const websiteJsonLd = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [products, categories] = await Promise.all([
+    getProducts().catch(() => [] as Product[]),
+    getCategories().catch(() => [] as Category[]),
+  ]);
+
   const themeScript = `
     try {
       var theme = window.localStorage.getItem("zedx-theme");
@@ -100,7 +108,9 @@ export default function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <StructuredData data={[organizationJsonLd, websiteJsonLd]} />
-        <SiteShell>{children}</SiteShell>
+        <SiteShell products={products as Product[]} categories={categories as Category[]}>
+          {children}
+        </SiteShell>
       </body>
     </html>
   );

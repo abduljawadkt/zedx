@@ -12,7 +12,7 @@ import {
   productImageStageGlowClassName,
 } from "@/components/product/ProductImage";
 import type { Product } from "@/data/products";
-import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
+import { formatCategoryName, formatProductName, formatPrice } from "@/lib/productDisplay";
 
 export function ProductCard({
   hidePricing = false,
@@ -86,11 +86,13 @@ export function ProductCard({
         {!hidePricing && (
           <div className="mt-6 flex items-center justify-between gap-4">
             <p className="text-2xl font-semibold leading-8 text-[var(--foreground)]">
-              {product.currency} {product.price}
+              {formatPrice(product)}
             </p>
-            <p className="text-sm text-[var(--muted)] line-through">
-              {product.currency} {product.oldPrice}
-            </p>
+            {product.oldPrice > product.price && (
+              <p className="text-sm text-[var(--muted)] line-through">
+                {product.currency} {product.oldPrice}
+              </p>
+            )}
           </div>
         )}
         <div className="mt-6 grid gap-3">
