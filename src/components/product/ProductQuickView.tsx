@@ -59,7 +59,7 @@ export function ProductQuickView({
               <ProductImage
                 product={product}
                 alt={`${displayName} quick view image`}
-                className="product-float !w-[min(76%,420px)] !drop-shadow-[0_32px_58px_rgba(15,23,42,0.28)]"
+                className="product-float !w-[min(76%,420px)]"
                 imageClassName="brightness-[1.03] contrast-[1.04]"
                 sizes="(min-width: 1024px) 420px, 72vw"
               />

@@ -8,8 +8,9 @@ export const productImageStageClassName =
 
 export const productImageStageGlowClassName = "pointer-events-none absolute inset-0";
 
-export const productImageGroundShadowClassName =
-  "pointer-events-none absolute inset-x-[18%] bottom-[12%] h-9 rounded-full bg-slate-950/16 blur-2xl";
+// Rendered as a no-op: a dark ground blob became a gray smudge on the white
+// product stages. Kept exported so existing callers don't need edits.
+export const productImageGroundShadowClassName = "hidden";
 
 export function getTransparentProductImageSrc(src: string) {
   if (!src.startsWith("/products/")) return src;

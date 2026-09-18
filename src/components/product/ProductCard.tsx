@@ -61,7 +61,7 @@ export function ProductCard({
             <ProductImage
               product={product}
               alt={`${displayName} product image`}
-              className="!w-[min(82%,330px)] !drop-shadow-[0_28px_48px_rgba(15,23,42,0.25)]"
+              className="!w-[min(82%,330px)]"
               imageClassName="brightness-[1.03] contrast-[1.04]"
               sizes="(min-width: 1280px) 330px, (min-width: 640px) 42vw, 78vw"
             />

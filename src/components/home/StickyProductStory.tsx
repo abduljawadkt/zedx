@@ -132,14 +132,14 @@ export function StickyProductStory() {
                 alt={`${step.title} hero product`}
                 width={420}
                 height={420}
-                className="relative z-10 max-h-[15rem] w-auto max-w-[82%] object-contain drop-shadow-[0_24px_54px_rgba(0,160,227,0.16)]"
+                className="relative z-10 max-h-[15rem] w-auto max-w-[82%] object-contain"
                 sizes="86vw"
               />
             ) : (
               <ProductImage
                 product={product}
                 alt={`${formatProductName(product.name)} story product`}
-                className="!w-[min(82%,320px)] !drop-shadow-[0_24px_44px_rgba(15,23,42,0.24)]"
+                className="!w-[min(82%,320px)]"
                 imageClassName="brightness-[1.03] contrast-[1.04]"
                 sizes="86vw"
               />
@@ -255,14 +255,14 @@ export function StickyProductStory() {
                   alt={`${step.title} hero product`}
                   width={560}
                   height={560}
-                  className="relative z-10 max-h-[26rem] w-auto max-w-[82%] object-contain drop-shadow-[0_36px_80px_rgba(0,160,227,0.18)]"
+                  className="relative z-10 max-h-[26rem] w-auto max-w-[82%] object-contain"
                   sizes="(min-width: 1024px) 520px, 86vw"
                 />
               ) : (
                 <ProductImage
                   product={product}
                   alt={`${formatProductName(product.name)} story product`}
-                  className="!w-[min(82%,520px)] !drop-shadow-[0_34px_60px_rgba(15,23,42,0.28)]"
+                  className="!w-[min(82%,520px)]"
                   imageClassName="brightness-[1.03] contrast-[1.04]"
                   sizes="(min-width: 1024px) 520px, 86vw"
                 />
@@ -316,7 +316,7 @@ function CompactRecommendationCard({ item }: { item: Product }) {
         <ProductImage
           product={item}
           alt={`${formatProductName(item.name)} recommendation`}
-          className="!w-[min(72%,120px)] !drop-shadow-[0_16px_26px_rgba(15,23,42,0.22)]"
+          className="!w-[min(72%,120px)]"
           imageClassName="brightness-[1.03] contrast-[1.04]"
           sizes="140px"
         />

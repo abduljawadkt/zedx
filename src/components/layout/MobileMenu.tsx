@@ -123,7 +123,7 @@ export function MobileMenu() {
                       alt={`${formatProductName(product.name)} menu product image`}
                       width={120}
                       height={120}
-                      className="relative z-10 h-16 w-auto object-contain brightness-[1.03] contrast-[1.04] drop-shadow-[0_12px_20px_rgba(15,23,42,0.2)]"
+                      className="relative z-10 h-16 w-auto object-contain brightness-[1.03] contrast-[1.04]"
                     />
                   </span>
                   <span>

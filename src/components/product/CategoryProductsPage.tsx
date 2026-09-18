@@ -83,7 +83,7 @@ export function CategoryProductsPage({
                 product={heroProduct}
                 alt={`${formatProductName(heroProduct.name)} category hero`}
                 priority
-                className="!w-[min(82%,360px)] !drop-shadow-[0_28px_50px_rgba(15,23,42,0.28)]"
+                className="!w-[min(82%,360px)]"
                 imageClassName="brightness-[1.03] contrast-[1.04]"
                 sizes="(min-width: 1024px) 360px, 72vw"
               />
