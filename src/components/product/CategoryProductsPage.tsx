@@ -33,7 +33,8 @@ export function CategoryProductsPage({
     return items;
   }, [products, sortMode]);
   const heroProduct = products[0];
-  const lowestPrice = products.length ? Math.min(...products.map((product) => product.price)) : 0;
+  const pricedProducts = products.filter((product) => product.price > 0);
+  const lowestPrice = pricedProducts.length ? Math.min(...pricedProducts.map((product) => product.price)) : 0;
   const displayCategoryName = formatCategoryName(category.name);
   const collectionLabel = formatLabelName(
     category.collection.toLowerCase().includes("collection")
@@ -68,7 +69,7 @@ export function CategoryProductsPage({
               href="#category-products"
               className="rounded-full bg-white px-5 py-3 type-control text-[#050505] transition hover:bg-[var(--brand-blue-soft)]"
             >
-              Shop from AED {lowestPrice}
+              {lowestPrice ? `Shop from AED ${lowestPrice}` : "Shop the range"}
             </Link>
           </div>
         </div>
@@ -95,7 +96,7 @@ export function CategoryProductsPage({
           <div className="relative">
             <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-4">
               <p className="type-micro text-white/52">From</p>
-              <p className="mt-2 text-3xl font-semibold">AED {lowestPrice}</p>
+              <p className="mt-2 text-3xl font-semibold">{lowestPrice ? `AED ${lowestPrice}` : "Price on request"}</p>
             </div>
           </div>
         </div>
