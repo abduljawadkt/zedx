@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Minus, Plus, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
-import { ProductImage } from "@/components/product/ProductImage";
+import { ProductImage, productImageStageClassName } from "@/components/product/ProductImage";
 import { formatProductName, formatPrice } from "@/lib/productDisplay";
 
 export function CartDrawer() {
@@ -80,7 +80,7 @@ export function CartDrawer() {
                     exit={{ opacity: 0, x: 18 }}
                     transition={{ type: "spring", stiffness: 180, damping: 24 }}
                   >
-                    <div className="product-stage !min-h-16">
+                    <div className={`${productImageStageClassName} !min-h-16 rounded-[1rem]`}>
                       <ProductImage
                         product={product}
                         alt={`${formatProductName(product.name)} cart image`}

@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { useCatalog } from "@/components/providers/CatalogProvider";
-import { ProductImage } from "@/components/product/ProductImage";
+import { ProductImage, productImageStageClassName } from "@/components/product/ProductImage";
 import { type Product } from "@/data/products";
 import { formatCategoryName, formatProductName, formatPrice } from "@/lib/productDisplay";
 
@@ -252,11 +252,11 @@ export function ProductAdvisorChat() {
                             key={product.id}
                             className="grid grid-cols-[4.5rem_1fr] gap-3 rounded-[1.25rem] border border-[#ffffff1a] bg-[#ffffff09] p-3"
                           >
-                            <div className="product-stage !min-h-0 aspect-square rounded-2xl">
+                            <div className={`${productImageStageClassName} !min-h-0 aspect-square rounded-2xl`}>
                               <ProductImage
                                 product={product}
                                 alt={`${product.name} advisor recommendation`}
-                                className="!w-[70%] !drop-shadow-[0_16px_26px_rgba(15,23,42,0.22)]"
+                                className="!w-[70%]"
                                 imageClassName="brightness-[1.03] contrast-[1.04]"
                                 sizes="90px"
                               />
