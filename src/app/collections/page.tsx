@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CollectionsPage() {
-  const collections = await getCollections();
+  const collections = (await getCollections()).filter((collection) => collection.productCount > 0);
 
   return (
     <main className="mx-auto w-full max-w-[92rem] flex-1 px-4 py-10 text-white sm:px-8 sm:py-20">

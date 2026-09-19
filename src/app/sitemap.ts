@@ -13,7 +13,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     "/products",
     "/collections",
-    ...collections.map((collection) => `/collections/${collection.slug}`),
+    ...collections
+      .filter((collection) => collection.productCount > 0)
+      .map((collection) => `/collections/${collection.slug}`),
     "/collections/accessories",
     "/about",
     "/contact",
