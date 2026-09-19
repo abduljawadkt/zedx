@@ -45,7 +45,11 @@ const hiddenCategorySlugs = new Set([
 export function CategoryUniverse() {
   const { products, categories } = useCatalog();
   const reduceMotion = useReducedMotion();
-  const visibleCategories = categories.filter((category) => !hiddenCategorySlugs.has(category.slug));
+  const visibleCategories = categories.filter(
+    (category) =>
+      !hiddenCategorySlugs.has(category.slug) &&
+      products.some((product) => product.categorySlug === category.slug),
+  );
 
   return (
     <section className="bg-[#030405] px-5 py-20 text-white sm:px-8 lg:py-24">
