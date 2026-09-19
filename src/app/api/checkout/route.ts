@@ -52,6 +52,10 @@ type MedusaShippingOptionResponse = {
   shipping_options?: Array<{
     id: string;
     name?: string;
+    amount?: number;
+    calculated_price?: {
+      calculated_amount?: number;
+    };
   }>;
 };
 
@@ -191,13 +195,20 @@ async function createMedusaOrder(input: CheckoutInput, customerToken?: string) {
   const shippingOptions = await medusaFetch<MedusaShippingOptionResponse>(
     `/store/shipping-options?cart_id=${cart.id}`,
   );
+  const availableOptions = shippingOptions.shipping_options ?? [];
+  // Cost the storefront never charges shipping, so always pick the cheapest
+  // fulfillment option (Medusa exposes a free option). When the customer
+  // explicitly chose in-store pickup we honour that named option instead.
+  const optionCost = (option: (typeof availableOptions)[number]) =>
+    option.calculated_price?.calculated_amount ?? option.amount ?? 0;
   const prefersPickup = input.paymentMethod.toLowerCase().includes("pickup");
-  const shippingOption =
-    shippingOptions.shipping_options?.find((option) =>
-      prefersPickup
-        ? option.name?.toLowerCase().includes("pickup")
-        : option.name?.toLowerCase().includes("standard"),
-    ) ?? shippingOptions.shipping_options?.[0];
+  const pickupOption = availableOptions.find((option) =>
+    option.name?.toLowerCase().includes("pickup"),
+  );
+  const cheapestOption = availableOptions
+    .slice()
+    .sort((a, b) => optionCost(a) - optionCost(b))[0];
+  const shippingOption = (prefersPickup && pickupOption ? pickupOption : cheapestOption) ?? availableOptions[0];
 
   if (!shippingOption) {
     throw new Error("No Medusa shipping option is available for UAE.");
