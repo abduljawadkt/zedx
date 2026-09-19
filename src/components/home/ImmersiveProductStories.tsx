@@ -231,7 +231,7 @@ export function ImmersiveProductStories() {
                 title="Clear calls and music in a compact case"
                 className="sm:min-h-[26rem] lg:min-h-[23.5rem] xl:min-h-[25rem]"
                 mediaClassName="object-center"
-                productSlug="zedx-zeepods-pro-2025"
+                productSlug="zeepods-ultra-true-wireless-earphones"
                 categorySlug="earpods"
                 variant="compact"
               />
@@ -299,7 +299,7 @@ export function ImmersiveProductStories() {
             title="Fast charging without cable clutter"
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
-            productSlug="zedx-retractable-cable-100w-ze-03-type-c"
+            productSlug="ze-03-100w-retractable-data-cable"
             categorySlug="charging-cables"
             variant="wide"
           />
