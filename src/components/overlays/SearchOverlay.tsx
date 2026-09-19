@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { useCatalog } from "@/components/providers/CatalogProvider";
-import { ProductImage } from "@/components/product/ProductImage";
+import { ProductImage, productImageStageClassName } from "@/components/product/ProductImage";
 import { formatCategoryName, formatProductName, formatPrice } from "@/lib/productDisplay";
 
 export function SearchOverlay() {
@@ -84,7 +84,7 @@ export function SearchOverlay() {
                   className="group grid grid-cols-[5rem_1fr] items-center gap-4 rounded-[1.25rem] border border-[#ffffff1a] bg-[#ffffff09] p-3 transition hover:-translate-y-1 hover:border-cyan-300/50"
                   onClick={closeSearch}
                 >
-                  <div className="product-stage !min-h-20">
+                  <div className={`${productImageStageClassName} !min-h-20 rounded-[1rem]`}>
                     <ProductImage
                       product={product}
                       alt={`${formatProductName(product.name)} search result image`}
