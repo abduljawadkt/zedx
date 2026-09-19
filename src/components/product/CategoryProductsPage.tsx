@@ -32,9 +32,12 @@ export function CategoryProductsPage({
     if (sortMode === "price-desc") items.sort((a, b) => b.price - a.price);
     return items;
   }, [products, sortMode]);
-  const heroProduct = products[0];
   const pricedProducts = products.filter((product) => product.price > 0);
   const lowestPrice = pricedProducts.length ? Math.min(...pricedProducts.map((product) => product.price)) : 0;
+  // Hero shows the lowest-priced product so its image matches the "From AED X" price.
+  const heroProduct = pricedProducts.length
+    ? pricedProducts.reduce((min, product) => (product.price < min.price ? product : min))
+    : products[0];
   const displayCategoryName = formatCategoryName(category.name);
   const collectionLabel = formatLabelName(
     category.collection.toLowerCase().includes("collection")
