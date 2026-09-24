@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getProducts, getProductsByHandles, NEW_ARRIVAL_HANDLES } from "@/lib/backend/catalog";
+import { getProducts, getProductsByHandles, FEATURED_HANDLES, NEW_ARRIVAL_HANDLES } from "@/lib/backend/catalog";
 import type { Product } from "@/data/products";
 import { BrandExperience } from "@/components/home/BrandExperience";
 import { CategoryUniverse } from "@/components/home/CategoryUniverse";
@@ -29,11 +29,25 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   // Backend-driven selections from the live catalog (Medusa/DB) — no hardcoded SKUs.
-  const [featured, curatedArrivals, newestAll] = await Promise.all([
-    getProducts({ sort: "featured", limit: 4 }) as Promise<Product[]>,
+  const [curatedFeatured, featuredSorted, curatedArrivals, newestAll] = await Promise.all([
+    getProductsByHandles(FEATURED_HANDLES),
+    getProducts({ sort: "featured", limit: 8 }) as Promise<Product[]>,
     getProductsByHandles(NEW_ARRIVAL_HANDLES),
     getProducts({ sort: "newest", limit: 40 }) as Promise<Product[]>,
   ]);
+
+  // Featured items: the curated picks (FEATURED_HANDLES), pulled live from the
+  // backend. Top up with the featured-sorted catalog only if a handle is missing.
+  const featured: Product[] = [...curatedFeatured];
+  if (featured.length < 4) {
+    const seenIds = new Set(featured.map((product) => product.id));
+    for (const product of featuredSorted) {
+      if (seenIds.has(product.id)) continue;
+      seenIds.add(product.id);
+      featured.push(product);
+      if (featured.length >= 4) break;
+    }
+  }
 
   // New Arrivals: the curated picks (NEW_ARRIVAL_HANDLES), pulled live from the
   // backend. If any curated handle is unavailable, top up with the newest
