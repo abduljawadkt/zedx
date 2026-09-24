@@ -299,8 +299,8 @@ export function ImmersiveProductStories() {
             title="Fast charging without cable clutter"
             className="sm:min-h-[30rem] lg:min-h-[31rem]"
             mediaClassName="object-center"
-            productSlug="ze-03-100w-retractable-data-cable"
-            categorySlug="charging-cables"
+            productSlug="70w-gan-wall-charger-powercube70-ze-09"
+            categorySlug="chargers"
             variant="wide"
           />
         </motion.div>
