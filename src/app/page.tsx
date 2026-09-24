@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getProducts } from "@/lib/backend/catalog";
+import { getProducts, getProductsByHandles, NEW_ARRIVAL_HANDLES } from "@/lib/backend/catalog";
 import type { Product } from "@/data/products";
 import { BrandExperience } from "@/components/home/BrandExperience";
 import { CategoryUniverse } from "@/components/home/CategoryUniverse";
@@ -29,24 +29,23 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   // Backend-driven selections from the live catalog (Medusa/DB) — no hardcoded SKUs.
-  const [featured, newestAll] = await Promise.all([
+  const [featured, curatedArrivals, newestAll] = await Promise.all([
     getProducts({ sort: "featured", limit: 4 }) as Promise<Product[]>,
+    getProductsByHandles(NEW_ARRIVAL_HANDLES),
     getProducts({ sort: "newest", limit: 40 }) as Promise<Product[]>,
   ]);
 
-  // New Arrivals: newest products, but spread across distinct categories so the
-  // row isn't all one category; top up with remaining newest if categories run out.
-  const newArrivals: Product[] = [];
-  const seenCategories = new Set<string>();
-  for (const product of newestAll) {
-    if (seenCategories.has(product.categorySlug)) continue;
-    seenCategories.add(product.categorySlug);
-    newArrivals.push(product);
-    if (newArrivals.length >= 4) break;
-  }
+  // New Arrivals: the curated picks (NEW_ARRIVAL_HANDLES), pulled live from the
+  // backend. If any curated handle is unavailable, top up with the newest
+  // products across distinct categories so the row always shows four items.
+  const newArrivals: Product[] = [...curatedArrivals];
   if (newArrivals.length < 4) {
+    const seenIds = new Set(newArrivals.map((product) => product.id));
+    const seenCategories = new Set(newArrivals.map((product) => product.categorySlug));
     for (const product of newestAll) {
-      if (newArrivals.some((item) => item.id === product.id)) continue;
+      if (seenIds.has(product.id) || seenCategories.has(product.categorySlug)) continue;
+      seenIds.add(product.id);
+      seenCategories.add(product.categorySlug);
       newArrivals.push(product);
       if (newArrivals.length >= 4) break;
     }

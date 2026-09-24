@@ -354,6 +354,32 @@ export async function getProducts({
   return typeof limit === "number" ? items.slice(0, limit) : items;
 }
 
+// --- Homepage "New Arrivals" curation ------------------------------------
+// The New Arrivals row features a hand-picked set of products. ONLY the list
+// of product handles lives here as configuration — every product detail
+// (title, price, image, category, badge) is pulled live from Medusa via
+// getProductsByHandles, so the cards always reflect current backend data and
+// nothing is hardcoded. To change what appears, edit this list. A handle is
+// the product's URL slug, e.g. /products/<handle>.
+export const NEW_ARRIVAL_HANDLES = [
+  "stellarpro-anc-enc-wireless-earbuds",
+  "70w-gan-wall-charger-powercube70-ze-09",
+  "zedx-z-mag-mini-10000-mah-zx-w11p",
+  "zedx-95w-car-charger-cr300",
+];
+
+// Fetch specific products by handle from the live catalog, preserving the
+// requested order. Missing handles are skipped rather than throwing, so the
+// row degrades gracefully if a product is unpublished or renamed.
+export async function getProductsByHandles(handles: string[]): Promise<Product[]> {
+  if (handles.length === 0) return [];
+  const all = (await getProducts()) as Product[];
+  const bySlug = new Map(all.map((product) => [product.slug, product]));
+  return handles
+    .map((handle) => bySlug.get(handle))
+    .filter((product): product is Product => Boolean(product));
+}
+
 export async function getProduct(slug: string) {
   if (getMedusaConfig()) {
     try {
