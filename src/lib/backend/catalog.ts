@@ -368,6 +368,16 @@ export const NEW_ARRIVAL_HANDLES = [
   "zedx-95w-car-charger-cr300",
 ];
 
+// The homepage "Featured items" row works the same way as NEW_ARRIVAL_HANDLES:
+// only the handles are listed here; all product data is pulled live from Medusa.
+// Edit this list to change which products are featured.
+export const FEATURED_HANDLES = [
+  "zedx-headphone-lumen-100",
+  "zedx-world-travel-adapter-35w-gan",
+  "zedx-at-24-ultra-watch",
+  "zedx-zeeride-mag-clip-on",
+];
+
 // Fetch specific products by handle from the live catalog, preserving the
 // requested order. Missing handles are skipped rather than throwing, so the
 // row degrades gracefully if a product is unpublished or renamed.
