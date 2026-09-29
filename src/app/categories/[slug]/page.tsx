@@ -4,6 +4,7 @@ import { CategoryProductsPage } from "@/components/product/CategoryProductsPage"
 import { StructuredData } from "@/components/seo/StructuredData";
 import { getCategory, getProducts } from "@/lib/backend/catalog";
 import { breadcrumbJsonLd, categorySeoTitle, collectionJsonLd } from "@/lib/seo";
+import { getSeoOverride } from "@/lib/seoOverrides";
 
 export async function generateMetadata({
   params,
@@ -21,22 +22,27 @@ export async function generateMetadata({
 
   const categoryProducts = await getProducts({ category: category.slug });
 
+  const override = getSeoOverride("category", category.slug);
+  const title = override?.title ?? categorySeoTitle(category, categoryProducts);
+  const description = override?.description ?? category.description;
+  const ogTitle = override?.title ?? category.name;
+
   return {
-    title: categorySeoTitle(category, categoryProducts),
-    description: category.description,
+    title,
+    description,
     alternates: {
       canonical: `/categories/${category.slug}`,
     },
     openGraph: {
-      title: category.name,
-      description: category.description,
+      title: ogTitle,
+      description,
       url: `/categories/${category.slug}`,
       images: [category.image],
     },
     twitter: {
       card: "summary_large_image",
-      title: category.name,
-      description: category.description,
+      title: ogTitle,
+      description,
       images: [category.image],
     },
   };

@@ -4,6 +4,7 @@ import { ProductDetailPage } from "@/components/product/ProductDetailPage";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { getProduct, getProducts } from "@/lib/backend/catalog";
 import { breadcrumbJsonLd, productJsonLd, productSeoDescription } from "@/lib/seo";
+import { getSeoOverride } from "@/lib/seoOverrides";
 import { formatCategoryName, formatProductName } from "@/lib/productDisplay";
 
 export async function generateMetadata({
@@ -20,22 +21,29 @@ export async function generateMetadata({
     };
   }
 
+  const override = getSeoOverride("product", product.slug);
+  const title =
+    override?.title ??
+    `${formatProductName(product.name)} — ${formatCategoryName(product.category)} AED ${product.price} | Buy Online UAE`;
+  const description = override?.description ?? productSeoDescription(product);
+  const ogTitle = override?.title ?? formatProductName(product.name);
+
   return {
-    title: `${formatProductName(product.name)} — ${formatCategoryName(product.category)} AED ${product.price} | Buy Online UAE`,
-    description: productSeoDescription(product),
+    title,
+    description,
     alternates: {
       canonical: `/products/${product.slug}`,
     },
     openGraph: {
-      title: formatProductName(product.name),
-      description: productSeoDescription(product),
+      title: ogTitle,
+      description,
       url: `/products/${product.slug}`,
       images: [product.image],
     },
     twitter: {
       card: "summary_large_image",
-      title: formatProductName(product.name),
-      description: productSeoDescription(product),
+      title: ogTitle,
+      description,
       images: [product.image],
     },
   };
