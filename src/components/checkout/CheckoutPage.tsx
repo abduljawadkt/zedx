@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Banknote, Minus, Plus, ShieldCheck, ShoppingBag, Store, Truck } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useCommerce } from "@/components/providers/CommerceProvider";
 import { ProductImage } from "@/components/product/ProductImage";
@@ -27,6 +28,7 @@ const paymentOptionMeta = {
 export function CheckoutPage() {
   const { addToCart, cartItems, clearCart, removeFromCart } = useCommerce();
   const reduceMotion = useReducedMotion();
+  const router = useRouter();
   const [customerName, setCustomerName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -137,8 +139,36 @@ export function CheckoutPage() {
         window.location.href = data.checkoutUrl;
         return;
       }
+
+      // Persist the placed order so the confirmation page can render it even
+      // though guest Medusa orders aren't retrievable by number from the client.
+      const confirmation = {
+        orderNumber: data.orderNumber,
+        status: data.status ?? "pending",
+        currency: data.currency ?? "AED",
+        total,
+        itemsCount: cartItems.length,
+        customerName,
+        email,
+        phone: `${phoneCountryCode} ${phone}`.trim(),
+        paymentMethod,
+        address: { emirate, city, addressLine, buildingName, apartment, landmark, postalCode, deliveryNotes },
+        placedAt: new Date().toISOString(),
+        lines: groupedItems.map(({ product, quantity }) => ({
+          name: product.name,
+          quantity,
+          price: product.price,
+          image: product.image,
+          slug: product.slug,
+          product,
+        })),
+      };
+      try {
+        sessionStorage.setItem("zedx:lastOrder", JSON.stringify(confirmation));
+      } catch {}
+
       clearCart();
-      setStatus(`Order ${data.orderNumber} created in Medusa Admin. Total ${data.currency} ${data.total}.`);
+      router.push(`/checkout/confirmation?order=${encodeURIComponent(data.orderNumber)}`);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Unable to place order.");
     } finally {
