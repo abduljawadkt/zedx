@@ -319,7 +319,7 @@ export async function POST(request: NextRequest) {
             },
           },
         })),
-        success_url: `${successBase}/checkout?session_id={CHECKOUT_SESSION_ID}&order=${order.orderNumber}`,
+        success_url: `${successBase}/checkout/confirmation?session_id={CHECKOUT_SESSION_ID}&order=${order.orderNumber}`,
         cancel_url: `${successBase}/checkout?cancelled=1&order=${order.orderNumber}`,
         client_reference_id: order.orderNumber,
         metadata: {
