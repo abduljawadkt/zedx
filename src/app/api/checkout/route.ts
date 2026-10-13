@@ -27,6 +27,7 @@ const checkoutSchema = z.object({
   postalCode: z.string().min(1),
   deliveryNotes: z.string().optional(),
   paymentMethod: z.string().min(1),
+  promoCode: z.string().optional(),
   items: z.array(z.object({
     productId: z.string().min(1),
     productSlug: z.string().optional(),
@@ -78,6 +79,8 @@ type MedusaCompleteCartResponse = {
     display_id?: number;
     status?: string;
     total?: number;
+    subtotal?: number;
+    discount_total?: number;
     currency_code?: string;
     items?: unknown[];
   };
@@ -192,6 +195,20 @@ async function createMedusaOrder(input: CheckoutInput, customerToken?: string) {
     });
   }
 
+  // Apply the coupon before completing so the real order is discounted. The
+  // code was already validated on the storefront; if it fails here we stop
+  // rather than silently placing the order at full price.
+  if (input.promoCode?.trim()) {
+    try {
+      await medusaFetch(`/store/carts/${cart.id}/promotions`, {
+        method: "POST",
+        body: JSON.stringify({ promo_codes: [input.promoCode.trim()] }),
+      });
+    } catch {
+      throw new Error(`The promo code "${input.promoCode.trim()}" could not be applied to this order.`);
+    }
+  }
+
   const shippingOptions = await medusaFetch<MedusaShippingOptionResponse>(
     `/store/shipping-options?cart_id=${cart.id}`,
   );
@@ -272,7 +289,9 @@ export async function POST(request: NextRequest) {
       return jsonResponse({
         orderNumber: order.display_id ? `MED-${order.display_id}` : order.id,
         status: order.status ?? "pending",
-        total: order.total ?? 0,
+        subtotal: Math.round(order.subtotal ?? order.total ?? 0),
+        discount: Math.round(order.discount_total ?? 0),
+        total: Math.round(order.total ?? 0),
         currency: order.currency_code?.toUpperCase() ?? "AED",
         items: order.items?.length ?? parsed.data.items.length,
         medusaOrderId: order.id,
