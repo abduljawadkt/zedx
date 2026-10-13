@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Banknote, Minus, Plus, ShieldCheck, ShoppingBag, Store, Truck } from "lucide-react";
+import { BadgePercent, Banknote, Minus, Plus, ShieldCheck, ShoppingBag, Store, Truck } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -45,6 +45,16 @@ export function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<(typeof paymentOptions)[number]>("Cash on delivery");
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [promoInput, setPromoInput] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState<{
+    code: string;
+    discount: number;
+    subtotal: number;
+    total: number;
+    currency: string;
+  } | null>(null);
+  const [promoStatus, setPromoStatus] = useState<string | null>(null);
+  const [promoLoading, setPromoLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -89,8 +99,68 @@ export function CheckoutPage() {
     [cartItems],
   );
 
+  const orderItems = useMemo(
+    () =>
+      cartItems.reduce(
+        (items, product) => {
+          const existing = items.find((item) => item.productId === product.id);
+          if (existing) existing.quantity += 1;
+          else items.push({ productId: product.id, productSlug: product.slug, variantId: product.medusaVariantId, quantity: 1 });
+          return items;
+        },
+        [] as Array<{ productId: string; productSlug: string; variantId?: string; quantity: number }>,
+      ),
+    [cartItems],
+  );
+
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const total = subtotal;
+  const discount = appliedPromo?.discount ?? 0;
+  const total = Math.max(0, subtotal - discount);
+
+  // A changed cart invalidates a previewed discount; require re-applying it.
+  useEffect(() => {
+    setAppliedPromo(null);
+    setPromoStatus(null);
+  }, [cartItems.length]);
+
+  async function applyPromo() {
+    const code = promoInput.trim();
+    if (!code) return;
+    setPromoLoading(true);
+    setPromoStatus(null);
+    try {
+      const response = await fetch("/api/checkout/promo", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ promoCode: code, items: orderItems }),
+      });
+      const payload = await response.json();
+      if (!response.ok) {
+        const message = typeof payload?.error === "string" ? payload.error : payload?.error?.message;
+        throw new Error(message ?? "Unable to apply promo code.");
+      }
+      const data = payload.data ?? payload;
+      setAppliedPromo({
+        code: data.code,
+        discount: data.discount,
+        subtotal: data.subtotal,
+        total: data.total,
+        currency: data.currency,
+      });
+      setPromoInput("");
+    } catch (error) {
+      setAppliedPromo(null);
+      setPromoStatus(error instanceof Error ? error.message : "Unable to apply promo code.");
+    } finally {
+      setPromoLoading(false);
+    }
+  }
+
+  function removePromo() {
+    setAppliedPromo(null);
+    setPromoStatus(null);
+    setPromoInput("");
+  }
 
   async function placeOrder() {
     setSubmitting(true);
@@ -118,15 +188,8 @@ export function CheckoutPage() {
           postalCode,
           deliveryNotes,
           paymentMethod,
-          items: cartItems.reduce(
-            (items, product) => {
-              const existing = items.find((item) => item.productId === product.id);
-              if (existing) existing.quantity += 1;
-              else items.push({ productId: product.id, productSlug: product.slug, variantId: product.medusaVariantId, quantity: 1 });
-              return items;
-            },
-            [] as Array<{ productId: string; productSlug: string; variantId?: string; quantity: number }>,
-          ),
+          promoCode: appliedPromo?.code,
+          items: orderItems,
         }),
       });
       const payload = await response.json();
@@ -146,6 +209,8 @@ export function CheckoutPage() {
         orderNumber: data.orderNumber,
         status: data.status ?? "pending",
         currency: data.currency ?? "AED",
+        subtotal,
+        discount,
         total,
         itemsCount: cartItems.length,
         customerName,
@@ -285,9 +350,58 @@ export function CheckoutPage() {
               ))}
             </div>
 
-            <div className="mt-6 space-y-3 border-t border-[#ffffff1a] pt-5 text-sm">
+            <div className="mt-6 border-t border-[#ffffff1a] pt-6">
+              {appliedPromo ? (
+                <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#00a0e3]/35 bg-[#00a0e3]/10 p-3">
+                  <span className="flex items-center gap-2 text-sm">
+                    <BadgePercent size={16} className="text-[var(--brand-blue-soft)]" />
+                    <span className="font-semibold text-white">{appliedPromo.code}</span>
+                    <span className="text-white/60">applied</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={removePromo}
+                    className="text-xs font-semibold text-white/60 underline-offset-2 transition hover:text-white hover:underline"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <span className="text-xs font-semibold text-[#ffffff66]">Promo code</span>
+                  <div className="mt-2 flex gap-2">
+                    <input
+                      value={promoInput}
+                      onChange={(event) => setPromoInput(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          event.preventDefault();
+                          applyPromo();
+                        }
+                      }}
+                      placeholder="Enter code"
+                      className="h-12 w-full rounded-2xl border border-[#ffffff1a] bg-black/24 px-4 text-sm uppercase tracking-wide text-white outline-none placeholder:normal-case placeholder:text-[#ffffff40] focus:border-[#00a0e3]/70"
+                    />
+                    <button
+                      type="button"
+                      onClick={applyPromo}
+                      disabled={promoLoading || !promoInput.trim()}
+                      className="inline-flex h-12 shrink-0 items-center justify-center rounded-2xl border border-[#ffffff26] px-5 text-sm font-semibold text-white transition hover:border-white/60 disabled:opacity-50"
+                    >
+                      {promoLoading ? "Applying…" : "Apply"}
+                    </button>
+                  </div>
+                </div>
+              )}
+              {promoStatus && <p className="mt-2 text-xs text-[#ff7a7a]">{promoStatus}</p>}
+            </div>
+
+            <div className="mt-6 space-y-3 text-sm">
               <SummaryRow label="Subtotal" value={`AED ${subtotal}`} />
-              <div className="flex items-center justify-between pt-3 text-white">
+              {appliedPromo && discount > 0 && (
+                <SummaryRow label={`Discount (${appliedPromo.code})`} value={`- AED ${discount}`} />
+              )}
+              <div className="flex items-center justify-between border-t border-[#ffffff1a] pt-4 text-white">
                 <span className="text-sm text-[#ffffff73]">Total</span>
                 <span className="text-2xl font-semibold sm:text-3xl">AED {total}</span>
               </div>

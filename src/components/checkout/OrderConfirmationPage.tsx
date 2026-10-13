@@ -32,6 +32,8 @@ type ConfirmationData = {
   orderNumber: string;
   status: string;
   currency: string;
+  subtotal?: number;
+  discount?: number;
   total: number;
   itemsCount: number;
   customerName?: string;
@@ -187,11 +189,13 @@ export function OrderConfirmationPage() {
 }
 
 function ConfirmationContent({ data, reduceMotion }: { data: ConfirmationData; reduceMotion: boolean }) {
-  const computedTotal = useMemo(
+  const computedSubtotal = useMemo(
     () => data.lines.reduce((sum, line) => sum + line.price * line.quantity, 0),
     [data.lines],
   );
-  const total = computedTotal || data.total;
+  const subtotal = data.subtotal ?? computedSubtotal;
+  const discount = data.discount ?? 0;
+  const total = data.total || Math.max(0, subtotal - discount);
   const currency = data.currency || "AED";
   const isPickup = (data.paymentMethod ?? "").toLowerCase().includes("pickup");
   const placedAt = data.placedAt ? new Date(data.placedAt) : null;
@@ -289,10 +293,18 @@ function ConfirmationContent({ data, reduceMotion }: { data: ConfirmationData; r
               <div className="flex items-center justify-between text-white/70">
                 <span>Subtotal</span>
                 <span className="font-semibold text-white/90">
-                  {currency} {total}
+                  {currency} {subtotal}
                 </span>
               </div>
-              <div className="flex items-center justify-between pt-3 text-white">
+              {discount > 0 && (
+                <div className="flex items-center justify-between text-[var(--brand-blue-soft)]">
+                  <span>Discount</span>
+                  <span className="font-semibold">
+                    - {currency} {discount}
+                  </span>
+                </div>
+              )}
+              <div className="flex items-center justify-between border-t border-[#ffffff1a] pt-4 text-white">
                 <span className="text-sm text-white/70">Total</span>
                 <span className="text-2xl font-semibold sm:text-3xl">
                   {currency} {total}
