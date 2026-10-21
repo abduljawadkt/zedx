@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
-const heroVideoSrc = "/hero-video/zedx-powerbank-hero.mp4";
+const heroVideoSrc = "/hero-video/zedx-powerbank-v1-hero.mp4";
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
