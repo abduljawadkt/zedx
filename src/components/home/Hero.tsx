@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section className="relative isolate min-h-[calc(100svh-4.5rem)] overflow-hidden bg-[var(--footer-bg)] text-[var(--foreground)]">
       <motion.video
-        className="absolute inset-0 h-full w-full object-cover object-[62%_center]"
+        className="absolute inset-0 h-full w-full object-contain object-center sm:object-cover sm:object-[62%_center]"
         src={heroVideoSrc}
         autoPlay
         muted
