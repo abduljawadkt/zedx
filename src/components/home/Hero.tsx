@@ -7,14 +7,13 @@ const heroVideoSrc = "/hero-video/zedx-powerbank-v1-hero.mp4";
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
-  const videoScale = useTransform(scrollYProgress, [0, 0.34], [1.03, 1]);
   const textY = useTransform(scrollYProgress, [0, 0.28], [0, 46]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.24], [1, 0.68]);
 
   return (
     <section className="relative isolate min-h-[calc(100svh-4.5rem)] overflow-hidden bg-[var(--footer-bg)] text-[var(--foreground)]">
       <motion.video
-        className="absolute inset-0 h-full w-full object-contain object-center sm:object-cover sm:object-[62%_center]"
+        className="absolute inset-0 h-full w-full object-contain object-center"
         src={heroVideoSrc}
         autoPlay
         muted
@@ -23,7 +22,6 @@ export function Hero() {
         preload="metadata"
         aria-hidden="true"
         disablePictureInPicture
-        style={reduceMotion ? undefined : { scale: videoScale }}
       />
 
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--hero-overlay-start)_0%,var(--hero-overlay-mid)_38%,rgba(5,12,20,0.14)_68%,var(--hero-overlay-end)_100%),linear-gradient(180deg,rgba(5,12,20,0.48)_0%,rgba(5,12,20,0.04)_44%,var(--hero-bottom)_100%)]" />
